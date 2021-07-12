@@ -37,7 +37,7 @@
             android:layout_width="34.06dp"
             android:layout_height="38dp"
             android:scaleType="fitXY"
-            android:src="@drawable/triangle"
+            android:src="@drawable/ic_triangle"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             />
@@ -61,7 +61,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="24dp"
-        android:layout_marginTop="373dp"
+        android:layout_marginTop="273dp"
         android:orientation="vertical"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent">
