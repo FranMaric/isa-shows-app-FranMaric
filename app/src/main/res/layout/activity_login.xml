@@ -101,10 +101,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="24dp"
             android:hint="Mail"
-            android:textColorHint="@color/white"
-            app:boxStrokeColor="@color/white"
-            app:backgroundTint="@color/white"
-            app:endIconMode="password_toggle">
+            app:backgroundTint="@color/white">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -127,11 +124,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="24dp"
-            android:hint="Password">
+            android:hint="Password"
+            app:endIconMode="password_toggle">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:lineSpacingExtra="3sp"
+                android:textColor="@color/white"
+                android:textFontWeight="400"
+                android:textSize="17sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
