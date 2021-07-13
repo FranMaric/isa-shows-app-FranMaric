@@ -100,7 +100,9 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="24dp"
             android:hint="Mail"
-            app:backgroundTint="@color/white">
+            app:boxStrokeColor="@color/selector_outlined_box"
+            android:textColorHint="@color/white"
+            app:hintTextColor="@color/white">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/emailField"
@@ -124,7 +126,11 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="24dp"
             android:hint="Password"
-            app:endIconMode="password_toggle">
+            app:endIconMode="password_toggle"
+            app:boxStrokeColor="@color/selector_outlined_box"
+            android:textColorHint="@color/white"
+            app:hintTextColor="@color/white"
+            app:endIconTint="@color/white">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/passwordField"
