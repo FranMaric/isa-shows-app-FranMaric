@@ -3,6 +3,7 @@ package com.shows.franmaric
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.core.widget.doAfterTextChanged
 import com.shows.franmaric.databinding.ActivityLoginBinding
 import java.util.regex.Pattern
 
