@@ -1,11 +1,17 @@
 package com.shows.franmaric
 
 import android.content.Intent
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Patterns
+import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat.setBackgroundTintList
 import androidx.core.widget.doAfterTextChanged
 import com.shows.franmaric.databinding.ActivityLoginBinding
 import java.util.regex.Pattern
+
+const val MIN_LENGTH = 6
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
@@ -14,6 +20,7 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        supportActionBar?.hide()
 
         binding.loginButton.setEnabled(false)
         binding.loginButton.setOnClickListener{
@@ -39,13 +46,15 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setButtonEnabled(enabled:Boolean){
-        binding.loginButton.setEnabled(enabled)
-        if(enabled){
-            binding.loginButton.setBackgroundTintList(this.getResources().getColorStateList(R.color.button_enabled))
-            binding.loginButton.setTextColor(0x52368C)
-        }else{
-            binding.loginButton.setBackgroundTintList(this.getResources().getColorStateList(R.color.button_disabled))
-            binding.loginButton.setTextColor(0xFFFFFF)
+        binding.loginButton.apply {
+            setEnabled(enabled)
+            if(enabled){
+                setBackgroundTintList(ContextCompat.getColorStateList(this@LoginActivity, R.color.button_enabled))
+                setTextColor(Color.parseColor("#52368C"))
+            } else {
+                setBackgroundTintList(ContextCompat.getColorStateList(this@LoginActivity, R.color.button_disabled))
+                setTextColor(Color.WHITE)
+            }
         }
     }
 
@@ -56,21 +65,11 @@ class LoginActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun isValidInput(email: String?, password: String?): Boolean {
-        if(email!=null && password!=null && isEmailValid(email) && password.length >= 6)
-            return true
-        return false
-    }
+    private fun isValidInput(email: String?, password: String?) =
+         email!=null && password!=null && isEmailValid(email) && password.length >= MIN_LENGTH
 
     //not gonna lie I found it on stackoverflow
     private fun isEmailValid(email: String): Boolean {
-        return Pattern.compile(
-            "^(([\\w-]+\\.)+[\\w-]+|([a-zA-Z]|[\\w-]{2,}))@"
-                    + "((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?"
-                    + "[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\."
-                    + "([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?"
-                    + "[0-9]{1,2}|25[0-5]|2[0-4][0-9]))|"
-                    + "([a-zA-Z]+[\\w-]+\\.)+[a-zA-Z]{2,4})$"
-        ).matcher(email).matches()
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 }
