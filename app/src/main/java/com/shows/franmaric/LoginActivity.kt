@@ -6,10 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Patterns
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat.setBackgroundTintList
 import androidx.core.widget.doAfterTextChanged
 import com.shows.franmaric.databinding.ActivityLoginBinding
-import java.util.regex.Pattern
 
 const val MIN_LENGTH = 6
 
