@@ -67,9 +67,11 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun login() {
-        val intent = Intent(this, WelcomeActivity::class.java)
-        val name = binding.emailField.text.toString().split("@").first()
-        intent.putExtra("name", name)
+        val intent = WelcomeActivity.buildIntent(
+            originActivity = this,
+            userName = binding.emailField.text.toString().split("@").first()
+        )
+
         startActivity(intent)
     }
 
