@@ -59,13 +59,6 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun initLoginButton(){
-        binding.loginButton.setEnabled(false)
-        binding.loginButton.setOnClickListener{
-            login()
-        }
-    }
-
     private fun setButtonEnabled(enabled:Boolean){
         binding.loginButton.apply {
             setEnabled(enabled)
