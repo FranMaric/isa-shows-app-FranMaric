@@ -24,6 +24,17 @@ class LoginActivity : AppCompatActivity() {
 
         initLoginButton()
 
+        initInputs()
+    }
+
+    private fun initLoginButton(){
+        binding.loginButton.setEnabled(false)
+        binding.loginButton.setOnClickListener{
+            login()
+        }
+    }
+
+    private fun initInputs(){
         binding.emailField.doAfterTextChanged { email->
             val password = binding.passwordField.text.toString()
             if(isValidInput(email.toString(), password)){
@@ -39,13 +50,6 @@ class LoginActivity : AppCompatActivity() {
             } else if(binding.loginButton.isEnabled){
                 setButtonEnabled(false)
             }
-        }
-    }
-
-    private fun initLoginButton(){
-        binding.loginButton.setEnabled(false)
-        binding.loginButton.setOnClickListener{
-            login()
         }
     }
 
