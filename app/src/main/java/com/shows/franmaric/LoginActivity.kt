@@ -22,10 +22,7 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
         supportActionBar?.hide()
 
-        binding.loginButton.setEnabled(false)
-        binding.loginButton.setOnClickListener{
-            login()
-        }
+        initLoginButton()
 
         binding.emailField.doAfterTextChanged { email->
             val password = binding.passwordField.text.toString()
@@ -42,6 +39,13 @@ class LoginActivity : AppCompatActivity() {
             } else if(binding.loginButton.isEnabled){
                 setButtonEnabled(false)
             }
+        }
+    }
+
+    private fun initLoginButton(){
+        binding.loginButton.setEnabled(false)
+        binding.loginButton.setOnClickListener{
+            login()
         }
     }
 
