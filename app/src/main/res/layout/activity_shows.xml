@@ -1,47 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ShowsActivity"
     android:orientation="vertical">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/showsRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone"
-            tools:listitem="@layout/view_show_item"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/showsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:visibility="gone"
+        tools:listitem="@layout/view_show_item"/>
 
-        <LinearLayout
-            android:id="@+id/emptyStateLabel"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="center">
+    <LinearLayout
+        android:id="@+id/emptyStateLabel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_empty_state"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_empty_state"/>
 
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="26dp"/>
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="26dp"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#808080"
-                android:textFontWeight="400"
-                android:textSize="17sp"
-                android:lineSpacingExtra="3sp"
-                android:fontFamily="sans-serif"
-                android:text="Your shows are not showing. Get it?"/>
-
-        </LinearLayout>
-
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#808080"
+            android:textFontWeight="400"
+            android:textSize="17sp"
+            android:lineSpacingExtra="3sp"
+            android:fontFamily="sans-serif"
+            android:text="Your shows are not showing. Get it?"/>
 
     </LinearLayout>
+
+</LinearLayout>
 
