@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.shows.franmaric.data.ShowsResources
 import com.shows.franmaric.databinding.ActivityShowsBinding
 
@@ -30,7 +31,7 @@ class ShowsActivity : AppCompatActivity()  {
     }
 
     private fun initShowsRecycler() {
-        showsAdapter = ShowsAdapter(ShowsResources.shows) { item ->
+        showsAdapter = ShowsAdapter(emptyList()) { item ->
             Toast.makeText(this, item.name, Toast.LENGTH_SHORT).show()
         }
 
