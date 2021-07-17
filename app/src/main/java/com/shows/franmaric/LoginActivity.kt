@@ -1,5 +1,6 @@
 package com.shows.franmaric
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
@@ -12,6 +13,13 @@ import com.shows.franmaric.databinding.ActivityLoginBinding
 const val MIN_LENGTH = 6
 
 class LoginActivity : AppCompatActivity() {
+    companion object {
+
+        fun buildIntent(context: Activity): Intent {
+            return Intent(context, LoginActivity::class.java)
+        }
+    }
+
     private lateinit var binding: ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
