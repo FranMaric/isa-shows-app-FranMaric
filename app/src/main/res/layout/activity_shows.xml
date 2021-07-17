@@ -3,8 +3,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ShowsActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <CheckBox
+        android:id="@+id/toggleListStateButton"
+        android:layout_gravity="end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:button="@drawable/selector_toggle_list_state_button"
+        android:text=" REMOVE SHOWS"
+        app:buttonTint="@android:color/black"
+        android:padding="5dp"
+        />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/showsRecyclerView"
