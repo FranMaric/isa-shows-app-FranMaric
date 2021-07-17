@@ -44,7 +44,7 @@ class ShowsAdapter(
 
             binding.descriptionTextView.text = item.description
 
-            binding.root.setOnClickListener {
+            binding.card.setOnClickListener {
                 onItemClickCallback(item)
             }
         }
