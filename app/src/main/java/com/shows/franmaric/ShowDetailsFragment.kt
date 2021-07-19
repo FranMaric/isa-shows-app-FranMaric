@@ -8,10 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.shows.franmaric.adapters.ReviewsAdapter
+import com.shows.franmaric.data.ShowsResources
 import com.shows.franmaric.databinding.DialogAddReviewBinding
 import com.shows.franmaric.databinding.FragmentShowDetailsBinding
 import com.shows.franmaric.models.Review
@@ -24,6 +26,8 @@ class ShowDetailsFragment : Fragment() {
 
     private val binding get() = _binding!!
 
+    val args: ShowDetailsFragmentArgs by navArgs()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -32,15 +36,13 @@ class ShowDetailsFragment : Fragment() {
         _binding = FragmentShowDetailsBinding.inflate(inflater, container, false)
         return binding.root
     }
-
     private var reviewsAdapter: ReviewsAdapter? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //TODO: get show from fragment args
-        //val show = ShowsResources.shows[intent.getIntExtra(SHOW_INDEX, 0)]
-        //initDataContainers(show)
+        val show = ShowsResources.shows[args.showIndex]
+        initDataContainers(show)
 
         //TODO: FIX supportActionBar
         //setSupportActionBar(binding.toolbar)
