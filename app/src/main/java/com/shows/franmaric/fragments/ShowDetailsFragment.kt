@@ -45,10 +45,6 @@ class ShowDetailsFragment : Fragment() {
         val show = ShowsResources.shows[args.showIndex]
         initDataContainers(show)
 
-        //TODO: FIX supportActionBar
-        //setSupportActionBar(binding.toolbar)
-
-
         initReviewRecycler()
 
         initSubmitButton()
