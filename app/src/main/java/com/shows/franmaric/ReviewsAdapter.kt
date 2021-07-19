@@ -8,10 +8,11 @@ import com.shows.franmaric.models.Review
 
 class ReviewsAdapter(
     private var items: List<Review>
-)  : RecyclerView.Adapter<ReviewsAdapter.ReviewViewHolder>(){
+) : RecyclerView.Adapter<ReviewsAdapter.ReviewViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReviewViewHolder {
-        val binding = ViewReviewItemBinding.inflate(LayoutInflater.from(parent.context))
+        val binding =
+            ViewReviewItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
         return ReviewViewHolder(binding)
     }
@@ -20,7 +21,7 @@ class ReviewsAdapter(
         return items.size
     }
 
-    fun getItems() : List<Review>{
+    fun getItems(): List<Review> {
         return items
     }
 
@@ -38,7 +39,8 @@ class ReviewsAdapter(
         notifyItemInserted(items.size)
     }
 
-    inner class ReviewViewHolder(private val binding: ViewReviewItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ReviewViewHolder(private val binding: ViewReviewItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         fun bind(review: Review) {
             binding.commentTextView.text = review.comment
