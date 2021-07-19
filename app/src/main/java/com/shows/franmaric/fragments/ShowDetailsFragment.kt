@@ -1,4 +1,4 @@
-package com.shows.franmaric
+package com.shows.franmaric.fragments
 
 import android.graphics.Color
 import android.graphics.PorterDuff
@@ -27,7 +27,7 @@ class ShowDetailsFragment : Fragment() {
 
     private val binding get() = _binding!!
 
-    val args: ShowDetailsFragmentArgs by navArgs()
+    val args: com.shows.franmaric.ShowDetailsFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,

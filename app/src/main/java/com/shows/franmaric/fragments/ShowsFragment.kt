@@ -1,4 +1,4 @@
-package com.shows.franmaric
+package com.shows.franmaric.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater

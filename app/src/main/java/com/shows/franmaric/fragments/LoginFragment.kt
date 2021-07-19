@@ -1,4 +1,4 @@
-package com.shows.franmaric
+package com.shows.franmaric.fragments
 
 import android.content.Context
 import android.graphics.Color
@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.shows.franmaric.R
 import com.shows.franmaric.databinding.FragmentLoginBinding
 
 const val MIN_PASSWORD_LENGTH = 6
@@ -67,10 +68,14 @@ class LoginFragment : Fragment() {
         binding.loginButton.apply {
             setEnabled(enabled)
             if(enabled){
-                setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), R.color.button_enabled))
+                setBackgroundTintList(ContextCompat.getColorStateList(requireContext(),
+                    R.color.button_enabled
+                ))
                 setTextColor(Color.parseColor("#52368C"))
             } else {
-                setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), R.color.button_disabled))
+                setBackgroundTintList(ContextCompat.getColorStateList(requireContext(),
+                    R.color.button_disabled
+                ))
                 setTextColor(Color.WHITE)
             }
         }
@@ -83,7 +88,7 @@ class LoginFragment : Fragment() {
             apply()
         }
 
-        val action = LoginFragmentDirections.actionLoginToShows()
+        val action = com.shows.franmaric.LoginFragmentDirections.actionLoginToShows()
         findNavController().navigate(action)
     }
 
