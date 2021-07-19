@@ -1,5 +1,6 @@
 package com.shows.franmaric.fragments
 
+import android.content.Context
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
@@ -13,6 +14,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.shows.franmaric.R
 import com.shows.franmaric.adapters.ReviewsAdapter
 import com.shows.franmaric.data.ShowsResources
 import com.shows.franmaric.databinding.DialogAddReviewBinding
@@ -37,6 +39,7 @@ class ShowDetailsFragment : Fragment() {
         _binding = FragmentShowDetailsBinding.inflate(inflater, container, false)
         return binding.root
     }
+
     private var reviewsAdapter: ReviewsAdapter? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -82,7 +85,11 @@ class ShowDetailsFragment : Fragment() {
             val rating = bottomSheetBinding.ratingBar.rating.toInt()
             val comment = bottomSheetBinding.commentField.text.toString()
 
-            val review = Review(rating, comment)
+            val sharedPref =
+                activity?.getPreferences(Context.MODE_PRIVATE) ?: return@setOnClickListener
+            val author = sharedPref.getString(getString(R.string.prefs_email), "imenko.prezimenovic@infinum.com")?.split("@")?.first() ?: return@setOnClickListener
+
+            val review = Review(rating, comment, author)
             reviewsAdapter?.addItem(review)
 
             var newRating = 0.0
