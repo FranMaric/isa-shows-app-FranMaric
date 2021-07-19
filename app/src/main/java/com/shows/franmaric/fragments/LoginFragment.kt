@@ -88,7 +88,7 @@ class LoginFragment : Fragment() {
             apply()
         }
 
-        val action = com.shows.franmaric.LoginFragmentDirections.actionLoginToShows()
+        val action = LoginFragmentDirections.actionLoginToShows()
         findNavController().navigate(action)
     }
 
