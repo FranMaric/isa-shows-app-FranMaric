@@ -26,7 +26,8 @@
 
         <action
             android:id="@+id/action_shows_to_login"
-            app:destination="@id/loginFragment"/>
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/loginFragment" />
 
     </fragment>
 
@@ -41,7 +42,8 @@
 
         <action
             android:id="@+id/action_show_details_to_shows"
-            app:destination="@id/showsFragment"/>
+            app:destination="@id/showsFragment"
+            app:popUpTo="@id/showsFragment" />
 
     </fragment>
 
