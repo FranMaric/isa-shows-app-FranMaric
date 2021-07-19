@@ -27,7 +27,7 @@ class ShowDetailsFragment : Fragment() {
 
     private val binding get() = _binding!!
 
-    val args: com.shows.franmaric.ShowDetailsFragmentArgs by navArgs()
+    val args: ShowDetailsFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
