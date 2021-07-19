@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
+import com.shows.franmaric.adapters.ShowsAdapter
 import com.shows.franmaric.data.ShowsResources
 import com.shows.franmaric.databinding.ActivityShowsBinding
 

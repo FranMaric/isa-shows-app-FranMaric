@@ -3,7 +3,6 @@ package com.shows.franmaric
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
-import android.graphics.ColorFilter
 import android.graphics.PorterDuff
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +10,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.shows.franmaric.adapters.ReviewsAdapter
 import com.shows.franmaric.data.ShowsResources
 import com.shows.franmaric.databinding.ActivityShowDetailsBinding
 import com.shows.franmaric.databinding.DialogAddReviewBinding
