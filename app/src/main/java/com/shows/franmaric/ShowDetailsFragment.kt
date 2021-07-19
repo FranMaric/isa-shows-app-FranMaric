@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -57,8 +58,7 @@ class ShowDetailsFragment : Fragment() {
         binding.collapsingToolbarLayout.title = show.name
         binding.toolbar.navigationIcon?.setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_IN)
         binding.toolbar.setNavigationOnClickListener {
-            //TODO: pop from stack
-            //this.finish()
+            findNavController().popBackStack()
         }
         binding.collapsingToolbarLayout.setExpandedTitleColor(Color.BLACK)
         binding.collapsingToolbarLayout.setCollapsedTitleTextColor(Color.BLACK)
