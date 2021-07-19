@@ -1,5 +1,6 @@
 package com.shows.franmaric
 
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Patterns
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.shows.franmaric.databinding.FragmentLoginBinding
 
 const val MIN_PASSWORD_LENGTH = 6
@@ -75,12 +77,14 @@ class LoginFragment : Fragment() {
     }
 
     private fun login() {
-        //TODO: use actions to navigate to ShowsFragment
-        /*val intent = Intent(this, ShowsActivity::class.java)
-        val name = binding.emailField.text.toString().split("@").first()
-        intent.putExtra("name", name)
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
+        with (sharedPref.edit()) {
+            putString(getString(R.string.prefs_email), binding.emailField.text.toString())
+            apply()
+        }
 
-        startActivity(intent)*/
+        val action = LoginFragmentDirections.actionLoginToShows()
+        findNavController().navigate(action)
     }
 
     private fun isValidInput(email: String?, password: String?) =
