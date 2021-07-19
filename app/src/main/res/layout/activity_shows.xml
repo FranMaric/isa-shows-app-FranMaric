@@ -8,6 +8,16 @@
     android:orientation="vertical"
     android:background="@color/white">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:minHeight="115dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:titleTextColor="@android:color/black"
+        app:title="Shows"
+        android:background="@color/white">
+    </androidx.appcompat.widget.Toolbar>
+
     <CheckBox
         android:id="@+id/toggleListStateButton"
         android:layout_gravity="end"
