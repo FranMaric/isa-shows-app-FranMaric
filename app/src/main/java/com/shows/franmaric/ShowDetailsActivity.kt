@@ -3,6 +3,8 @@ package com.shows.franmaric
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.ColorFilter
+import android.graphics.PorterDuff
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -49,8 +51,9 @@ class ShowDetailsActivity : AppCompatActivity() {
 
     private fun initDataContainers(show: Show) {
         binding.collapsingToolbarLayout.title = show.name
+        binding.toolbar.navigationIcon?.setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_IN)
         binding.toolbar.setNavigationOnClickListener {
-            println("IDEMOOOO NAZAD")
+            this.finish()
         }
         binding.collapsingToolbarLayout.setExpandedTitleColor(Color.BLACK)
         binding.collapsingToolbarLayout.setCollapsedTitleTextColor(Color.BLACK)
