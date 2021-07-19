@@ -6,6 +6,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
@@ -63,14 +64,9 @@ class ShowsFragment : Fragment()  {
 
     private fun initShowsRecycler() {
         showsAdapter = ShowsAdapter(ShowsResources.shows) { show ->
-            //TODO: fragment args and action
-            //val intent = ShowDetailsFragment.buildIntent(
-            //    originActivity = this,
-            //    showIndex = ShowsResources.shows.indexOf(show)
-            //)
-
-            //println(ShowsResources.shows.indexOf(show))
-            //startActivity(intent)
+            val showIndex = ShowsResources.shows.indexOf(show)
+            val action = ShowsFragmentDirections.actionShowsToShowDetails(showIndex)
+            findNavController().navigate(action)
         }
 
         if(showsAdapter?.getItemCount() == 0){
