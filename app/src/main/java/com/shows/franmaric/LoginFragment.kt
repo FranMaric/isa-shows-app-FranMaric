@@ -11,7 +11,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import com.shows.franmaric.databinding.FragmentLoginBinding
 
-const val MIN_LENGTH = 6
+const val MIN_PASSWORD_LENGTH = 6
 
 class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
@@ -84,7 +84,7 @@ class LoginFragment : Fragment() {
     }
 
     private fun isValidInput(email: String?, password: String?) =
-         email!=null && password!=null && isEmailValid(email) && password.length >= MIN_LENGTH
+         email!=null && password!=null && isEmailValid(email) && password.length >= MIN_PASSWORD_LENGTH
 
     //not gonna lie I found it on stackoverflow
     private fun isEmailValid(email: String): Boolean {
