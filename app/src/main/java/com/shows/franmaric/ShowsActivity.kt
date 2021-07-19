@@ -28,6 +28,8 @@ class ShowsActivity : AppCompatActivity()  {
         binding = ActivityShowsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        supportActionBar?.hide()
+
         initShowsRecycler()
 
         initToggleListStateButton()
