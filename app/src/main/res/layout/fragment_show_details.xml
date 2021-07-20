@@ -41,7 +41,7 @@
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fillViewport="true"
@@ -125,7 +125,8 @@
                     android:layout_height="match_parent"
                     android:layout_marginHorizontal="24dp"
                     tools:listitem="@layout/view_review_item"
-                    tools:visibility="gone" />
+                    tools:visibility="gone"
+                    android:nestedScrollingEnabled="false"/>
 
                 <TextView
                     android:id="@+id/emptyStateLabel"
@@ -141,7 +142,7 @@
                     android:textSize="17sp" />
 
             </LinearLayout>
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
