@@ -15,8 +15,7 @@
         android:layout_height="wrap_content"
         app:titleTextColor="@android:color/black"
         app:title="Shows"
-        android:background="@color/white">
-    </androidx.appcompat.widget.Toolbar>
+        android:background="@color/white"/>
 
     <CheckBox
         android:id="@+id/toggleListStateButton"
