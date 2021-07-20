@@ -15,7 +15,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Write a review"
+            android:text="@string/write_a_review"
             android:textColor="@color/black"
             android:textFontWeight="700"
             android:textSize="24sp"
@@ -58,7 +58,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
-        android:hint="Comment"
+        android:hint="@string/comment"
         app:boxStrokeColor="@color/selector_review_outlined_box"
         android:textColorHint="#52368C"
         app:hintTextColor="#52368C">
@@ -83,7 +83,7 @@
         android:layout_marginHorizontal="24dp"
         android:layout_marginVertical="24dp"
         android:backgroundTint="#52368C"
-        android:text="Submit"
+        android:text="@string/submit"
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textColor="@color/white"

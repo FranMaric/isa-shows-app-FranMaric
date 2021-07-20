@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:titleTextColor="@android:color/black"
-        app:title="Shows"
+        app:title="@string/shows"
         android:background="@color/white"/>
 
     <CheckBox
@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:button="@drawable/selector_toggle_list_state_button"
-        android:text=" REMOVE SHOWS"
+        android:text="@string/remove_shows"
         android:textColor="@color/black"
         app:buttonTint="@android:color/black"
         android:padding="5dp"
@@ -60,7 +60,7 @@
             android:textSize="17sp"
             android:lineSpacingExtra="3sp"
             android:fontFamily="sans-serif"
-            android:text="Your shows are not showing. Get it?"/>
+            android:text="@string/your_shows_are_not_showing_get_it"/>
 
     </LinearLayout>
 
