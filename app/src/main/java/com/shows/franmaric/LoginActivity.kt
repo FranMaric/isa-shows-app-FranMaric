@@ -1,19 +1,25 @@
 package com.shows.franmaric
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Patterns
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat.setBackgroundTintList
 import androidx.core.widget.doAfterTextChanged
 import com.shows.franmaric.databinding.ActivityLoginBinding
-import java.util.regex.Pattern
 
 const val MIN_LENGTH = 6
 
 class LoginActivity : AppCompatActivity() {
+    companion object {
+
+        fun buildIntent(context: Activity): Intent {
+            return Intent(context, LoginActivity::class.java)
+        }
+    }
+
     private lateinit var binding: ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,10 +73,9 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun login() {
-        val intent = WelcomeActivity.buildIntent(
-            originActivity = this,
-            userName = binding.emailField.text.toString().split("@").first()
-        )
+        val intent = Intent(this, ShowsActivity::class.java)
+        val name = binding.emailField.text.toString().split("@").first()
+        intent.putExtra("name", name)
 
         startActivity(intent)
     }

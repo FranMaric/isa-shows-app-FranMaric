@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ShowsActivity"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:minHeight="115dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:titleTextColor="@android:color/black"
+        app:title="Shows"
+        android:background="@color/white">
+    </androidx.appcompat.widget.Toolbar>
+
+    <CheckBox
+        android:id="@+id/toggleListStateButton"
+        android:layout_gravity="end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:button="@drawable/selector_toggle_list_state_button"
+        android:text=" REMOVE SHOWS"
+        android:textColor="@color/black"
+        app:buttonTint="@android:color/black"
+        android:padding="5dp"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/showsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:visibility="gone"
+        tools:listitem="@layout/view_show_item"/>
+
+    <LinearLayout
+        android:id="@+id/emptyStateLabel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_empty_state"/>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="26dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#808080"
+            android:textFontWeight="400"
+            android:textSize="17sp"
+            android:lineSpacingExtra="3sp"
+            android:fontFamily="sans-serif"
+            android:text="Your shows are not showing. Get it?"/>
+
+    </LinearLayout>
+
+</LinearLayout>
+
