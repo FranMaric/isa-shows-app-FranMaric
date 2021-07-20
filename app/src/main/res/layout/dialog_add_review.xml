@@ -66,7 +66,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/commentField"
             android:layout_width="match_parent"
-            android:layout_height="240dp"
+            android:layout_height="wrap_content"
+            android:minHeight="180dp"
             android:fontFamily="sans-serif"
             android:lineSpacingExtra="3sp"
             android:textFontWeight="400"
