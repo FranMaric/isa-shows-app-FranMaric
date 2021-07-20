@@ -87,7 +87,10 @@ class ShowDetailsFragment : Fragment() {
 
             val sharedPref =
                 activity?.getPreferences(Context.MODE_PRIVATE) ?: return@setOnClickListener
-            val author = sharedPref.getString(getString(R.string.prefs_email), "imenko.prezimenovic@infinum.com")?.split("@")?.first() ?: return@setOnClickListener
+            val author = sharedPref.getString(
+                getString(R.string.prefs_email),
+                "imenko.prezimenovic@infinum.com"
+            )?.split("@")?.first() ?: return@setOnClickListener
 
             val review = Review(rating, comment, author)
             reviewsAdapter?.addItem(review)
@@ -118,17 +121,10 @@ class ShowDetailsFragment : Fragment() {
         if (binding.reviewsRecyclerView.isVisible == visible)
             return
 
-        if (visible) {
-            binding.reviewsRecyclerView.isVisible = true
-            binding.reviewInfoTextView.isVisible = true
-            binding.ratingBar.isVisible = true
-            binding.emptyStateLabel.isVisible = false
-        } else {
-            binding.reviewsRecyclerView.isVisible = false
-            binding.reviewInfoTextView.isVisible = false
-            binding.ratingBar.isVisible = false
-            binding.emptyStateLabel.isVisible = true
-        }
+        binding.reviewsRecyclerView.isVisible = visible
+        binding.reviewInfoTextView.isVisible = visible
+        binding.ratingBar.isVisible = visible
+        binding.emptyStateLabel.isVisible = !visible
     }
 
     private fun initReviewRecycler() {
