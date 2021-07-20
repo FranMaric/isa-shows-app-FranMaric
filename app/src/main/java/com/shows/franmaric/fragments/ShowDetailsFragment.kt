@@ -100,7 +100,7 @@ class ShowDetailsFragment : Fragment() {
                 newRating += review.rating
             }
 
-            var reviewCount = reviewsAdapter?.getItemCount()!!
+            val reviewCount = reviewsAdapter?.getItemCount()!!
             newRating = newRating / reviewCount
 
             binding.reviewInfoTextView.text =
