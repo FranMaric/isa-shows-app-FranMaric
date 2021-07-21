@@ -1,66 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragments.ShowsFragment"
+    android:background="@color/white"
     android:orientation="vertical"
-    android:background="@color/white">
+    tools:context=".fragments.ShowsFragment">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="19dp"
+        android:layout_gravity="end"
+        app:cardCornerRadius="100dp">
+
+        <ImageView
+            android:id="@+id/profileButton"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/knv1" />
+    </androidx.cardview.widget.CardView>
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        android:minHeight="115dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:titleTextColor="@android:color/black"
+        android:background="@color/white"
+        android:minHeight="115dp"
         app:title="@string/shows"
-        android:background="@color/white"/>
+        app:titleTextColor="@android:color/black" />
 
     <CheckBox
         android:id="@+id/toggleListStateButton"
-        android:layout_gravity="end"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="end"
         android:button="@drawable/selector_toggle_list_state_button"
+        android:padding="5dp"
         android:text="@string/remove_shows"
         android:textColor="@color/black"
-        app:buttonTint="@android:color/black"
-        android:padding="5dp"
-        />
+        app:buttonTint="@android:color/black" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/showsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:visibility="gone"
-        tools:listitem="@layout/view_show_item"/>
+        tools:listitem="@layout/view_show_item"
+        tools:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/emptyStateLabel"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="vertical">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_empty_state"/>
+            android:src="@drawable/ic_empty_state" />
 
         <Space
             android:layout_width="wrap_content"
-            android:layout_height="26dp"/>
+            android:layout_height="26dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:lineSpacingExtra="3sp"
+            android:text="@string/your_shows_are_not_showing_get_it"
             android:textColor="#808080"
             android:textFontWeight="400"
-            android:textSize="17sp"
-            android:lineSpacingExtra="3sp"
-            android:fontFamily="sans-serif"
-            android:text="@string/your_shows_are_not_showing_get_it"/>
+            android:textSize="17sp" />
 
     </LinearLayout>
 
