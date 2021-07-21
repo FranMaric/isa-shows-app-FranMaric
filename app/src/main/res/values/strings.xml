@@ -14,4 +14,6 @@
     <string name="remove_shows">REMOVE SHOWS</string>
     <string name="your_shows_are_not_showing_get_it">Your shows are not showing. Get it?</string>
     <string name="remember_me">Remember me</string>
+    <string name="logout">Logout</string>
+    <string name="change_profile_photo">Change profile photo</string>
 </resources>
