@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
 import com.shows.franmaric.adapters.ShowsAdapter
 import com.shows.franmaric.data.ShowsResources
 import com.shows.franmaric.databinding.FragmentShowsBinding
@@ -35,31 +34,6 @@ class ShowsFragment : Fragment()  {
         super.onViewCreated(view, savedInstanceState)
 
         initShowsRecycler()
-
-        initToggleListStateButton()
-    }
-
-    private fun initToggleListStateButton() {
-        binding.toggleListStateButton.setOnClickListener{
-            if(binding.toggleListStateButton.isChecked){
-                showsAdapter?.setItems(emptyList())
-                binding.toggleListStateButton.text = " ADD SHOWS"
-                Snackbar.make(binding.root, "Removed all shows :(", Snackbar.LENGTH_SHORT)
-                    .show()
-
-            } else {
-                showsAdapter?.setItems(ShowsResources.shows)
-                binding.toggleListStateButton.text = " REMOVE SHOWS"
-                Snackbar.make(binding.root, "Added latest and greatest from Krv nije voda just for you.", Snackbar.LENGTH_SHORT)
-                    .show()
-            }
-
-            if(showsAdapter?.getItemCount() == 0){
-                binding.showsRecyclerView.visibility = View.GONE
-            } else {
-                binding.showsRecyclerView.visibility = View.VISIBLE
-            }
-        }
     }
 
     private fun initShowsRecycler() {

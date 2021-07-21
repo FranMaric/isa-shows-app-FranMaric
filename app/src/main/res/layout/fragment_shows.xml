@@ -11,9 +11,9 @@
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="end"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="19dp"
-        android:layout_gravity="end"
         app:cardCornerRadius="100dp">
 
         <ImageView
@@ -32,17 +32,6 @@
         android:minHeight="115dp"
         app:title="@string/shows"
         app:titleTextColor="@android:color/black" />
-
-    <CheckBox
-        android:id="@+id/toggleListStateButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:button="@drawable/selector_toggle_list_state_button"
-        android:padding="5dp"
-        android:text="@string/remove_shows"
-        android:textColor="@color/black"
-        app:buttonTint="@android:color/black" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/showsRecyclerView"
