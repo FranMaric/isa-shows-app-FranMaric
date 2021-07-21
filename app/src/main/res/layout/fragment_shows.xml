@@ -21,7 +21,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/knv1" />
+            android:src="@drawable/ic_profile_placeholder" />
     </androidx.cardview.widget.CardView>
 
     <androidx.appcompat.widget.Toolbar
