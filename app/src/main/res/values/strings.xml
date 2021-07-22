@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Shows-Franmaric</string>
     <string name="prefs_email">email</string>
+    <string name="prefs_remember_me">remember_me</string>
     <string name="write_a_review">Write a review</string>
     <string name="comment">Comment</string>
     <string name="submit">Submit</string>
