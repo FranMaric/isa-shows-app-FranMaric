@@ -59,13 +59,7 @@ class ShowsFragment : Fragment()  {
 
         bottomSheetBinding.logoutButton.setOnClickListener {
             showAlertDialog {
-                val sharedPref =
-                    activity?.getPreferences(Context.MODE_PRIVATE) ?: return@showAlertDialog
-                with(sharedPref.edit()) {
-                    remove(getString(R.string.prefs_email))
-                    putBoolean(getString(R.string.prefs_remember_me), false)
-                    apply()
-                }
+                logout()
 
                 val action = ShowsFragmentDirections.actionShowsToLogin()
                 findNavController().navigate(action)
@@ -78,6 +72,16 @@ class ShowsFragment : Fragment()  {
         bottomSheetBinding.mailTextView.text = sharedPref.getString(getString(R.string.prefs_email),"imenko.prezimenovic@infinum.com")
 
         dialog.show()
+    }
+
+    private fun logout() {
+        val sharedPref =
+            activity?.getPreferences(Context.MODE_PRIVATE) ?: return
+        with(sharedPref.edit()) {
+            remove(getString(R.string.prefs_email))
+            putBoolean(getString(R.string.prefs_remember_me), false)
+            apply()
+        }
     }
 
     private fun showAlertDialog(onPositiveCallback: () -> Unit) {
