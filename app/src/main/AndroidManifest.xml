@@ -21,7 +21,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.infinum.academy.shows.fileprovider"
+            android:authorities="com.shows.franmaric.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
