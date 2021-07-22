@@ -1,5 +1,7 @@
 package com.shows.franmaric.fragments
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,9 +11,13 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.shows.franmaric.R
 import com.shows.franmaric.adapters.ShowsAdapter
 import com.shows.franmaric.data.ShowsResources
+import com.shows.franmaric.databinding.BottomSheetProfileBinding
 import com.shows.franmaric.databinding.FragmentShowsBinding
+
 
 class ShowsFragment : Fragment()  {
 
@@ -34,6 +40,40 @@ class ShowsFragment : Fragment()  {
         super.onViewCreated(view, savedInstanceState)
 
         initShowsRecycler()
+
+        initProfileButton()
+    }
+
+    private fun initProfileButton() {
+        binding.profileButton.setOnClickListener{
+            showProfileBottomSheet()
+        }
+    }
+
+    private fun showProfileBottomSheet() {
+        val dialog = BottomSheetDialog(requireContext())
+
+        val bottomSheetBinding = BottomSheetProfileBinding.inflate(layoutInflater)
+        dialog.setContentView(bottomSheetBinding.root)
+
+        bottomSheetBinding.logoutButton.setOnClickListener {
+            val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return@setOnClickListener
+            with(sharedPref.edit()) {
+                remove(getString(R.string.prefs_email))
+                putBoolean(getString(R.string.prefs_remember_me), false)
+                apply()
+            }
+
+            val action = ShowsFragmentDirections.actionShowsToLogin()
+            findNavController().navigate(action)
+
+            dialog.dismiss()
+        }
+
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
+        bottomSheetBinding.mailTextView.text = sharedPref.getString(getString(R.string.prefs_email),"imenko.prezimenovic@infinum.com")
+
+        dialog.show()
     }
 
     private fun initShowsRecycler() {
