@@ -15,7 +15,9 @@ import android.view.View.GONE
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,6 +30,7 @@ import com.shows.franmaric.databinding.BottomSheetProfileBinding
 import com.shows.franmaric.databinding.FragmentShowsBinding
 import com.shows.franmaric.utils.FileUtil
 import com.shows.franmaric.utils.preparePrmissionsContract
+import com.shows.franmaric.viewmodels.ShowsViewModel
 
 
 class ShowsFragment : Fragment()  {
@@ -35,6 +38,8 @@ class ShowsFragment : Fragment()  {
     private var _binding: FragmentShowsBinding? = null
 
     private val binding get() = _binding!!
+
+    private val viewModel: ShowsViewModel by viewModels()
 
     private val cameraPermissionForTakingPhoto = preparePrmissionsContract(onPermissionsGranted = {
         takePhoto()
@@ -153,15 +158,18 @@ class ShowsFragment : Fragment()  {
     }
 
     private fun initShowsRecycler() {
-        showsAdapter = ShowsAdapter(ShowsResources.shows) { show ->
+        showsAdapter = ShowsAdapter(emptyList()) { show ->
             val showIndex = ShowsResources.shows.indexOf(show)
             val action = ShowsFragmentDirections.actionShowsToShowDetails(showIndex)
             findNavController().navigate(action)
         }
 
-        if(showsAdapter?.getItemCount() == 0){
-            binding.showsRecyclerView.visibility = GONE
+        viewModel.getShowsLiveData().observe(requireActivity()){shows ->
+            showsAdapter?.setItems(shows)
+            binding.showsRecyclerView.isVisible = showsAdapter?.getItemCount() != 0
         }
+
+        viewModel.initShows()
 
         binding.showsRecyclerView.layoutManager = LinearLayoutManager(context)
         binding.showsRecyclerView.adapter = showsAdapter
