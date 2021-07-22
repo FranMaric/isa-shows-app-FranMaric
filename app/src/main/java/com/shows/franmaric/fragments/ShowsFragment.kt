@@ -8,21 +8,25 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.shows.franmaric.R
 import com.shows.franmaric.adapters.ShowsAdapter
 import com.shows.franmaric.data.ShowsResources
 import com.shows.franmaric.databinding.BottomSheetProfileBinding
 import com.shows.franmaric.databinding.FragmentShowsBinding
+import com.shows.franmaric.utils.FileUtil
 import com.shows.franmaric.utils.preparePrmissionsContract
 
 
@@ -80,7 +84,27 @@ class ShowsFragment : Fragment()  {
 
         bottomSheetBinding.changeProfilePhotoButton.setOnClickListener {
             changeProfilePhoto()
+
+            val file = FileUtil.createImageFile(requireContext())
+            val avatarUri = FileProvider.getUriForFile(requireContext(), activity?.applicationContext?.packageName.toString() + ".fileprovider", file!!)
+
+            Glide.with(requireContext())
+                .load(avatarUri)
+                .into(bottomSheetBinding.profileImageView)
+
+            Glide.with(requireContext())
+                .load(avatarUri)
+                .into(binding.profileButton)
+
+
         }
+
+        val file = FileUtil.createImageFile(requireContext())
+        val avatarUri = FileProvider.getUriForFile(requireContext(), activity?.applicationContext?.packageName.toString() + ".fileprovider", file!!)
+
+        Glide.with(requireContext())
+            .load(avatarUri)
+            .into(bottomSheetBinding.profileImageView)
 
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
         bottomSheetBinding.mailTextView.text = sharedPref.getString(getString(R.string.prefs_email),"imenko.prezimenovic@infinum.com")
@@ -94,13 +118,11 @@ class ShowsFragment : Fragment()  {
 
     @SuppressLint("MissingPermission")
     private fun takePhoto() {
-        val cameraContract = ActivityResultContracts.TakePicture()//TODO definiraj contract za kameru
-//            private val cameraPermissionContract = //TODO definiraj contract za permission za kameru
-//            Ako mi je user dozvolio korištenje kamere:
-//        -> dohvati ili kreiraj file u koji ćeš spremit sliku
-//        -> ako je file uspješno kreiran/dohvaćen, *preuzmi njegov Uri*
-//        avatarUri = FileProvider.getUriForFile(kontekst, it.applicationContext.packageName.toString() + ".fileprovider",file u koji spremaš sliku)
-//        -> pokreni camera contract koristeći taj uri
+        val file = FileUtil.createImageFile(requireContext())
+        val avatarUri = FileProvider.getUriForFile(requireContext(), activity?.applicationContext?.packageName.toString() + ".fileprovider", file!!)
+
+        val cameraContract = ActivityResultContracts.TakePicture().createIntent(requireContext(), avatarUri)
+        startActivity(cameraContract)
     }
 
     private fun logout() {
