@@ -131,7 +131,7 @@ class ShowsFragment : Fragment()  {
         with(sharedPref.edit()) {
             remove(getString(R.string.prefs_email))
             putBoolean(getString(R.string.prefs_remember_me), false)
-            apply()
+            commit()
         }
     }
 
