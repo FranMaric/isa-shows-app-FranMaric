@@ -1,5 +1,6 @@
 package com.shows.franmaric.fragments
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -57,23 +58,43 @@ class ShowsFragment : Fragment()  {
         dialog.setContentView(bottomSheetBinding.root)
 
         bottomSheetBinding.logoutButton.setOnClickListener {
-            val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return@setOnClickListener
-            with(sharedPref.edit()) {
-                remove(getString(R.string.prefs_email))
-                putBoolean(getString(R.string.prefs_remember_me), false)
-                apply()
+            showAlertDialog {
+                val sharedPref =
+                    activity?.getPreferences(Context.MODE_PRIVATE) ?: return@showAlertDialog
+                with(sharedPref.edit()) {
+                    remove(getString(R.string.prefs_email))
+                    putBoolean(getString(R.string.prefs_remember_me), false)
+                    apply()
+                }
+
+                val action = ShowsFragmentDirections.actionShowsToLogin()
+                findNavController().navigate(action)
+
+                dialog.dismiss()
             }
-
-            val action = ShowsFragmentDirections.actionShowsToLogin()
-            findNavController().navigate(action)
-
-            dialog.dismiss()
         }
 
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
         bottomSheetBinding.mailTextView.text = sharedPref.getString(getString(R.string.prefs_email),"imenko.prezimenovic@infinum.com")
 
         dialog.show()
+    }
+
+    private fun showAlertDialog(onPositiveCallback: () -> Unit) {
+        val alertDialog = AlertDialog.Builder(requireContext())
+
+        alertDialog.setTitle("LOGOUT")
+        alertDialog.setMessage("Are you sure you want to logout?")
+
+        alertDialog.setPositiveButton("LOGOUT",{_,_->
+            onPositiveCallback()
+        })
+
+        alertDialog.setNegativeButton("BACK",{_,_->
+
+        })
+
+        alertDialog.show()
     }
 
     private fun initShowsRecycler() {
