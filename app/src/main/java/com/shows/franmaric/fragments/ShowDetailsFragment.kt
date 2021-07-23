@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -21,6 +22,7 @@ import com.shows.franmaric.databinding.DialogAddReviewBinding
 import com.shows.franmaric.databinding.FragmentShowDetailsBinding
 import com.shows.franmaric.models.Review
 import com.shows.franmaric.models.Show
+import com.shows.franmaric.viewmodels.ShowDetailsViewModel
 
 
 class ShowDetailsFragment : Fragment() {
@@ -30,6 +32,8 @@ class ShowDetailsFragment : Fragment() {
     private val binding get() = _binding!!
 
     val args: ShowDetailsFragmentArgs by navArgs()
+
+    private val viewModel: ShowDetailsViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,18 +55,35 @@ class ShowDetailsFragment : Fragment() {
         initReviewRecycler()
 
         initSubmitButton()
+
+        initReviewInfo()
+    }
+
+    private fun initReviewInfo() {
+        viewModel.getAverageReviewRatingLiveData().observe(requireActivity()){newRating ->
+            val reviewCount = viewModel.reviewsCount()
+            binding.reviewInfoTextView.text =
+                "${reviewCount} REVIEW${if (reviewCount == 1) "" else "S"}, ${newRating} AVERAGE"
+
+            binding.ratingBar.rating = newRating.toFloat()
+        }
     }
 
     private fun initDataContainers(show: Show) {
-        binding.collapsingToolbarLayout.title = show.name
         binding.toolbar.navigationIcon?.setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_IN)
         binding.toolbar.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
         binding.collapsingToolbarLayout.setExpandedTitleColor(Color.BLACK)
         binding.collapsingToolbarLayout.setCollapsedTitleTextColor(Color.BLACK)
-        binding.showImageView.setImageResource(show.imageResourceId)
-        binding.descriptionTextView.text = show.description
+
+        viewModel.getShowLiveData().observe(requireActivity()){show ->
+            binding.collapsingToolbarLayout.title = show.name
+            binding.showImageView.setImageResource(show.imageResourceId)
+            binding.descriptionTextView.text = show.description
+        }
+
+        viewModel.setShow(show)
     }
 
     private fun initSubmitButton() {
@@ -93,20 +114,7 @@ class ShowDetailsFragment : Fragment() {
             )?.split("@")?.first() ?: return@setOnClickListener
 
             val review = Review(rating, comment, author)
-            reviewsAdapter?.addItem(review)
-
-            var newRating = 0.0
-            reviewsAdapter?.getItems()?.forEach { review ->
-                newRating += review.rating
-            }
-
-            val reviewCount = reviewsAdapter?.getItemCount()!!
-            newRating = newRating / reviewCount
-
-            binding.reviewInfoTextView.text =
-                "${reviewCount} REVIEW${if (reviewCount == 1) "" else "S"}, ${newRating} AVERAGE"
-
-            binding.ratingBar.rating = newRating.toFloat()
+            viewModel.addReview(review)
 
             setRecyclerViewVisibility(true)
 
@@ -131,6 +139,10 @@ class ShowDetailsFragment : Fragment() {
         reviewsAdapter = ReviewsAdapter(emptyList())
 
         setRecyclerViewVisibility(reviewsAdapter?.getItemCount() != 0)
+
+        viewModel.getReviewsLiveData().observe(requireActivity()){reviews ->
+            reviewsAdapter?.setItems(reviews)
+        }
 
         binding.reviewsRecyclerView.layoutManager = LinearLayoutManager(context)
         binding.reviewsRecyclerView.adapter = reviewsAdapter
