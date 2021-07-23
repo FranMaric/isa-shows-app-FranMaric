@@ -130,11 +130,7 @@ class ShowDetailsFragment : Fragment() {
     private fun initReviewRecycler() {
         reviewsAdapter = ReviewsAdapter(emptyList())
 
-        if (reviewsAdapter?.getItemCount() == 0) {
-            setRecyclerViewVisibility(false)
-        } else {
-            setRecyclerViewVisibility(true)
-        }
+        setRecyclerViewVisibility(reviewsAdapter?.getItemCount() != 0)
 
         binding.reviewsRecyclerView.layoutManager = LinearLayoutManager(context)
         binding.reviewsRecyclerView.adapter = reviewsAdapter
