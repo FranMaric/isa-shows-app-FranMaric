@@ -16,6 +16,17 @@
     </fragment>
 
     <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.shows.franmaric.registerScreen.RegisterFragment"
+        tools:layout="@layout/fragment_register">
+
+        <action
+            android:id="@+id/action_register_to_login"
+            app:destination="@id/showsFragment"/>
+
+    </fragment>
+
+    <fragment
         android:id="@+id/showsFragment"
         android:name="com.shows.franmaric.showsScreen.ShowsFragment"
         tools:layout="@layout/fragment_shows">
