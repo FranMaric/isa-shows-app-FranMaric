@@ -1,4 +1,4 @@
-package com.shows.franmaric.viewmodels
+package com.shows.franmaric.showsScreen
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

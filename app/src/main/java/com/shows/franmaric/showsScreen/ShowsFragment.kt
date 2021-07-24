@@ -1,17 +1,12 @@
-package com.shows.franmaric.fragments
+package com.shows.franmaric.showsScreen
 
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
-import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
@@ -24,13 +19,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.shows.franmaric.R
-import com.shows.franmaric.adapters.ShowsAdapter
 import com.shows.franmaric.data.ShowsResources
 import com.shows.franmaric.databinding.BottomSheetProfileBinding
 import com.shows.franmaric.databinding.FragmentShowsBinding
 import com.shows.franmaric.utils.FileUtil
 import com.shows.franmaric.utils.preparePrmissionsContract
-import com.shows.franmaric.viewmodels.ShowsViewModel
 
 
 class ShowsFragment : Fragment()  {
@@ -160,7 +153,9 @@ class ShowsFragment : Fragment()  {
     private fun initShowsRecycler() {
         showsAdapter = ShowsAdapter(emptyList()) { show ->
             val showIndex = ShowsResources.shows.indexOf(show)
-            val action = ShowsFragmentDirections.actionShowsToShowDetails(showIndex)
+            val action = ShowsFragmentDirections.actionShowsToShowDetails(
+                    showIndex
+                )
             findNavController().navigate(action)
         }
 

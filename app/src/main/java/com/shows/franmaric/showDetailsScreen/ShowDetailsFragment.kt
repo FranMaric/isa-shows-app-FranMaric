@@ -1,14 +1,12 @@
-package com.shows.franmaric.fragments
+package com.shows.franmaric.showDetailsScreen
 
 import android.content.Context
 import android.graphics.Color
 import android.graphics.PorterDuff
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -18,14 +16,11 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.shows.franmaric.R
-import com.shows.franmaric.adapters.ReviewsAdapter
 import com.shows.franmaric.data.ShowsResources
 import com.shows.franmaric.databinding.DialogAddReviewBinding
 import com.shows.franmaric.databinding.FragmentShowDetailsBinding
 import com.shows.franmaric.models.Review
 import com.shows.franmaric.models.Show
-import com.shows.franmaric.viewmodels.ShowDetailsViewModel
-import kotlin.math.roundToInt
 
 
 class ShowDetailsFragment : Fragment() {

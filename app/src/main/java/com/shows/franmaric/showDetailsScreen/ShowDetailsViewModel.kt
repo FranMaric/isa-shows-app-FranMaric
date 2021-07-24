@@ -1,7 +1,5 @@
-package com.shows.franmaric.viewmodels
+package com.shows.franmaric.showDetailsScreen
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

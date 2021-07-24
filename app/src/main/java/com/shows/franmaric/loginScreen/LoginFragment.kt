@@ -1,4 +1,4 @@
-package com.shows.franmaric.fragments
+package com.shows.franmaric.loginScreen
 
 import android.content.Context
 import android.graphics.Color

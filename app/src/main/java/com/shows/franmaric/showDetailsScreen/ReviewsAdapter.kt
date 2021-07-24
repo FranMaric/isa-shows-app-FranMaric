@@ -1,4 +1,4 @@
-package com.shows.franmaric.adapters
+package com.shows.franmaric.showDetailsScreen
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
