@@ -19,4 +19,5 @@
     <string name="change_profile_photo">Change profile photo</string>
     <string name='no_permission' formatted='false'>Please check your permissions in Settings.</string>
     <string name='settings' formatted='false'>Settings</string>
+    <string name="review_info">%1$d REVIEW%2$s, %3$s AVERAGE</string>
 </resources>

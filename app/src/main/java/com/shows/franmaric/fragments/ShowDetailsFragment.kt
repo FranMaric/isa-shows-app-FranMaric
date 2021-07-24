@@ -3,10 +3,12 @@ package com.shows.franmaric.fragments
 import android.content.Context
 import android.graphics.Color
 import android.graphics.PorterDuff
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -23,6 +25,7 @@ import com.shows.franmaric.databinding.FragmentShowDetailsBinding
 import com.shows.franmaric.models.Review
 import com.shows.franmaric.models.Show
 import com.shows.franmaric.viewmodels.ShowDetailsViewModel
+import kotlin.math.roundToInt
 
 
 class ShowDetailsFragment : Fragment() {
@@ -60,10 +63,15 @@ class ShowDetailsFragment : Fragment() {
     }
 
     private fun initReviewInfo() {
-        viewModel.getAverageReviewRatingLiveData().observe(requireActivity()){newRating ->
+        viewModel.getAverageReviewRatingLiveData().observe(requireActivity()) { newRating ->
             val reviewCount = viewModel.reviewsCount()
             binding.reviewInfoTextView.text =
-                "${reviewCount} REVIEW${if (reviewCount == 1) "" else "S"}, ${newRating} AVERAGE"
+                getString(
+                    R.string.review_info,
+                    reviewCount,
+                    if (reviewCount == 1) "" else "S",
+                    String.format("%.2f", newRating)
+                )
 
             binding.ratingBar.rating = newRating.toFloat()
         }
@@ -77,7 +85,7 @@ class ShowDetailsFragment : Fragment() {
         binding.collapsingToolbarLayout.setExpandedTitleColor(Color.BLACK)
         binding.collapsingToolbarLayout.setCollapsedTitleTextColor(Color.BLACK)
 
-        viewModel.getShowLiveData().observe(requireActivity()){show ->
+        viewModel.getShowLiveData().observe(requireActivity()) { show ->
             binding.collapsingToolbarLayout.title = show.name
             binding.showImageView.setImageResource(show.imageResourceId)
             binding.descriptionTextView.text = show.description
@@ -140,7 +148,7 @@ class ShowDetailsFragment : Fragment() {
 
         setRecyclerViewVisibility(reviewsAdapter?.getItemCount() != 0)
 
-        viewModel.getReviewsLiveData().observe(requireActivity()){reviews ->
+        viewModel.getReviewsLiveData().observe(requireActivity()) { reviews ->
             reviewsAdapter?.setItems(reviews)
         }
 
