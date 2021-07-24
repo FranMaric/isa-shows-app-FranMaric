@@ -111,6 +111,8 @@ class ShowsFragment : Fragment() {
 
         Glide.with(requireContext())
             .load(avatarUri)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .skipMemoryCache(true)
             .into(bottomSheetBinding.profileImageView)
 
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
@@ -166,7 +168,7 @@ class ShowsFragment : Fragment() {
     }
 
     private fun initShowsRecycler() {
-        showsAdapter = ShowsAdapter(emptyList()) { show ->
+        showsAdapter = ShowsAdapter(emptyList(),requireContext()) { show ->
             val showIndex = ShowsResources.shows.indexOf(show)
             val action = ShowsFragmentDirections.actionShowsToShowDetails(
                 showIndex
