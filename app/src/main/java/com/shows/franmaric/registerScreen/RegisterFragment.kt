@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.shows.franmaric.R
 import com.shows.franmaric.databinding.FragmentRegisterBinding
 
@@ -37,7 +38,11 @@ class RegisterFragment : Fragment() {
     }
 
     private fun initRegisterButton() {
-        TODO("Not yet implemented")
+        binding.registerButton.setOnClickListener {
+            //TODO: register
+            val action = RegisterFragmentDirections.actionRegisterToLogin().setAfterRegister(true)
+            findNavController().navigate(action)
+        }
     }
 
     private fun initInputs() {

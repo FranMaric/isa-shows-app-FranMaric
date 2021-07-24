@@ -8,9 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
+import androidx.core.view.marginBottom
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.shows.franmaric.R
 import com.shows.franmaric.databinding.FragmentLoginBinding
 
@@ -20,6 +23,8 @@ class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
 
     private val binding get() = _binding!!
+
+    val args: LoginFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,9 +40,23 @@ class LoginFragment : Fragment() {
 
         checkRememberMe()
 
+        initRegisterButton()
+
         initLoginButton()
 
         initInputs()
+    }
+
+    private fun initRegisterButton() {
+        if(args.afterRegister){
+            binding.registerButton.isVisible = false
+            binding.loginTextView.text = "Registration successful!"
+            binding.loginTextView.minLines = 2
+        }
+        binding.registerButton.setOnClickListener {
+            val action = LoginFragmentDirections.actionLoginToRegister()
+            findNavController().navigate(action)
+        }
     }
 
     private fun checkRememberMe() {
