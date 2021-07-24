@@ -41,7 +41,6 @@ class ShowDetailsViewModel : ViewModel() {
         return reviewsLiveData
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
     fun addReview(review: Review) {
         reviews.add(review)
         reviewsLiveData.value = reviews
@@ -53,10 +52,7 @@ class ShowDetailsViewModel : ViewModel() {
         reviewsLiveData.value = reviews
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
     private fun calculateAverageReviewsRating(): Double {
-        return reviews.stream().mapToDouble({ review ->
-            return@mapToDouble review.rating.toDouble()
-        }).average().asDouble
+        return reviews.map{it->it.rating}.average()
     }
 }
