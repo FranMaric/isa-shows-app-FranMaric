@@ -29,9 +29,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:minHeight="115dp"
-        app:title="@string/shows"
-        app:titleTextColor="@android:color/black" />
+        android:minHeight="115dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Shows"
+            android:fontFamily="sans-serif"
+            android:lineSpacingExtra="3sp"
+            android:textColor="@color/black"
+            android:textFontWeight="700"
+            android:textSize="36sp" />
+
+    </androidx.appcompat.widget.Toolbar>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/showsRecyclerView"
