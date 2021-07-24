@@ -51,7 +51,6 @@ class LoginFragment : Fragment() {
         if(args.afterRegister){
             binding.registerButton.isVisible = false
             binding.loginTextView.text = "Registration successful!"
-            binding.loginTextView.minLines = 2
         }
         binding.registerButton.setOnClickListener {
             val action = LoginFragmentDirections.actionLoginToRegister()
