@@ -6,12 +6,15 @@ import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.shows.franmaric.R
 import com.shows.franmaric.databinding.FragmentRegisterBinding
+import com.shows.franmaric.showDetailsScreen.ShowDetailsViewModel
 
 const val MIN_PASSWORD_LENGTH = 6
 
@@ -19,6 +22,8 @@ class RegisterFragment : Fragment() {
     private var _binding: FragmentRegisterBinding? = null
 
     private val binding get() = _binding!!
+
+    private val viewModel: RegisterViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,16 +37,33 @@ class RegisterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initRegisterObserver()
+
         initRegisterButton()
 
         initInputs()
     }
 
+    private fun initRegisterObserver() {
+        viewModel.getRegistrationResultLiveData()
+            .observe(requireActivity()) { isRegisterSuccessful ->
+                if (isRegisterSuccessful) {
+                    val action = RegisterFragmentDirections.actionRegisterToLogin().setAfterRegister(true)
+                    findNavController().navigate(action)
+                } else {
+                    Toast.makeText(context, "Not successful registration!", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+    }
+
     private fun initRegisterButton() {
         binding.registerButton.setOnClickListener {
-            //TODO: register
-            val action = RegisterFragmentDirections.actionRegisterToLogin().setAfterRegister(true)
-            findNavController().navigate(action)
+            val email = binding.emailField.text.toString()
+            val password = binding.passwordField.text.toString()
+            val passwordConfirmation = binding.passwordConfirmationField.text.toString()
+
+            viewModel.register(email, password, passwordConfirmation)
         }
     }
 
