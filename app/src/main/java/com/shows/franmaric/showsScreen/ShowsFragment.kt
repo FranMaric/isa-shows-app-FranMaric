@@ -17,6 +17,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.shows.franmaric.R
 import com.shows.franmaric.data.ShowsResources
@@ -26,7 +27,7 @@ import com.shows.franmaric.utils.FileUtil
 import com.shows.franmaric.utils.preparePrmissionsContract
 
 
-class ShowsFragment : Fragment()  {
+class ShowsFragment : Fragment() {
 
     private var _binding: FragmentShowsBinding? = null
 
@@ -58,7 +59,7 @@ class ShowsFragment : Fragment()  {
     }
 
     private fun initProfileButton() {
-        binding.profileButton.setOnClickListener{
+        binding.profileButton.setOnClickListener {
             showProfileBottomSheet()
         }
     }
@@ -88,24 +89,33 @@ class ShowsFragment : Fragment()  {
 
             Glide.with(requireContext())
                 .load(avatarUri)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
                 .into(bottomSheetBinding.profileImageView)
 
             Glide.with(requireContext())
                 .load(avatarUri)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
                 .into(binding.profileButton)
 
 
         }
 
         val file = FileUtil.createImageFile(requireContext())
-        val avatarUri = FileProvider.getUriForFile(requireContext(), activity?.applicationContext?.packageName.toString() + ".fileprovider", file!!)
+        val avatarUri = FileProvider.getUriForFile(
+            requireContext(),
+            activity?.applicationContext?.packageName.toString() + ".fileprovider",
+            file!!
+        )
 
         Glide.with(requireContext())
             .load(avatarUri)
             .into(bottomSheetBinding.profileImageView)
 
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
-        bottomSheetBinding.mailTextView.text = sharedPref.getString(getString(R.string.prefs_email),"imenko.prezimenovic@infinum.com")
+        bottomSheetBinding.mailTextView.text =
+            sharedPref.getString(getString(R.string.prefs_email), "imenko.prezimenovic@infinum.com")
 
         dialog.show()
     }
@@ -117,9 +127,14 @@ class ShowsFragment : Fragment()  {
     @SuppressLint("MissingPermission")
     private fun takePhoto() {
         val file = FileUtil.createImageFile(requireContext())
-        val avatarUri = FileProvider.getUriForFile(requireContext(), activity?.applicationContext?.packageName.toString() + ".fileprovider", file!!)
+        val avatarUri = FileProvider.getUriForFile(
+            requireContext(),
+            activity?.applicationContext?.packageName.toString() + ".fileprovider",
+            file!!
+        )
 
-        val cameraContract = ActivityResultContracts.TakePicture().createIntent(requireContext(), avatarUri)
+        val cameraContract =
+            ActivityResultContracts.TakePicture().createIntent(requireContext(), avatarUri)
         startActivity(cameraContract)
     }
 
@@ -139,11 +154,11 @@ class ShowsFragment : Fragment()  {
         alertDialog.setTitle("LOGOUT")
         alertDialog.setMessage("Are you sure you want to logout?")
 
-        alertDialog.setPositiveButton("LOGOUT",{_,_->
+        alertDialog.setPositiveButton("LOGOUT", { _, _ ->
             onPositiveCallback()
         })
 
-        alertDialog.setNegativeButton("BACK",{_,_->
+        alertDialog.setNegativeButton("BACK", { _, _ ->
 
         })
 
@@ -154,12 +169,12 @@ class ShowsFragment : Fragment()  {
         showsAdapter = ShowsAdapter(emptyList()) { show ->
             val showIndex = ShowsResources.shows.indexOf(show)
             val action = ShowsFragmentDirections.actionShowsToShowDetails(
-                    showIndex
-                )
+                showIndex
+            )
             findNavController().navigate(action)
         }
 
-        viewModel.getShowsLiveData().observe(requireActivity()){shows ->
+        viewModel.getShowsLiveData().observe(requireActivity()) { shows ->
             showsAdapter?.setItems(shows)
             binding.showsRecyclerView.isVisible = showsAdapter?.getItemCount() != 0
         }
@@ -169,7 +184,12 @@ class ShowsFragment : Fragment()  {
         binding.showsRecyclerView.layoutManager = LinearLayoutManager(context)
         binding.showsRecyclerView.adapter = showsAdapter
 
-        binding.showsRecyclerView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+        binding.showsRecyclerView.addItemDecoration(
+            DividerItemDecoration(
+                context,
+                DividerItemDecoration.VERTICAL
+            )
+        )
     }
 
     override fun onDestroyView() {
