@@ -1,11 +1,9 @@
 package com.shows.franmaric.networking
 
-import com.shows.franmaric.models.LoginRequest
-import com.shows.franmaric.models.LoginResponse
-import com.shows.franmaric.models.RegisterRequest
-import com.shows.franmaric.models.RegisterResponse
+import com.shows.franmaric.models.*
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface ShowsApiService {
@@ -15,4 +13,7 @@ interface ShowsApiService {
 
     @POST("/users/sign_in")
     fun login(@Body request: LoginRequest): Call<LoginResponse>
+
+    @GET("/shows")
+    fun getShows(): Call<GetShowsResponse>
 }
