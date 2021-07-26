@@ -15,6 +15,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.shows.franmaric.PREFS_EMAIL_KEY
 import com.shows.franmaric.R
 import com.shows.franmaric.data.ShowsResources
 import com.shows.franmaric.databinding.DialogAddReviewBinding
@@ -113,7 +114,7 @@ class ShowDetailsFragment : Fragment() {
             val sharedPref =
                 activity?.getPreferences(Context.MODE_PRIVATE) ?: return@setOnClickListener
             val author = sharedPref.getString(
-                getString(R.string.prefs_email),
+                PREFS_EMAIL_KEY,
                 "imenko.prezimenovic@infinum.com"
             )?.split("@")?.first() ?: return@setOnClickListener
 
