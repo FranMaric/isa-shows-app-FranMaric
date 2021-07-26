@@ -147,7 +147,7 @@ class ShowDetailsFragment : Fragment() {
             reviewsAdapter?.setItems(reviews)
         }
 
-        binding.reviewsRecyclerView.layoutManager = LinearLayoutManager(context)
+        binding.reviewsRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.reviewsRecyclerView.adapter = reviewsAdapter
 
         binding.reviewsRecyclerView.addItemDecoration(
