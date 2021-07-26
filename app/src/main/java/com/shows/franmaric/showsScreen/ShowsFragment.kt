@@ -45,29 +45,8 @@ class ShowsFragment : Fragment() {
     private var bottomSheetBinding: BottomSheetProfileBinding? = null
 
     private val getCameraImage = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
-        val file = FileUtil.getImageFile(requireContext())
-
-        if (success && file != null) {
-            val avatarUri = FileProvider.getUriForFile(
-                requireContext(),
-                activity?.applicationContext?.packageName.toString() + ".fileprovider",
-                file
-            )
-
-            if(bottomSheetBinding != null) {
-                Glide.with(requireContext())
-                    .load(avatarUri)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true)
-                    .into(bottomSheetBinding!!.profileImageView)
-            }
-
-            Glide.with(requireContext())
-                .load(avatarUri)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true)
-                .into(binding.profileButton)
-        }
+        if(success)
+            updateProfileAndBottomSheetPhoto()
     }
 
     override fun onCreateView(
@@ -166,6 +145,32 @@ class ShowsFragment : Fragment() {
         )
 
         getCameraImage.launch(avatarUri)
+    }
+
+    private fun updateProfileAndBottomSheetPhoto() {
+        val file = FileUtil.getImageFile(requireContext())
+
+        if (file != null) {
+            val avatarUri = FileProvider.getUriForFile(
+                requireContext(),
+                activity?.applicationContext?.packageName.toString() + ".fileprovider",
+                file
+            )
+
+            if(bottomSheetBinding != null) {
+                Glide.with(requireContext())
+                    .load(avatarUri)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .into(bottomSheetBinding!!.profileImageView)
+            }
+
+            Glide.with(requireContext())
+                .load(avatarUri)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .into(binding.profileButton)
+        }
     }
 
     private fun logout() {
