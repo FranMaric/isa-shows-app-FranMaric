@@ -39,6 +39,36 @@ class ShowsFragment : Fragment() {
         takePhoto()
     })
 
+    private var showsAdapter: ShowsAdapter? = null
+
+    private var bottomSheetBinding: BottomSheetProfileBinding? = null
+
+    private val getCameraImage = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+        val file = FileUtil.getImageFile(requireContext())
+
+        if (success && file != null) {
+            val avatarUri = FileProvider.getUriForFile(
+                requireContext(),
+                activity?.applicationContext?.packageName.toString() + ".fileprovider",
+                file
+            )
+
+            if(bottomSheetBinding != null) {
+                Glide.with(requireContext())
+                    .load(avatarUri)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .into(bottomSheetBinding!!.profileImageView)
+            }
+
+            Glide.with(requireContext())
+                .load(avatarUri)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .into(binding.profileButton)
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -48,7 +78,6 @@ class ShowsFragment : Fragment() {
         return binding.root
     }
 
-    private var showsAdapter: ShowsAdapter? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -62,15 +91,30 @@ class ShowsFragment : Fragment() {
         binding.profileButton.setOnClickListener {
             showProfileBottomSheet()
         }
+        val file = FileUtil.getImageFile(requireContext())
+
+        if (file != null) {
+            val avatarUri = FileProvider.getUriForFile(
+                requireContext(),
+                activity?.applicationContext?.packageName.toString() + ".fileprovider",
+                file
+            )
+
+            Glide.with(requireContext())
+                .load(avatarUri)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .into(binding.profileButton)
+        }
     }
 
     private fun showProfileBottomSheet() {
         val dialog = BottomSheetDialog(requireContext())
 
-        val bottomSheetBinding = BottomSheetProfileBinding.inflate(layoutInflater)
-        dialog.setContentView(bottomSheetBinding.root)
+        bottomSheetBinding = BottomSheetProfileBinding.inflate(layoutInflater)
+        dialog.setContentView(bottomSheetBinding!!.root)
 
-        bottomSheetBinding.logoutButton.setOnClickListener {
+        bottomSheetBinding!!.logoutButton.setOnClickListener {
             showAlertDialog {
                 logout()
 
@@ -81,42 +125,26 @@ class ShowsFragment : Fragment() {
             }
         }
 
-        bottomSheetBinding.changeProfilePhotoButton.setOnClickListener {
+        bottomSheetBinding!!.changeProfilePhotoButton.setOnClickListener {
             changeProfilePhoto()
-
-            val file = FileUtil.createImageFile(requireContext())
-            val avatarUri = FileProvider.getUriForFile(requireContext(), activity?.applicationContext?.packageName.toString() + ".fileprovider", file!!)
-
-            Glide.with(requireContext())
-                .load(avatarUri)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true)
-                .into(bottomSheetBinding.profileImageView)
-
-            Glide.with(requireContext())
-                .load(avatarUri)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true)
-                .into(binding.profileButton)
-
-
         }
 
-        val file = FileUtil.createImageFile(requireContext())
-        val avatarUri = FileProvider.getUriForFile(
-            requireContext(),
-            activity?.applicationContext?.packageName.toString() + ".fileprovider",
-            file!!
-        )
+        val file = FileUtil.getImageFile(requireContext())
+        if(file != null) {
+            val avatarUri = FileProvider.getUriForFile(
+                requireContext(),
+                activity?.applicationContext?.packageName.toString() + ".fileprovider",
+                file
+            )
 
-        Glide.with(requireContext())
-            .load(avatarUri)
-            .diskCacheStrategy(DiskCacheStrategy.NONE)
-            .skipMemoryCache(true)
-            .into(bottomSheetBinding.profileImageView)
-
+            Glide.with(requireContext())
+                .load(avatarUri)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .into(bottomSheetBinding!!.profileImageView)
+        }
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
-        bottomSheetBinding.mailTextView.text =
+        bottomSheetBinding!!.mailTextView.text =
             sharedPref.getString(getString(R.string.prefs_email), "imenko.prezimenovic@infinum.com")
 
         dialog.show()
@@ -128,16 +156,15 @@ class ShowsFragment : Fragment() {
 
     @SuppressLint("MissingPermission")
     private fun takePhoto() {
-        val file = FileUtil.createImageFile(requireContext())
+        val file = FileUtil.getImageFile(requireContext()) ?: FileUtil.createImageFile(requireContext())
+
         val avatarUri = FileProvider.getUriForFile(
             requireContext(),
             activity?.applicationContext?.packageName.toString() + ".fileprovider",
             file!!
         )
 
-        val cameraContract =
-            ActivityResultContracts.TakePicture().createIntent(requireContext(), avatarUri)
-        startActivity(cameraContract)
+        getCameraImage.launch(avatarUri)
     }
 
     private fun logout() {
