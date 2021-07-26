@@ -183,7 +183,7 @@ class ShowsFragment : Fragment() {
 
         viewModel.initShows()
 
-        binding.showsRecyclerView.layoutManager = LinearLayoutManager(context)
+        binding.showsRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.showsRecyclerView.adapter = showsAdapter
 
         binding.showsRecyclerView.addItemDecoration(
