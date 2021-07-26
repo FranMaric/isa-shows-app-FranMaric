@@ -1,7 +1,13 @@
 package com.shows.franmaric.models
 
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Review (
-    val rating: Int,
-    val comment: String,
-    val author: String
+    @SerialName("id") val id: String,
+    @SerialName("comment") val comment: String,
+    @SerialName("rating") val rating: Int,
+    @SerialName("show_id") val showId: String,
+    @SerialName("user") val user: User
     )
