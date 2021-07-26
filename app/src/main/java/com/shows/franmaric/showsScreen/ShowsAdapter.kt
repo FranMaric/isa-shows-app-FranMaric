@@ -48,8 +48,6 @@ class ShowsAdapter(
         fun bind(item: ShowResponse) {
             Glide.with(context)
                 .load(item.imageUrl)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true)
                 .into(binding.showImage)
 
             binding.titleTextView.text = item.title
