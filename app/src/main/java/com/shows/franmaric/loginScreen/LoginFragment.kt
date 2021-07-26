@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.core.view.marginBottom
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -18,7 +17,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.shows.franmaric.R
 import com.shows.franmaric.databinding.FragmentLoginBinding
-import com.shows.franmaric.registerScreen.RegisterViewModel
 
 const val MIN_PASSWORD_LENGTH = 6
 
@@ -55,8 +53,14 @@ class LoginFragment : Fragment() {
     }
 
     private fun initLoginObserver() {
-        viewModel.getLoginResultLiveData().observe(requireActivity()){isLoginSuccessful ->
-            if(isLoginSuccessful){
+        viewModel.getLoginResultLiveData().observe(requireActivity()) { isLoginSuccessful ->
+            if (isLoginSuccessful) {
+                val prefs = activity?.getPreferences(Context.MODE_PRIVATE) ?: return@observe
+                with(prefs.edit()){
+                    putBoolean(getString(R.string.prefs_remember_me),binding.rememberMeCheckBox.isChecked)
+                    apply()
+                }
+
                 val action = LoginFragmentDirections.actionLoginToShows()
                 findNavController().navigate(action)
             } else {
@@ -67,7 +71,7 @@ class LoginFragment : Fragment() {
     }
 
     private fun initRegisterButton() {
-        if(args.afterRegister){
+        if (args.afterRegister) {
             binding.registerButton.isVisible = false
             binding.loginTextView.text = "Registration successful!"
         }
@@ -138,7 +142,11 @@ class LoginFragment : Fragment() {
     private fun login() {
         val email = binding.emailField.text.toString()
         val password = binding.passwordField.text.toString()
-        viewModel.login(email, password,activity?.getPreferences(Context.MODE_PRIVATE) ?: return)
+        viewModel.login(
+            email,
+            password,
+            activity?.getPreferences(Context.MODE_PRIVATE) ?: return
+        )
     }
 
     private fun isValidInput(email: String?, password: String?) =
