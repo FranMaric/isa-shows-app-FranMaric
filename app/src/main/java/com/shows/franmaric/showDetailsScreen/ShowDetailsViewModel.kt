@@ -45,10 +45,27 @@ class ShowDetailsViewModel : ViewModel() {
         return reviews.size
     }
 
-    fun addReview(review: Review) {
-        reviews.add(review)
-        reviewsLiveData.value = reviews
-        reviewsAverageRatingLiveData.value = calculateAverageReviewsRating()
+    fun addReview(comment: String, rating: Int) {
+        showLiveData.value?.id?.let {
+            ApiModule.retrofit.postReview(ReviewRequest(comment, rating, it.toInt()))
+                .enqueue(object : Callback<PostReviewResponse> {
+                    override fun onResponse(
+                        call: Call<PostReviewResponse>,
+                        response: Response<PostReviewResponse>
+                    ) {
+                        if (response.isSuccessful && response.body()?.review != null) {
+                            reviews.add(response.body()?.review!!)
+
+                            reviewsLiveData.value = reviews
+                            reviewsAverageRatingLiveData.value = calculateAverageReviewsRating()
+                        }
+                    }
+
+                    override fun onFailure(call: Call<PostReviewResponse>, t: Throwable) {
+                        //TODO: update viewModel onFailure
+                    }
+                })
+        }
     }
 
     fun removeReview(review: Review) {
@@ -75,7 +92,6 @@ class ShowDetailsViewModel : ViewModel() {
                     //TODO: update viewModel onFailure
                }
            })
-       Log.d("Reviews response:","OVO je PRIJE FUNKCIJE kmi")
 
        ApiModule.retrofit.getReviews(showId)
            .enqueue(object : Callback<GetReviewsResponse> {

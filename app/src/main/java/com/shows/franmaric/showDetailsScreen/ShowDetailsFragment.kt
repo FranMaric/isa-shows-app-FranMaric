@@ -21,6 +21,7 @@ import com.shows.franmaric.R
 import com.shows.franmaric.databinding.DialogAddReviewBinding
 import com.shows.franmaric.databinding.FragmentShowDetailsBinding
 import com.shows.franmaric.models.Review
+import com.shows.franmaric.models.ReviewRequest
 
 
 class ShowDetailsFragment : Fragment() {
@@ -111,15 +112,7 @@ class ShowDetailsFragment : Fragment() {
             val rating = bottomSheetBinding.ratingBar.rating.toInt()
             val comment = bottomSheetBinding.commentField.text.toString()
 
-            val sharedPref =
-                activity?.getPreferences(Context.MODE_PRIVATE) ?: return@setOnClickListener
-            val author = sharedPref.getString(
-                PREFS_EMAIL_KEY,
-                "imenko.prezimenovic@infinum.com"
-            ) ?: return@setOnClickListener
-
-            //val review = Review(rating, comment, author)
-            //viewModel.addReview(review)
+            viewModel.addReview(comment, rating)
 
             setRecyclerViewVisibility(true)
 
