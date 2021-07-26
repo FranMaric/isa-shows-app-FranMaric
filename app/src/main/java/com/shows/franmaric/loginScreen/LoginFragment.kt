@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.shows.franmaric.PREFS_REMEMBER_ME_KEY
 import com.shows.franmaric.R
 import com.shows.franmaric.databinding.FragmentLoginBinding
 
@@ -57,7 +58,7 @@ class LoginFragment : Fragment() {
             if (isLoginSuccessful) {
                 val prefs = activity?.getPreferences(Context.MODE_PRIVATE) ?: return@observe
                 with(prefs.edit()){
-                    putBoolean(getString(R.string.prefs_remember_me),binding.rememberMeCheckBox.isChecked)
+                    putBoolean(PREFS_REMEMBER_ME_KEY, binding.rememberMeCheckBox.isChecked)
                     apply()
                 }
 
@@ -84,7 +85,7 @@ class LoginFragment : Fragment() {
     private fun checkRememberMe() {
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
 
-        if (sharedPref.getBoolean(getString(R.string.prefs_remember_me), false)) {
+        if (sharedPref.getBoolean(PREFS_REMEMBER_ME_KEY, false)) {
             val action = LoginFragmentDirections.actionLoginToShows()
             findNavController().navigate(action)
         }

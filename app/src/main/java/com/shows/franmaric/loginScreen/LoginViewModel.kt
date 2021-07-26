@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.shows.franmaric.PREFS_EMAIL_KEY
 import com.shows.franmaric.R
 import com.shows.franmaric.models.LoginRequest
 import com.shows.franmaric.models.LoginResponse
@@ -31,6 +32,7 @@ class LoginViewModel : ViewModel() {
                         putString("access-token", response.headers()["access-token"])
                         putString("client", response.headers()["client"])
                         putString("uid", response.headers()["uid"])
+                        putString(PREFS_EMAIL_KEY, email)
                         apply()
                     }
                 }

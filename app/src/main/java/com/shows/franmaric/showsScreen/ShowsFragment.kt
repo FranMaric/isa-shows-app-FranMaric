@@ -19,7 +19,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.shows.franmaric.R
+import com.shows.franmaric.PREFS_EMAIL_KEY
+import com.shows.franmaric.PREFS_REMEMBER_ME_KEY
 import com.shows.franmaric.data.ShowsResources
 import com.shows.franmaric.databinding.BottomSheetProfileBinding
 import com.shows.franmaric.databinding.FragmentShowsBinding
@@ -145,7 +146,7 @@ class ShowsFragment : Fragment() {
         }
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
         bottomSheetBinding!!.mailTextView.text =
-            sharedPref.getString(getString(R.string.prefs_email), "imenko.prezimenovic@infinum.com")
+            sharedPref.getString(PREFS_EMAIL_KEY, "imenko.prezimenovic@infinum.com")
 
         dialog.show()
     }
@@ -171,8 +172,8 @@ class ShowsFragment : Fragment() {
         val sharedPref =
             activity?.getPreferences(Context.MODE_PRIVATE) ?: return
         with(sharedPref.edit()) {
-            remove(getString(R.string.prefs_email))
-            putBoolean(getString(R.string.prefs_remember_me), false)
+            remove(PREFS_EMAIL_KEY)
+            putBoolean(PREFS_REMEMBER_ME_KEY, false)
             commit()
         }
     }
