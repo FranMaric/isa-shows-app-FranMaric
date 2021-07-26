@@ -21,7 +21,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.shows.franmaric.PREFS_EMAIL_KEY
 import com.shows.franmaric.PREFS_REMEMBER_ME_KEY
-import com.shows.franmaric.data.ShowsResources
 import com.shows.franmaric.databinding.BottomSheetProfileBinding
 import com.shows.franmaric.databinding.FragmentShowsBinding
 import com.shows.franmaric.utils.FileUtil
@@ -202,9 +201,8 @@ class ShowsFragment : Fragment() {
 
     private fun initShowsRecycler() {
         showsAdapter = ShowsAdapter(emptyList(),requireContext()) { show ->
-            val showIndex = ShowsResources.shows.indexOf(show)
             val action = ShowsFragmentDirections.actionShowsToShowDetails(
-                showIndex
+                show.id
             )
             findNavController().navigate(action)
         }
