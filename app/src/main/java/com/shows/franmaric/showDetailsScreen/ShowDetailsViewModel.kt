@@ -99,7 +99,6 @@ class ShowDetailsViewModel : ViewModel() {
                    call: Call<GetReviewsResponse>,
                    response: Response<GetReviewsResponse>
                ) {
-                   Log.d("Reviews response:","HEEEEEEJ VIDIII MEEEEEE DOBIO SAM USPJESAN ODGOVOR")
                    if(response.isSuccessful) {
                        reviews = response.body()?.reviews?.toMutableList() ?: mutableListOf<Review>()
                        reviewsAverageRatingLiveData.value = calculateAverageReviewsRating()
