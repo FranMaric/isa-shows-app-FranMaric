@@ -35,7 +35,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="18dp"
         android:layout_marginTop="181dp"
@@ -46,6 +46,7 @@
         android:textFontWeight="700"
         android:textSize="34sp"
         app:layout_constraintLeft_toRightOf="@id/triangle"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -66,7 +67,7 @@
 
     <TextView
         android:id="@+id/continueTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="24dp"
         android:layout_marginTop="16dp"
@@ -77,12 +78,13 @@
         android:textFontWeight="400"
         android:textSize="17sp"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/loginTextView" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/mailTextInput"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
         android:layout_marginTop="26dp"
@@ -91,6 +93,7 @@
         app:boxStrokeColor="@color/selector_outlined_box"
         app:hintTextColor="@color/white"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/continueTextView">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -108,7 +111,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/passwordTextInput"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
         android:layout_marginTop="26dp"
@@ -119,6 +122,7 @@
         app:endIconTint="@color/white"
         app:hintTextColor="@color/white"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/mailTextInput">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -135,9 +139,11 @@
 
     <CheckBox
         android:id="@+id/rememberMeCheckBox"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="27dp"
+        android:buttonTint="@color/white"
+        android:checked="false"
         android:fontFamily="sans-serif"
         android:lineSpacingExtra="13sp"
         android:text="@string/remember_me"
@@ -145,9 +151,8 @@
         android:textFontWeight="400"
         android:textSize="17sp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/passwordTextInput"
-        android:checked="false"
-        android:buttonTint="@color/white"/>
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/passwordTextInput" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/loginButton"
@@ -163,14 +168,14 @@
         android:textFontWeight="700"
         android:textSize="17sp"
         app:cornerRadius="40dp"
-        app:layout_goneMarginBottom="32dp"
+        app:layout_constraintBottom_toTopOf="@id/registerButton"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/registerButton" />
+        app:layout_goneMarginBottom="32dp" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/registerButton"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
         android:layout_marginBottom="32dp"
@@ -183,6 +188,8 @@
         android:textFontWeight="700"
         android:textSize="17sp"
         app:cornerRadius="40dp"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
