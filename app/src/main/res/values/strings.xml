@@ -22,4 +22,5 @@
     <string name="review_info">%1$d REVIEW%2$s, %3$s AVERAGE</string>
     <string name="register">Register</string>
     <string name="repeat_password">Repeat password</string>
+    <string name="_0_reviews_0_average">0 REVIEWS, 0 AVERAGE</string>
 </resources>
