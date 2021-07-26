@@ -33,6 +33,8 @@ class ShowDetailsFragment : Fragment() {
 
     private val viewModel: ShowDetailsViewModel by viewModels()
 
+    private var reviewsAdapter: ReviewsAdapter? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -42,7 +44,6 @@ class ShowDetailsFragment : Fragment() {
         return binding.root
     }
 
-    private var reviewsAdapter: ReviewsAdapter? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
