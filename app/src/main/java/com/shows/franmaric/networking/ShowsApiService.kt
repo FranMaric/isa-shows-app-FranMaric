@@ -1,10 +1,12 @@
 package com.shows.franmaric.networking
 
 import com.shows.franmaric.models.*
+import com.shows.franmaric.models.GetShowResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface ShowsApiService {
 
@@ -16,4 +18,10 @@ interface ShowsApiService {
 
     @GET("/shows")
     fun getShows(): Call<GetShowsResponse>
+
+    @GET("/shows/{showId}")
+    fun getShow(@Path("showId") showId: String): Call<GetShowResponse>
+
+    @GET("/shows/{showId}/reviews")
+    fun getReviews(@Path("showId") showId: String): Call<GetReviewsResponse>
 }
