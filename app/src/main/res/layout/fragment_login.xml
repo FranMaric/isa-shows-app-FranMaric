@@ -151,7 +151,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/loginButton"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
         android:backgroundTint="#55BBBBBB"
@@ -163,6 +163,9 @@
         android:textFontWeight="700"
         android:textSize="17sp"
         app:cornerRadius="40dp"
+        app:layout_goneMarginBottom="32dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toTopOf="@id/registerButton" />
 
     <com.google.android.material.button.MaterialButton
