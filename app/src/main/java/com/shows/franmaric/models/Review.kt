@@ -8,6 +8,6 @@ data class Review (
     @SerialName("id") val id: String,
     @SerialName("comment") val comment: String,
     @SerialName("rating") val rating: Int,
-    @SerialName("show_id") val showId: String,
+    @SerialName("show_id") val showId: Int,
     @SerialName("user") val user: User
     )

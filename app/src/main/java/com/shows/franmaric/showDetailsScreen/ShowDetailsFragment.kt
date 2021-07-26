@@ -14,14 +14,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.shows.franmaric.PREFS_EMAIL_KEY
 import com.shows.franmaric.R
-import com.shows.franmaric.data.ShowsResources
 import com.shows.franmaric.databinding.DialogAddReviewBinding
 import com.shows.franmaric.databinding.FragmentShowDetailsBinding
 import com.shows.franmaric.models.Review
-import com.shows.franmaric.models.Show
 
 
 class ShowDetailsFragment : Fragment() {
@@ -30,7 +29,7 @@ class ShowDetailsFragment : Fragment() {
 
     private val binding get() = _binding!!
 
-    val args: ShowDetailsFragmentArgs by navArgs()
+    private val args: ShowDetailsFragmentArgs by navArgs()
 
     private val viewModel: ShowDetailsViewModel by viewModels()
 
@@ -49,14 +48,15 @@ class ShowDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val show = ShowsResources.shows[args.showIndex]
-        initDataContainers(show)
+        initDataContainers()
 
         initReviewRecycler()
 
         initSubmitButton()
 
         initReviewInfo()
+
+        viewModel.initShow(args.showId)
     }
 
     private fun initReviewInfo() {
@@ -74,7 +74,7 @@ class ShowDetailsFragment : Fragment() {
         }
     }
 
-    private fun initDataContainers(show: Show) {
+    private fun initDataContainers() {
         binding.toolbar.navigationIcon?.setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_IN)
         binding.toolbar.setNavigationOnClickListener {
             findNavController().popBackStack()
@@ -83,12 +83,12 @@ class ShowDetailsFragment : Fragment() {
         binding.collapsingToolbarLayout.setCollapsedTitleTextColor(Color.BLACK)
 
         viewModel.getShowLiveData().observe(requireActivity()) { show ->
-            binding.collapsingToolbarLayout.title = show.name
-            binding.showImageView.setImageResource(show.imageResourceId)
+            binding.collapsingToolbarLayout.title = show.title
+            Glide.with(requireContext())
+                .load(show.imageUrl)
+                .into(binding.showImageView)
             binding.descriptionTextView.text = show.description
         }
-
-        viewModel.setShow(show)
     }
 
     private fun initSubmitButton() {
@@ -116,10 +116,10 @@ class ShowDetailsFragment : Fragment() {
             val author = sharedPref.getString(
                 PREFS_EMAIL_KEY,
                 "imenko.prezimenovic@infinum.com"
-            )?.split("@")?.first() ?: return@setOnClickListener
+            ) ?: return@setOnClickListener
 
-            val review = Review(rating, comment, author)
-            viewModel.addReview(review)
+            //val review = Review(rating, comment, author)
+            //viewModel.addReview(review)
 
             setRecyclerViewVisibility(true)
 
@@ -141,12 +141,13 @@ class ShowDetailsFragment : Fragment() {
     }
 
     private fun initReviewRecycler() {
-        reviewsAdapter = ReviewsAdapter(emptyList())
+        reviewsAdapter = ReviewsAdapter(emptyList(), requireContext())
 
         setRecyclerViewVisibility(reviewsAdapter?.getItemCount() != 0)
 
         viewModel.getReviewsLiveData().observe(requireActivity()) { reviews ->
             reviewsAdapter?.setItems(reviews)
+            setRecyclerViewVisibility(reviews.size != 0)
         }
 
         binding.reviewsRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
