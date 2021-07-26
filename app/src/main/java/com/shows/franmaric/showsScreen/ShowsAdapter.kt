@@ -3,12 +3,9 @@ package com.shows.franmaric.showsScreen
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.shows.franmaric.databinding.ViewShowItemBinding
-import com.shows.franmaric.models.Show
 import com.shows.franmaric.models.ShowResponse
 
 class ShowsAdapter(
