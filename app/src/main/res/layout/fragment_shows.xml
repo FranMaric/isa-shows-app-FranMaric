@@ -41,6 +41,18 @@
             android:textFontWeight="700"
             android:textSize="36sp" />
 
+        <CheckBox
+            android:id="@+id/topRatedCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/top_rated"
+            android:textAllCaps="false"
+            app:icon="@drawable/ic_heart_white"
+            android:gravity="end"
+            app:iconGravity="start"
+            android:button="@drawable/selector_top_rated_check_box"
+            style="?attr/materialButtonOutlinedStyle" />
+
     </androidx.appcompat.widget.Toolbar>
 
     <androidx.recyclerview.widget.RecyclerView

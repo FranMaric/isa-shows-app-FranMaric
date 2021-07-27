@@ -21,4 +21,5 @@
     <string name="register">Register</string>
     <string name="repeat_password">Repeat password</string>
     <string name="_0_reviews_0_average">0 REVIEWS, 0 AVERAGE</string>
+    <string name="top_rated">Top rated</string>
 </resources>

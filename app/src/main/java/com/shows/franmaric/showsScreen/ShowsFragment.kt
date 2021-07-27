@@ -78,6 +78,14 @@ class ShowsFragment : Fragment() {
         initShowsRecycler()
 
         initProfileButton()
+
+        initTopRatedCheckBox()
+    }
+
+    private fun initTopRatedCheckBox() {
+        binding.topRatedCheckBox.setOnCheckedChangeListener {_, isTopRated ->
+            viewModel.getShows(isTopRated)
+        }
     }
 
     private fun initProfileButton() {

@@ -28,21 +28,43 @@ class ShowsViewModel : ViewModel() {
     }
 
     fun initShows(){
-        ApiModule.retrofit.getShows()
-            .enqueue(object : Callback<GetShowsResponse> {
-                override fun onResponse(
-                    call: Call<GetShowsResponse>,
-                    response: Response<GetShowsResponse>
-                ) {
-                    if(response.isSuccessful){
-                        showsLiveData.value = response.body()?.shows
-                    }
-                }
+        getShows(false)
+    }
 
-                override fun onFailure(call: Call<GetShowsResponse>, t: Throwable) {
-                    showsLiveData.value = emptyList()
-                }
-            })
+    fun getShows(isTopRated: Boolean = false){
+        if(isTopRated){
+            ApiModule.retrofit.getTopRatedShows()
+                .enqueue(object : Callback<GetTopRatedShowsResponse> {
+                    override fun onResponse(
+                        call: Call<GetTopRatedShowsResponse>,
+                        response: Response<GetTopRatedShowsResponse>
+                    ) {
+                        if(response.isSuccessful){
+                            showsLiveData.value = response.body()?.shows
+                        }
+                    }
+
+                    override fun onFailure(call: Call<GetTopRatedShowsResponse>, t: Throwable) {
+                        showsLiveData.value = emptyList()
+                    }
+                })
+        } else {
+            ApiModule.retrofit.getShows()
+                .enqueue(object : Callback<GetShowsResponse> {
+                    override fun onResponse(
+                        call: Call<GetShowsResponse>,
+                        response: Response<GetShowsResponse>
+                    ) {
+                        if (response.isSuccessful) {
+                            showsLiveData.value = response.body()?.shows
+                        }
+                    }
+
+                    override fun onFailure(call: Call<GetShowsResponse>, t: Throwable) {
+                        showsLiveData.value = emptyList()
+                    }
+                })
+        }
     }
 
     fun uploadProfilePhoto(imageUri: String, prefs: SharedPreferences, updateCallback: (String) -> Unit) {
