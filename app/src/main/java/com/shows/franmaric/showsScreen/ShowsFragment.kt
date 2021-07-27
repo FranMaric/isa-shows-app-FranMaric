@@ -4,7 +4,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,7 +21,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.shows.franmaric.PREFS_EMAIL_KEY
 import com.shows.franmaric.PREFS_PROFILE_PHOTO_URL
-import com.shows.franmaric.PREFS_REMEMBER_ME_KEY
 import com.shows.franmaric.databinding.BottomSheetProfileBinding
 import com.shows.franmaric.databinding.FragmentShowsBinding
 import com.shows.franmaric.utils.FileUtil
@@ -98,7 +96,7 @@ class ShowsFragment : Fragment() {
 
         bottomSheetBinding!!.logoutButton.setOnClickListener {
             showAlertDialog {
-                logout()
+                viewModel.logout(activity?.getPreferences(Context.MODE_PRIVATE) ?: return@showAlertDialog)
 
                 val action = ShowsFragmentDirections.actionShowsToLogin()
                 findNavController().navigate(action)
@@ -157,16 +155,6 @@ class ShowsFragment : Fragment() {
             .skipMemoryCache(true)
             .into(binding.profileButton)
 
-    }
-
-    private fun logout() {
-        val sharedPref =
-            activity?.getPreferences(Context.MODE_PRIVATE) ?: return
-        with(sharedPref.edit()) {
-            remove(PREFS_EMAIL_KEY)
-            putBoolean(PREFS_REMEMBER_ME_KEY, false)
-            commit()
-        }
     }
 
     private fun showAlertDialog(onPositiveCallback: () -> Unit) {

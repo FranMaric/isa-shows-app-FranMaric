@@ -1,17 +1,17 @@
 package com.shows.franmaric.showsScreen
 
+import android.content.Context
 import android.content.SharedPreferences
-import android.util.Log
-import androidx.core.content.FileProvider
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.shows.franmaric.PREFS_EMAIL_KEY
 import com.shows.franmaric.PREFS_PROFILE_PHOTO_URL
+import com.shows.franmaric.PREFS_REMEMBER_ME_KEY
 import com.shows.franmaric.models.*
 import com.shows.franmaric.networking.ApiModule
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -70,5 +70,14 @@ class ShowsViewModel : ViewModel() {
 
                 }
             })
+    }
+
+    fun logout(prefs: SharedPreferences) {
+        with(prefs.edit()) {
+            remove(PREFS_EMAIL_KEY)
+            remove(PREFS_PROFILE_PHOTO_URL)
+            putBoolean(PREFS_REMEMBER_ME_KEY, false)
+            apply()
+        }
     }
 }
