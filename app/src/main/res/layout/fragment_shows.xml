@@ -43,15 +43,14 @@
 
         <CheckBox
             android:id="@+id/topRatedCheckBox"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/top_rated"
             android:textAllCaps="false"
-            app:icon="@drawable/ic_heart_white"
             android:gravity="end"
-            app:iconGravity="start"
+            android:checked="false"
             android:button="@drawable/selector_top_rated_check_box"
-            style="?attr/materialButtonOutlinedStyle" />
+            app:useMaterialThemeColors="false" />
 
     </androidx.appcompat.widget.Toolbar>
 
