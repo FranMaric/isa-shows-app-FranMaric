@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -20,6 +21,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.shows.franmaric.PREFS_EMAIL_KEY
+import com.shows.franmaric.PREFS_PROFILE_PHOTO_URL
 import com.shows.franmaric.PREFS_REMEMBER_ME_KEY
 import com.shows.franmaric.databinding.BottomSheetProfileBinding
 import com.shows.franmaric.databinding.FragmentShowsBinding
@@ -43,10 +45,24 @@ class ShowsFragment : Fragment() {
 
     private var bottomSheetBinding: BottomSheetProfileBinding? = null
 
-    private val getCameraImage = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
-        if(success)
-            updateProfileAndBottomSheetPhoto()
-    }
+    private val getCameraImage =
+        registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+            if (success) {
+                val file = FileUtil.getImageFile(requireContext())
+
+                if (file != null) {
+                    val avatarUri = FileProvider.getUriForFile(
+                        requireContext(),
+                        activity?.applicationContext?.packageName.toString() + ".fileprovider",
+                        file
+                    )
+                    viewModel.uploadProfilePhoto(file.toString(),
+                        activity?.getPreferences(Context.MODE_PRIVATE) ?: return@registerForActivityResult) { photoUrl ->
+                        updateProfileAndBottomSheetPhoto()
+                    }
+                }
+            }
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -70,21 +86,8 @@ class ShowsFragment : Fragment() {
         binding.profileButton.setOnClickListener {
             showProfileBottomSheet()
         }
-        val file = FileUtil.getImageFile(requireContext())
 
-        if (file != null) {
-            val avatarUri = FileProvider.getUriForFile(
-                requireContext(),
-                activity?.applicationContext?.packageName.toString() + ".fileprovider",
-                file
-            )
-
-            Glide.with(requireContext())
-                .load(avatarUri)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true)
-                .into(binding.profileButton)
-        }
+        updateProfileAndBottomSheetPhoto()
     }
 
     private fun showProfileBottomSheet() {
@@ -108,20 +111,8 @@ class ShowsFragment : Fragment() {
             changeProfilePhoto()
         }
 
-        val file = FileUtil.getImageFile(requireContext())
-        if(file != null) {
-            val avatarUri = FileProvider.getUriForFile(
-                requireContext(),
-                activity?.applicationContext?.packageName.toString() + ".fileprovider",
-                file
-            )
+        updateProfileAndBottomSheetPhoto()
 
-            Glide.with(requireContext())
-                .load(avatarUri)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true)
-                .into(bottomSheetBinding!!.profileImageView)
-        }
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
         bottomSheetBinding!!.mailTextView.text =
             sharedPref.getString(PREFS_EMAIL_KEY, "imenko.prezimenovic@infinum.com")
@@ -135,7 +126,8 @@ class ShowsFragment : Fragment() {
 
     @SuppressLint("MissingPermission")
     private fun takePhoto() {
-        val file = FileUtil.getImageFile(requireContext()) ?: FileUtil.createImageFile(requireContext())
+        val file =
+            FileUtil.getImageFile(requireContext()) ?: FileUtil.createImageFile(requireContext())
 
         val avatarUri = FileProvider.getUriForFile(
             requireContext(),
@@ -147,29 +139,24 @@ class ShowsFragment : Fragment() {
     }
 
     private fun updateProfileAndBottomSheetPhoto() {
-        val file = FileUtil.getImageFile(requireContext())
+        val prefs = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
+        val avatarUri = prefs.getString(PREFS_PROFILE_PHOTO_URL, "")
+        if(avatarUri == "") return
 
-        if (file != null) {
-            val avatarUri = FileProvider.getUriForFile(
-                requireContext(),
-                activity?.applicationContext?.packageName.toString() + ".fileprovider",
-                file
-            )
-
-            if(bottomSheetBinding != null) {
-                Glide.with(requireContext())
-                    .load(avatarUri)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true)
-                    .into(bottomSheetBinding!!.profileImageView)
-            }
-
+        if (bottomSheetBinding != null) {
             Glide.with(requireContext())
                 .load(avatarUri)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .skipMemoryCache(true)
-                .into(binding.profileButton)
+                .into(bottomSheetBinding!!.profileImageView)
         }
+
+        Glide.with(requireContext())
+            .load(avatarUri)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .skipMemoryCache(true)
+            .into(binding.profileButton)
+
     }
 
     private fun logout() {
@@ -200,7 +187,7 @@ class ShowsFragment : Fragment() {
     }
 
     private fun initShowsRecycler() {
-        showsAdapter = ShowsAdapter(emptyList(),requireContext()) { show ->
+        showsAdapter = ShowsAdapter(emptyList(), requireContext()) { show ->
             val action = ShowsFragmentDirections.actionShowsToShowDetails(
                 show.id
             )
@@ -214,7 +201,8 @@ class ShowsFragment : Fragment() {
 
         viewModel.initShows()
 
-        binding.showsRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        binding.showsRecyclerView.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.showsRecyclerView.adapter = showsAdapter
 
         binding.showsRecyclerView.addItemDecoration(

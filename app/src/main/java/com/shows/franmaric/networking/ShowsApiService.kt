@@ -2,11 +2,9 @@ package com.shows.franmaric.networking
 
 import com.shows.franmaric.models.*
 import com.shows.franmaric.models.GetShowResponse
+import okhttp3.MultipartBody
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 interface ShowsApiService {
 
@@ -27,4 +25,8 @@ interface ShowsApiService {
 
     @POST("/reviews")
     fun postReview(@Body request: ReviewRequest): Call<PostReviewResponse>
+
+    @Multipart
+    @PUT("/users")
+    fun uploadProfilePhoto(@Part image: MultipartBody.Part): Call<ProfilePhotoResponse>
 }
