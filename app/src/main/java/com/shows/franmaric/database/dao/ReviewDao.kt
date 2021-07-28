@@ -13,8 +13,8 @@ interface ReviewDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertReview(review: ReviewEntity)
 
-    @Query("SELECT * FROM show WHERE id IS :reviewId")
-    fun getShow(reviewId: String) : LiveData<ReviewEntity>
+    @Query("SELECT * FROM review WHERE id IS :reviewId")
+    fun getReview(reviewId: String) : LiveData<ReviewEntity>
 
     @Query("SELECT * FROM review")
     fun getReviews() : LiveData<List<ReviewEntity>>
