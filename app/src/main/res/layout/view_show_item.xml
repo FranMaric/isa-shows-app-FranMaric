@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <!--TODO: Adjust ImageView to fit max width of screen-->
+
             <ImageView
                 android:id="@+id/showImage"
                 android:layout_width="match_parent"

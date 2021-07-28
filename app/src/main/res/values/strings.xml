@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Shows-Franmaric</string>
+    <string name="prefs_email">email</string>
 </resources>

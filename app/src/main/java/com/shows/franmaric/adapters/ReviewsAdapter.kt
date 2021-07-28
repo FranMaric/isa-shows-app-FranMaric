@@ -1,4 +1,4 @@
-package com.shows.franmaric
+package com.shows.franmaric.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -43,6 +43,7 @@ class ReviewsAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(review: Review) {
+            binding.nameTextView.text = review.author
             binding.commentTextView.text = review.comment
             binding.ratingTextView.text = review.rating.toString()
             println("BOK izradujem viewholder. Nema na cemu.")

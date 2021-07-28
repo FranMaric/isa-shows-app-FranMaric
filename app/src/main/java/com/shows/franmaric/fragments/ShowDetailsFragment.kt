@@ -1,47 +1,51 @@
-package com.shows.franmaric
+package com.shows.franmaric.fragments
 
-import android.app.Activity
-import android.content.Intent
+import android.content.Context
 import android.graphics.Color
-import android.graphics.ColorFilter
 import android.graphics.PorterDuff
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.shows.franmaric.R
+import com.shows.franmaric.adapters.ReviewsAdapter
 import com.shows.franmaric.data.ShowsResources
-import com.shows.franmaric.databinding.ActivityShowDetailsBinding
 import com.shows.franmaric.databinding.DialogAddReviewBinding
+import com.shows.franmaric.databinding.FragmentShowDetailsBinding
 import com.shows.franmaric.models.Review
 import com.shows.franmaric.models.Show
 
 
-class ShowDetailsActivity : AppCompatActivity() {
-    companion object {
-        private const val SHOW_INDEX = "SHOW_INDEX"
+class ShowDetailsFragment : Fragment() {
 
-        fun buildIntent(originActivity: Activity,showIndex: Int): Intent {
-            val intent = Intent(originActivity, ShowDetailsActivity::class.java)
-            intent.putExtra(SHOW_INDEX, showIndex)
+    private var _binding: FragmentShowDetailsBinding? = null
 
-            return intent
-        }
+    private val binding get() = _binding!!
+
+    val args: ShowDetailsFragmentArgs by navArgs()
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentShowDetailsBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    private lateinit var binding: ActivityShowDetailsBinding
     private var reviewsAdapter: ReviewsAdapter? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityShowDetailsBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        val show = ShowsResources.shows[intent.getIntExtra(SHOW_INDEX,0)]
-
-        setSupportActionBar(binding.toolbar)
-
+        val show = ShowsResources.shows[args.showIndex]
         initDataContainers(show)
 
         initReviewRecycler()
@@ -53,7 +57,7 @@ class ShowDetailsActivity : AppCompatActivity() {
         binding.collapsingToolbarLayout.title = show.name
         binding.toolbar.navigationIcon?.setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_IN)
         binding.toolbar.setNavigationOnClickListener {
-            this.finish()
+            findNavController().popBackStack()
         }
         binding.collapsingToolbarLayout.setExpandedTitleColor(Color.BLACK)
         binding.collapsingToolbarLayout.setCollapsedTitleTextColor(Color.BLACK)
@@ -62,18 +66,18 @@ class ShowDetailsActivity : AppCompatActivity() {
     }
 
     private fun initSubmitButton() {
-        binding.reviewButton.setOnClickListener{
+        binding.reviewButton.setOnClickListener {
             showBottomSheet()
         }
     }
 
     private fun showBottomSheet() {
-        val dialog = BottomSheetDialog(this)
+        val dialog = BottomSheetDialog(requireContext())
 
         val bottomSheetBinding = DialogAddReviewBinding.inflate(layoutInflater)
         dialog.setContentView(bottomSheetBinding.root)
 
-        bottomSheetBinding.dismissButton.setOnClickListener{
+        bottomSheetBinding.dismissButton.setOnClickListener {
             dialog.dismiss()
         }
 
@@ -81,18 +85,23 @@ class ShowDetailsActivity : AppCompatActivity() {
             val rating = bottomSheetBinding.ratingBar.rating.toInt()
             val comment = bottomSheetBinding.commentField.text.toString()
 
-            val review = Review(rating, comment)
+            val sharedPref =
+                activity?.getPreferences(Context.MODE_PRIVATE) ?: return@setOnClickListener
+            val author = sharedPref.getString(getString(R.string.prefs_email), "imenko.prezimenovic@infinum.com")?.split("@")?.first() ?: return@setOnClickListener
+
+            val review = Review(rating, comment, author)
             reviewsAdapter?.addItem(review)
 
             var newRating = 0.0
-            reviewsAdapter?.getItems()?.forEach{review->
+            reviewsAdapter?.getItems()?.forEach { review ->
                 newRating += review.rating
             }
 
             var reviewCount = reviewsAdapter?.getItemCount()!!
             newRating = newRating / reviewCount
 
-            binding.reviewInfoTextView.text = "${reviewCount} REVIEW${if(reviewCount == 1) "" else "S"}, ${newRating} AVERAGE"
+            binding.reviewInfoTextView.text =
+                "${reviewCount} REVIEW${if (reviewCount == 1) "" else "S"}, ${newRating} AVERAGE"
 
             binding.ratingBar.rating = newRating.toFloat()
 
@@ -104,18 +113,17 @@ class ShowDetailsActivity : AppCompatActivity() {
         dialog.show()
     }
 
-    private fun setRecyclerViewVisibility(visible:Boolean){
+    private fun setRecyclerViewVisibility(visible: Boolean) {
         // Saving processing power :)
-        if(binding.reviewsRecyclerView.isVisible == visible)
+        if (binding.reviewsRecyclerView.isVisible == visible)
             return
 
-        if(visible){
+        if (visible) {
             binding.reviewsRecyclerView.isVisible = true
             binding.reviewInfoTextView.isVisible = true
             binding.ratingBar.isVisible = true
             binding.emptyStateLabel.isVisible = false
-        }
-        else {
+        } else {
             binding.reviewsRecyclerView.isVisible = false
             binding.reviewInfoTextView.isVisible = false
             binding.ratingBar.isVisible = false
@@ -126,16 +134,25 @@ class ShowDetailsActivity : AppCompatActivity() {
     private fun initReviewRecycler() {
         reviewsAdapter = ReviewsAdapter(emptyList())
 
-        if(reviewsAdapter?.getItemCount() == 0){
+        if (reviewsAdapter?.getItemCount() == 0) {
             setRecyclerViewVisibility(false)
         } else {
             setRecyclerViewVisibility(true)
         }
 
-        binding.reviewsRecyclerView.layoutManager = LinearLayoutManager(this)
+        binding.reviewsRecyclerView.layoutManager = LinearLayoutManager(context)
         binding.reviewsRecyclerView.adapter = reviewsAdapter
 
-        binding.reviewsRecyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+        binding.reviewsRecyclerView.addItemDecoration(
+            DividerItemDecoration(
+                context,
+                DividerItemDecoration.VERTICAL
+            )
+        )
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }
