@@ -10,11 +10,14 @@ import com.shows.franmaric.R
 import com.shows.franmaric.models.LoginRequest
 import com.shows.franmaric.models.LoginResponse
 import com.shows.franmaric.networking.ApiModule
+import com.shows.franmaric.repository.ShowsRepository
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class LoginViewModel : ViewModel() {
+class LoginViewModel (
+    val repository: ShowsRepository
+) : ViewModel() {
     private val loginResultLiveData: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
 
     fun getLoginResultLiveData(): LiveData<Boolean> {

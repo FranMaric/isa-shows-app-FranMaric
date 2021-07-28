@@ -3,7 +3,6 @@ package com.shows.franmaric.showsScreen
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.app.Application
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -23,7 +22,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.shows.franmaric.MainActivity
 import com.shows.franmaric.PREFS_EMAIL_KEY
 import com.shows.franmaric.PREFS_PROFILE_PHOTO_URL
-import com.shows.franmaric.database.DatabaseViewModelFactory
+import com.shows.franmaric.repository.RepositoryViewModelFactory
 import com.shows.franmaric.databinding.BottomSheetProfileBinding
 import com.shows.franmaric.databinding.FragmentShowsBinding
 import com.shows.franmaric.utils.FileUtil
@@ -37,7 +36,7 @@ class ShowsFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: ShowsViewModel by viewModels {
-        DatabaseViewModelFactory((requireActivity() as MainActivity).showsDatabase)
+        RepositoryViewModelFactory((requireActivity() as MainActivity).showsRepository)
     }
 
     private val cameraPermissionForTakingPhoto = preparePrmissionsContract(onPermissionsGranted = {

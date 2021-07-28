@@ -1,6 +1,5 @@
 package com.shows.franmaric.showDetailsScreen
 
-import android.content.Context
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
@@ -17,14 +16,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.shows.franmaric.MainActivity
-import com.shows.franmaric.PREFS_EMAIL_KEY
 import com.shows.franmaric.R
-import com.shows.franmaric.database.DatabaseViewModelFactory
+import com.shows.franmaric.repository.RepositoryViewModelFactory
 import com.shows.franmaric.databinding.DialogAddReviewBinding
 import com.shows.franmaric.databinding.FragmentShowDetailsBinding
-import com.shows.franmaric.models.Review
-import com.shows.franmaric.models.ReviewRequest
-import com.shows.franmaric.showsScreen.ShowsViewModel
 
 
 class ShowDetailsFragment : Fragment() {
@@ -36,7 +31,7 @@ class ShowDetailsFragment : Fragment() {
     private val args: ShowDetailsFragmentArgs by navArgs()
 
     private val viewModel: ShowDetailsViewModel by viewModels {
-        DatabaseViewModelFactory((requireActivity() as MainActivity).showsDatabase)
+        RepositoryViewModelFactory((requireActivity() as MainActivity).showsRepository)
     }
 
     private var reviewsAdapter: ReviewsAdapter? = null

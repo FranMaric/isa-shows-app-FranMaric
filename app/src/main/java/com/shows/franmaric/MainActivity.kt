@@ -6,13 +6,16 @@ import androidx.appcompat.app.AppCompatActivity
 import com.shows.franmaric.database.ShowsDatabase
 import com.shows.franmaric.databinding.ActivityMainBinding
 import com.shows.franmaric.networking.ApiModule
+import com.shows.franmaric.repository.ShowsRepository
 
 class MainActivity: AppCompatActivity()  {
     private lateinit var binding: ActivityMainBinding
 
-    val showsDatabase by lazy {
+    private val showsDatabase by lazy {
         ShowsDatabase.getDatabase(this)
     }
+
+    val showsRepository = ShowsRepository(showsDatabase, ApiModule.retrofit)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

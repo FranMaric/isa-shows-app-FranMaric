@@ -1,6 +1,5 @@
 package com.shows.franmaric.registerScreen
 
-import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Patterns
@@ -15,10 +14,13 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.shows.franmaric.R
 import com.shows.franmaric.databinding.FragmentRegisterBinding
+import com.shows.franmaric.repository.ShowsRepository
 
 const val MIN_PASSWORD_LENGTH = 6
 
-class RegisterFragment : Fragment() {
+class RegisterFragment  (
+    val repository: ShowsRepository
+): Fragment() {
     private var _binding: FragmentRegisterBinding? = null
 
     private val binding get() = _binding!!

@@ -1,6 +1,5 @@
 package com.shows.franmaric.showsScreen
 
-import android.content.Context
 import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,9 +7,9 @@ import androidx.lifecycle.ViewModel
 import com.shows.franmaric.PREFS_EMAIL_KEY
 import com.shows.franmaric.PREFS_PROFILE_PHOTO_URL
 import com.shows.franmaric.PREFS_REMEMBER_ME_KEY
-import com.shows.franmaric.database.ShowsDatabase
 import com.shows.franmaric.models.*
 import com.shows.franmaric.networking.ApiModule
+import com.shows.franmaric.repository.ShowsRepository
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -20,7 +19,7 @@ import retrofit2.Response
 import java.io.File
 
 class ShowsViewModel (
-    val database: ShowsDatabase
+    val repository: ShowsRepository
 ): ViewModel() {
     private val showsLiveData: MutableLiveData<List<ShowResponse>> by lazy {
         MutableLiveData<List<ShowResponse>>()

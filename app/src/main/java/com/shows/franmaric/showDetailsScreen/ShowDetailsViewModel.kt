@@ -1,20 +1,17 @@
 package com.shows.franmaric.showDetailsScreen
 
-import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.shows.franmaric.PREFS_EMAIL_KEY
-import com.shows.franmaric.database.ShowsDatabase
 import com.shows.franmaric.models.*
 import com.shows.franmaric.networking.ApiModule
+import com.shows.franmaric.repository.ShowsRepository
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class ShowDetailsViewModel(
-    val database: ShowsDatabase
+    val repository: ShowsRepository
 ) : ViewModel() {
     private var reviews = mutableListOf<Review>()
 

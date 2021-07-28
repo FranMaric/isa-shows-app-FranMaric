@@ -1,13 +1,13 @@
-package com.shows.franmaric
+package com.shows.franmaric.repository
 
 import com.shows.franmaric.database.ShowsDatabase
 import com.shows.franmaric.models.Review
 import com.shows.franmaric.models.ShowResponse
-import retrofit2.Retrofit
+import com.shows.franmaric.networking.ShowsApiService
 
 class ShowsRepository(
     val showsDatabase: ShowsDatabase,
-    val retrofit: Retrofit
+    val retrofit: ShowsApiService
 ) {
     fun hasInternetConnection(): Boolean {
         //TODO: implement
