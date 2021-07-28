@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import com.shows.franmaric.PREFS_EMAIL_KEY
 import com.shows.franmaric.PREFS_PROFILE_PHOTO_URL
 import com.shows.franmaric.PREFS_REMEMBER_ME_KEY
+import com.shows.franmaric.database.ShowsDatabase
 import com.shows.franmaric.models.*
 import com.shows.franmaric.networking.ApiModule
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -18,7 +19,9 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
 
-class ShowsViewModel : ViewModel() {
+class ShowsViewModel (
+    val database: ShowsDatabase
+): ViewModel() {
     private val showsLiveData: MutableLiveData<List<ShowResponse>> by lazy {
         MutableLiveData<List<ShowResponse>>()
     }
