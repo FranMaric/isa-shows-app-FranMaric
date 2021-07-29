@@ -27,7 +27,7 @@ class RegisterViewModel(
         passwordConfirmation: String,
         hasInternetConnection: Boolean
     ) {
-        repository.register(email, password, passwordConfirmation, {
+        repository.register(email, password, passwordConfirmation, hasInternetConnection, {
             registrationResultLiveData.value = false
         }) { response ->
             registrationResultLiveData.value = response.isSuccessful

@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import com.shows.franmaric.MainActivity
 import com.shows.franmaric.R
 import com.shows.franmaric.databinding.FragmentRegisterBinding
+import com.shows.franmaric.extensions.hasInternetConnection
 import com.shows.franmaric.loginScreen.LoginViewModel
 import com.shows.franmaric.repository.RepositoryViewModelFactory
 import com.shows.franmaric.repository.ShowsRepository
@@ -68,7 +69,7 @@ class RegisterFragment : Fragment() {
             val password = binding.passwordField.text.toString()
             val passwordConfirmation = binding.passwordConfirmationField.text.toString()
 
-            viewModel.register(email, password, passwordConfirmation)
+            viewModel.register(email, password, passwordConfirmation, requireContext().hasInternetConnection())
         }
     }
 
