@@ -15,9 +15,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.shows.franmaric.MainActivity
 import com.shows.franmaric.PREFS_REMEMBER_ME_KEY
 import com.shows.franmaric.R
 import com.shows.franmaric.databinding.FragmentLoginBinding
+import com.shows.franmaric.repository.RepositoryViewModelFactory
+import com.shows.franmaric.showsScreen.ShowsViewModel
 
 const val MIN_PASSWORD_LENGTH = 6
 
@@ -28,7 +31,9 @@ class LoginFragment : Fragment() {
 
     val args: LoginFragmentArgs by navArgs()
 
-    private val viewModel: LoginViewModel by viewModels()
+    private val viewModel: LoginViewModel by viewModels {
+        RepositoryViewModelFactory((requireActivity() as MainActivity).repository())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

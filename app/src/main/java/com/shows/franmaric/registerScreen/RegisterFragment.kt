@@ -12,8 +12,11 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.shows.franmaric.MainActivity
 import com.shows.franmaric.R
 import com.shows.franmaric.databinding.FragmentRegisterBinding
+import com.shows.franmaric.loginScreen.LoginViewModel
+import com.shows.franmaric.repository.RepositoryViewModelFactory
 import com.shows.franmaric.repository.ShowsRepository
 
 const val MIN_PASSWORD_LENGTH = 6
@@ -25,7 +28,9 @@ class RegisterFragment  (
 
     private val binding get() = _binding!!
 
-    private val viewModel: RegisterViewModel by viewModels()
+    private val viewModel: RegisterViewModel by viewModels {
+        RepositoryViewModelFactory((requireActivity() as MainActivity).repository())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
