@@ -21,9 +21,7 @@ import com.shows.franmaric.repository.ShowsRepository
 
 const val MIN_PASSWORD_LENGTH = 6
 
-class RegisterFragment  (
-    val repository: ShowsRepository
-): Fragment() {
+class RegisterFragment : Fragment() {
     private var _binding: FragmentRegisterBinding? = null
 
     private val binding get() = _binding!!
