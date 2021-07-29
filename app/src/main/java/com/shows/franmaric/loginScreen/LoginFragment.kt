@@ -2,6 +2,8 @@ package com.shows.franmaric.loginScreen
 
 import android.content.Context
 import android.graphics.Color
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.os.Bundle
 import android.util.Patterns
 import android.view.LayoutInflater
@@ -19,6 +21,7 @@ import com.shows.franmaric.MainActivity
 import com.shows.franmaric.PREFS_REMEMBER_ME_KEY
 import com.shows.franmaric.R
 import com.shows.franmaric.databinding.FragmentLoginBinding
+import com.shows.franmaric.extensions.hasInternetConnection
 import com.shows.franmaric.repository.RepositoryViewModelFactory
 import com.shows.franmaric.showsScreen.ShowsViewModel
 
@@ -32,7 +35,7 @@ class LoginFragment : Fragment() {
     val args: LoginFragmentArgs by navArgs()
 
     private val viewModel: LoginViewModel by viewModels {
-        RepositoryViewModelFactory((requireActivity() as MainActivity).repository())
+        RepositoryViewModelFactory((requireActivity() as MainActivity).showsRepository)
     }
 
     override fun onCreateView(
@@ -151,7 +154,8 @@ class LoginFragment : Fragment() {
         viewModel.login(
             email,
             password,
-            activity?.getPreferences(Context.MODE_PRIVATE) ?: return
+            activity?.getPreferences(Context.MODE_PRIVATE) ?: return,
+            requireContext().hasInternetConnection()
         )
     }
 

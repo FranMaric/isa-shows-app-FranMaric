@@ -12,10 +12,12 @@ class MainActivity: AppCompatActivity()  {
     private lateinit var binding: ActivityMainBinding
 
     private val showsDatabase by lazy {
-        ShowsDatabase.getDatabase(this)
+        ShowsDatabase.getDatabase(applicationContext)
     }
 
-    val showsRepository = ShowsRepository(showsDatabase, ApiModule.retrofit)
+    val showsRepository by lazy {
+        ShowsRepository(showsDatabase, ApiModule.retrofit)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

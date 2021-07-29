@@ -27,7 +27,7 @@ class RegisterFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: RegisterViewModel by viewModels {
-        RepositoryViewModelFactory((requireActivity() as MainActivity).repository())
+        RepositoryViewModelFactory((requireActivity() as MainActivity).showsRepository)
     }
 
     override fun onCreateView(
