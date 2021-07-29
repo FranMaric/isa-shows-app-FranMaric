@@ -13,8 +13,14 @@ class ShowsRepository(
 ) {
 
 
-    fun login(email: String, password: String, hasInternetConnection: Boolean,onFailureCallback: () -> Unit, onResponseCallback: (response: Response<LoginResponse>)->Unit) {
-        if(!hasInternetConnection) {
+    fun login(
+        email: String,
+        password: String,
+        hasInternetConnection: Boolean,
+        onFailureCallback: () -> Unit,
+        onResponseCallback: (response: Response<LoginResponse>) -> Unit
+    ) {
+        if (!hasInternetConnection) {
             onFailureCallback()
             return
         }
@@ -34,8 +40,15 @@ class ShowsRepository(
             })
     }
 
-    fun register(email: String, password: String, passwordConfirmation: String, hasInternetConnection: Boolean, onFailureCallback: () -> Unit, onResponseCallback: (response: Response<RegisterResponse>)->Unit) {
-        if(!hasInternetConnection) {
+    fun register(
+        email: String,
+        password: String,
+        passwordConfirmation: String,
+        hasInternetConnection: Boolean,
+        onFailureCallback: () -> Unit,
+        onResponseCallback: (response: Response<RegisterResponse>) -> Unit
+    ) {
+        if (!hasInternetConnection) {
             onFailureCallback()
             return
         }
