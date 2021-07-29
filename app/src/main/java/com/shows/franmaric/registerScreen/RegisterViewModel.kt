@@ -11,7 +11,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class RegisterViewModel (
+class RegisterViewModel(
     val repository: ShowsRepository
 ) : ViewModel() {
 
@@ -21,19 +21,16 @@ class RegisterViewModel (
         return registrationResultLiveData
     }
 
-    fun register(email: String, password: String, passwordConfirmation: String) {
-        ApiModule.retrofit.register(RegisterRequest(email, password, passwordConfirmation))
-            .enqueue(object : Callback<RegisterResponse> {
-                override fun onResponse(
-                    call: Call<RegisterResponse>,
-                    response: Response<RegisterResponse>
-                ) {
-                    registrationResultLiveData.value = response.isSuccessful
-                }
-
-                override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
-                    registrationResultLiveData.value = false
-                }
-            })
+    fun register(
+        email: String,
+        password: String,
+        passwordConfirmation: String,
+        hasInternetConnection: Boolean
+    ) {
+        repository.register(email, password, passwordConfirmation, {
+            registrationResultLiveData.value = false
+        }) { response ->
+            registrationResultLiveData.value = response.isSuccessful
+        }
     }
 }

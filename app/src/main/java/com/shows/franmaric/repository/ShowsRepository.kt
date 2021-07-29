@@ -6,34 +6,15 @@ import com.shows.franmaric.networking.ShowsApiService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.IOException
-import java.net.InetSocketAddress
-import java.net.Socket
-import java.net.SocketAddress
-
-const val GOOGLE_DNS = "8.8.8.8"
-const val DNS_PORT = 53
-const val TIMEOUT = 1500
-const val TAG = "NetworkChecker"
 
 class ShowsRepository(
     private val showsDatabase: ShowsDatabase,
     private val retrofit: ShowsApiService
 ) {
-    private fun hasInternetConnection(): Boolean {
-        return try {
-            val sock = Socket()
-            val socketAddress: SocketAddress = InetSocketAddress(GOOGLE_DNS, DNS_PORT)
-            sock.connect(socketAddress, TIMEOUT)
-            sock.close()
-            true
-        } catch (e: IOException) {
-            false
-        }
-    }
 
-    fun login(email: String, password: String, onFailureCallback: () -> Unit, onResponseCallback: (response: Response<LoginResponse>)->Unit) {
-        if(!hasInternetConnection()) {
+
+    fun login(email: String, password: String, hasInternetConnection: Boolean,onFailureCallback: () -> Unit, onResponseCallback: (response: Response<LoginResponse>)->Unit) {
+        if(!hasInternetConnection) {
             onFailureCallback()
             return
         }
@@ -53,8 +34,8 @@ class ShowsRepository(
             })
     }
 
-    fun register(email: String, password: String, passwordConfirmation: String, onFailureCallback: () -> Unit, onResponseCallback: (response: Response<RegisterResponse>)->Unit) {
-        if(!hasInternetConnection()) {
+    fun register(email: String, password: String, passwordConfirmation: String, hasInternetConnection: Boolean, onFailureCallback: () -> Unit, onResponseCallback: (response: Response<RegisterResponse>)->Unit) {
+        if(!hasInternetConnection) {
             onFailureCallback()
             return
         }

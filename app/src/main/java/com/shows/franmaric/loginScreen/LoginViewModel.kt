@@ -6,16 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.shows.franmaric.PREFS_EMAIL_KEY
 import com.shows.franmaric.PREFS_PROFILE_PHOTO_URL
-import com.shows.franmaric.R
-import com.shows.franmaric.models.LoginRequest
-import com.shows.franmaric.models.LoginResponse
-import com.shows.franmaric.networking.ApiModule
 import com.shows.franmaric.repository.ShowsRepository
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
-class LoginViewModel (
+class LoginViewModel(
     val repository: ShowsRepository
 ) : ViewModel() {
     private val loginResultLiveData: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
@@ -24,27 +17,24 @@ class LoginViewModel (
         return loginResultLiveData
     }
 
-    fun login(email: String, password: String, preferences: SharedPreferences) {
-        ApiModule.retrofit.login(LoginRequest(email, password))
-            .enqueue(object : Callback<LoginResponse> {
-                override fun onResponse(
-                    call: Call<LoginResponse>,
-                    response: Response<LoginResponse>
-                ) {
-                    loginResultLiveData.value = response.isSuccessful
-                    with(preferences.edit()){
-                        putString("access-token", response.headers()["access-token"])
-                        putString("client", response.headers()["client"])
-                        putString("uid", response.headers()["uid"])
-                        putString(PREFS_EMAIL_KEY, email)
-                        putString(PREFS_PROFILE_PHOTO_URL, response.body()?.user?.imageUrl)
-                        apply()
-                    }
-                }
-
-                override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                    loginResultLiveData.value = false
-                }
-            })
+    fun login(
+        email: String,
+        password: String,
+        preferences: SharedPreferences,
+        hasInternetConnection: Boolean
+    ) {
+        repository.login(email, password, hasInternetConnection,{
+            loginResultLiveData.value = false
+        }) { response ->
+            loginResultLiveData.value = response.isSuccessful
+            with(preferences.edit()) {
+                putString("access-token", response.headers()["access-token"])
+                putString("client", response.headers()["client"])
+                putString("uid", response.headers()["uid"])
+                putString(PREFS_EMAIL_KEY, email)
+                putString(PREFS_PROFILE_PHOTO_URL, response.body()?.user?.imageUrl)
+                apply()
+            }
+        }
     }
 }
