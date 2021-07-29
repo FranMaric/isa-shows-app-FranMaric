@@ -14,10 +14,10 @@ interface ReviewDao {
     fun insertReview(review: ReviewEntity)
 
     @Query("SELECT * FROM review WHERE id IS :reviewId")
-    fun getReview(reviewId: String) : LiveData<ReviewEntity>
+    fun getReview(reviewId: String) : ReviewEntity
 
     @Query("SELECT * FROM review WHERE show_id IS :showId")
-    fun getReviews(showId: Int) : LiveData<List<ReviewEntity>>
+    fun getReviews(showId: Int) : List<ReviewEntity>
 
 
 }

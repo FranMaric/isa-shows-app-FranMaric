@@ -14,8 +14,8 @@ interface ShowDao {
     fun insertShows(shows: List<ShowEntity>)
 
     @Query("SELECT * FROM show WHERE id IS :showId")
-    fun getShow(showId: String) : LiveData<ShowEntity>
+    fun getShow(showId: String) : ShowEntity
 
     @Query("SELECT * FROM show")
-    fun getShows() : LiveData<List<ShowEntity>>
+    fun getShows() : List<ShowEntity>
 }
