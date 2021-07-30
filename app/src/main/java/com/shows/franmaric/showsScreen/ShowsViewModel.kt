@@ -1,15 +1,15 @@
 package com.shows.franmaric.showsScreen
 
 import android.content.SharedPreferences
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import android.util.Log
+import androidx.lifecycle.*
 import com.shows.franmaric.PREFS_EMAIL_KEY
 import com.shows.franmaric.PREFS_PROFILE_PHOTO_URL
 import com.shows.franmaric.PREFS_REMEMBER_ME_KEY
 import com.shows.franmaric.models.*
 import com.shows.franmaric.networking.ApiModule
 import com.shows.franmaric.repository.ShowsRepository
+import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -29,11 +29,7 @@ class ShowsViewModel (
         return showsLiveData
     }
 
-    fun initShows(){
-        getShows(false)
-    }
-
-    fun getShows(isTopRated: Boolean = false){
+    fun getShows(hasInternetConnection: Boolean ,isTopRated: Boolean = false) {
         if(isTopRated){
             ApiModule.retrofit.getTopRatedShows()
                 .enqueue(object : Callback<GetTopRatedShowsResponse> {
@@ -51,21 +47,9 @@ class ShowsViewModel (
                     }
                 })
         } else {
-            ApiModule.retrofit.getShows()
-                .enqueue(object : Callback<GetShowsResponse> {
-                    override fun onResponse(
-                        call: Call<GetShowsResponse>,
-                        response: Response<GetShowsResponse>
-                    ) {
-                        if (response.isSuccessful) {
-                            showsLiveData.value = response.body()?.shows
-                        }
-                    }
-
-                    override fun onFailure(call: Call<GetShowsResponse>, t: Throwable) {
-                        showsLiveData.value = emptyList()
-                    }
-                })
+            repository.getShows(hasInternetConnection) {
+                showsLiveData.postValue(it)
+            }
         }
     }
 

@@ -25,6 +25,7 @@ import com.shows.franmaric.PREFS_PROFILE_PHOTO_URL
 import com.shows.franmaric.repository.RepositoryViewModelFactory
 import com.shows.franmaric.databinding.BottomSheetProfileBinding
 import com.shows.franmaric.databinding.FragmentShowsBinding
+import com.shows.franmaric.extensions.hasInternetConnection
 import com.shows.franmaric.utils.FileUtil
 import com.shows.franmaric.utils.preparePrmissionsContract
 
@@ -88,7 +89,7 @@ class ShowsFragment : Fragment() {
 
     private fun initTopRatedCheckBox() {
         binding.topRatedCheckBox.setOnCheckedChangeListener {_, isTopRated ->
-            viewModel.getShows(isTopRated)
+            viewModel.getShows(requireContext().hasInternetConnection() ,isTopRated)
         }
     }
 
@@ -196,10 +197,13 @@ class ShowsFragment : Fragment() {
 
         viewModel.getShowsLiveData().observe(requireActivity()) { shows ->
             showsAdapter?.setItems(shows)
-            binding.showsRecyclerView.isVisible = showsAdapter?.getItemCount() != 0
+
+            val visible = showsAdapter?.getItemCount() != 0
+            binding.showsRecyclerView.isVisible = visible
+            binding.emptyStateLabel.isVisible = !visible
         }
 
-        viewModel.initShows()
+        viewModel.getShows(requireContext().hasInternetConnection(), isTopRated = false)
 
         binding.showsRecyclerView.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
