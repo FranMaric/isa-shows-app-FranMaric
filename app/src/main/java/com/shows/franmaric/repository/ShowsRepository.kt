@@ -1,17 +1,11 @@
 package com.shows.franmaric.repository
 
-import android.util.Log
-import androidx.room.ColumnInfo
-import androidx.room.Embedded
-import androidx.room.PrimaryKey
 import com.shows.franmaric.database.ShowsDatabase
 import com.shows.franmaric.database.entities.ReviewEntity
 import com.shows.franmaric.database.entities.ShowEntity
 import com.shows.franmaric.database.entities.UserEntity
 import com.shows.franmaric.models.*
 import com.shows.franmaric.networking.ShowsApiService
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
