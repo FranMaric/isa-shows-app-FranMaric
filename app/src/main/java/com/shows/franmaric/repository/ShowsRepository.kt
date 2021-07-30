@@ -252,11 +252,6 @@ class ShowsRepository(
         }
     }
 
-    fun getReview(): List<ShowResponse> {
-        //TODO: implement
-        return emptyList()
-    }
-
     fun postReview(review: Review) {
         //TODO: implement
     }
