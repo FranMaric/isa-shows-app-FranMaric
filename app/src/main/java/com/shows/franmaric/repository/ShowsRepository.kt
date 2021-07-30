@@ -189,6 +189,7 @@ class ShowsRepository(
         callback: (List<Review>) -> Unit
     ) {
         if (hasInternetConnection) {
+            checkOfflineReviewAdded(showId.toInt())
             retrofit.getReviews(showId)
                 .enqueue(object : Callback<GetReviewsResponse> {
                     override fun onResponse(
@@ -250,8 +251,117 @@ class ShowsRepository(
         }
     }
 
-    fun postReview(review: Review) {
-        //TODO: implement
+    private fun checkOfflineReviewAdded(showId: Int) {
+        Executors.newSingleThreadExecutor().execute {
+            showsDatabase.reviewDao().getReviews(showId).map {
+                if(it.id == "offline") {
+                    retrofit.postReview(ReviewRequest(
+                            comment = it.comment,
+                            rating = it.rating,
+                            showId = it.showId
+                        ))
+                        .enqueue(object : Callback<PostReviewResponse> {
+                            override fun onResponse(
+                                call: Call<PostReviewResponse>,
+                                response: Response<PostReviewResponse>
+                            ) {
+                                if (response.isSuccessful && response.body()?.review != null) {
+                                    Executors.newSingleThreadExecutor().execute {
+                                        showsDatabase.reviewDao().deleteReview(it)
+                                        showsDatabase.reviewDao().insertReview(
+                                            ReviewEntity(
+                                                id = response.body()?.review!!.id,
+                                                comment = response.body()?.review!!.comment,
+                                                rating = response.body()?.review!!.rating,
+                                                showId = response.body()?.review!!.showId,
+                                                user = UserEntity(
+                                                    id = response.body()?.review!!.user.id,
+                                                    email = response.body()?.review!!.user.email,
+                                                    imageUrl = response.body()?.review!!.user.imageUrl
+                                                )
+                                            )
+                                        )
+                                    }
+                                }
+                            }
+
+                            override fun onFailure(call: Call<PostReviewResponse>, t: Throwable) {
+                            }
+                        })
+                }
+            }
+        }
+    }
+
+    fun addReview(
+        reviewRequest: ReviewRequest,
+        hasInternetConnection: Boolean,
+        email: String,
+        callback: (Review?) -> Unit
+    ) {
+        if(hasInternetConnection) {
+            retrofit.postReview(reviewRequest)
+                .enqueue(object : Callback<PostReviewResponse> {
+                    override fun onResponse(
+                        call: Call<PostReviewResponse>,
+                        response: Response<PostReviewResponse>
+                    ) {
+                        if (response.isSuccessful && response.body()?.review != null) {
+                            callback(response.body()?.review!!)
+                        } else {
+                            addReviewToDB(reviewRequest, email, callback)
+                        }
+                    }
+
+                    override fun onFailure(call: Call<PostReviewResponse>, t: Throwable) {
+                        addReviewToDB(reviewRequest, email, callback)
+                    }
+                })
+        } else {
+            addReviewToDB(reviewRequest, email, callback)
+        }
+    }
+
+    private fun addReviewToDB(reviewRequest: ReviewRequest, email: String, callback: (Review?) -> Unit) {
+        Executors.newSingleThreadExecutor().execute {
+            var didNotComment = true
+            for (review in showsDatabase.reviewDao().getReviews(reviewRequest.showId)) {
+                if(review.user.email == email) {
+                    didNotComment = false
+                    break
+                }
+            }
+
+            if(didNotComment) {
+                showsDatabase.reviewDao().insertReview(
+                    ReviewEntity(
+                        id = "offline",
+                        comment = reviewRequest.comment,
+                        rating = reviewRequest.rating,
+                        showId = reviewRequest.showId,
+                        user = UserEntity(
+                            id = "offline",
+                            email = "",
+                            imageUrl = null
+                        )
+                    )
+                )
+                callback(
+                    Review(
+                    id = "offline",
+                    comment = reviewRequest.comment,
+                    rating = reviewRequest.rating,
+                    showId = reviewRequest.showId,
+                    user = User(
+                        id = "offline",
+                        email = email,
+                        imageUrl = null
+                    )
+                ))
+            } else {
+                callback(null)
+            }
+        }
     }
 
     fun uploadProfilePhoto() {

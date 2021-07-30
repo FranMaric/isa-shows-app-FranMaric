@@ -42,25 +42,15 @@ class ShowDetailsViewModel(
         return reviews.size
     }
 
-    fun addReview(comment: String, rating: Int) {
+    fun addReview(comment: String, rating: Int, hasInternetConnection: Boolean, email: String) {
         showLiveData.value?.id?.let {
-            ApiModule.retrofit.postReview(ReviewRequest(comment, rating, it.toInt()))
-                .enqueue(object : Callback<PostReviewResponse> {
-                    override fun onResponse(
-                        call: Call<PostReviewResponse>,
-                        response: Response<PostReviewResponse>
-                    ) {
-                        if (response.isSuccessful && response.body()?.review != null) {
-                            reviews.add(response.body()?.review!!)
-
-                            reviewsLiveData.value = reviews
-                        }
-                    }
-
-                    override fun onFailure(call: Call<PostReviewResponse>, t: Throwable) {
-                        //TODO: update viewModel onFailure
-                    }
-                })
+            repository.addReview(ReviewRequest(comment, rating, it.toInt()), hasInternetConnection, email) { review ->
+                review?.let { review ->
+                    reviews.add(0, review)
+                    reviewsLiveData.postValue(reviews)
+                    reviewsAverageRatingLiveData.postValue(calculateAverageReviewsRating())
+                }
+            }
         }
     }
 
@@ -69,7 +59,7 @@ class ShowDetailsViewModel(
         reviewsLiveData.value = reviews
     }
 
-    fun calculateAverageReviewsRating() : Double {
+    private fun calculateAverageReviewsRating() : Double {
         return reviews.map{it->it.rating}.average()
     }
 

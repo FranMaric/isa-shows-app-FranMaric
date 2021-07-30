@@ -1,5 +1,6 @@
 package com.shows.franmaric.showDetailsScreen
 
+import android.content.Context
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.shows.franmaric.MainActivity
+import com.shows.franmaric.PREFS_EMAIL_KEY
 import com.shows.franmaric.R
 import com.shows.franmaric.repository.RepositoryViewModelFactory
 import com.shows.franmaric.databinding.DialogAddReviewBinding
@@ -113,7 +115,14 @@ class ShowDetailsFragment : Fragment() {
             val rating = bottomSheetBinding.ratingBar.rating.toInt()
             val comment = bottomSheetBinding.commentField.text.toString()
 
-            viewModel.addReview(comment, rating)
+            val prefs = activity?.getPreferences(Context.MODE_PRIVATE) ?: return@setOnClickListener
+
+            viewModel.addReview(
+                comment,
+                rating,
+                requireContext().hasInternetConnection(),
+                prefs.getString(PREFS_EMAIL_KEY, "")!!
+            )
 
             setRecyclerViewVisibility(true)
 
