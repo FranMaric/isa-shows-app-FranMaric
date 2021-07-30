@@ -1,8 +1,13 @@
 package com.shows.franmaric.repository
 
 import android.util.Log
+import androidx.room.ColumnInfo
+import androidx.room.Embedded
+import androidx.room.PrimaryKey
 import com.shows.franmaric.database.ShowsDatabase
+import com.shows.franmaric.database.entities.ReviewEntity
 import com.shows.franmaric.database.entities.ShowEntity
+import com.shows.franmaric.database.entities.UserEntity
 import com.shows.franmaric.models.*
 import com.shows.franmaric.networking.ShowsApiService
 import kotlinx.coroutines.GlobalScope
@@ -128,14 +133,123 @@ class ShowsRepository(
         }
     }
 
-    fun getShow(showId: String): ShowResponse {
-        //TODO: implement
-        return ShowResponse(showId, 0.0, "", "", 0, "")
+    fun getShow(showId: String, hasInternetConnection: Boolean, callback: (ShowResponse) -> Unit) {
+        if (hasInternetConnection) {
+            retrofit.getShow(showId)
+                .enqueue(object : Callback<GetShowResponse> {
+                    override fun onResponse(
+                        call: Call<GetShowResponse>,
+                        response: Response<GetShowResponse>
+                    ) {
+                        if (response.body()?.show != null) {
+                            callback(response.body()?.show!!)
+                            writeShowToDB(response.body()?.show!!)
+                        } else {
+                            getShowFromDB(showId, callback)
+                        }
+                    }
+
+                    override fun onFailure(call: Call<GetShowResponse>, t: Throwable) {
+                        getShowFromDB(showId, callback)
+                    }
+                })
+        } else {
+            getShowFromDB(showId, callback)
+        }
     }
 
-    fun getReviews(): List<Review> {
-        //TODO: implement
-        return emptyList()
+    private fun writeShowToDB(show : ShowResponse) {
+        Executors.newSingleThreadExecutor().execute {
+            showsDatabase.showDao().insertShow(
+                ShowEntity(
+                    id = show.id,
+                    averageRating = show.averageRating,
+                    description = show.description,
+                    imageUrl = show.imageUrl,
+                    noOfReviews = show.noOfReviews,
+                    title = show.title
+                )
+            )
+        }
+    }
+
+    private fun getShowFromDB(showId: String, callback: (ShowResponse) -> Unit) {
+        Executors.newSingleThreadExecutor().execute {
+            val showEntity = showsDatabase.showDao().getShow(showId)
+            callback(
+                ShowResponse(
+                    id = showEntity.id,
+                    averageRating = showEntity.averageRating,
+                    description = showEntity.description,
+                    imageUrl = showEntity.imageUrl,
+                    noOfReviews = showEntity.noOfReviews,
+                    title = showEntity.title
+                )
+            )
+        }
+    }
+
+    fun getReviews(showId: String, hasInternetConnection: Boolean, callback: (List<Review>) -> Unit) {
+        if (hasInternetConnection) {
+            retrofit.getReviews(showId)
+                .enqueue(object : Callback<GetReviewsResponse> {
+                    override fun onResponse(
+                        call: Call<GetReviewsResponse>,
+                        response: Response<GetReviewsResponse>
+                    ) {
+                        if (response.body()?.reviews != null) {
+                            callback(response.body()?.reviews!!)
+                            writeReviewsToDB(response.body()?.reviews!!)
+                        } else {
+                            getReviewsFromDB(showId.toInt(), callback)
+                        }
+                    }
+
+                    override fun onFailure(call: Call<GetReviewsResponse>, t: Throwable) {
+                        getReviewsFromDB(showId.toInt(), callback)
+                    }
+                })
+        } else {
+            getReviewsFromDB(showId.toInt(), callback)
+        }
+    }
+
+    private fun getReviewsFromDB(showId: Int, callback: (List<Review>) -> Unit) {
+        Executors.newSingleThreadExecutor().execute {
+            callback(
+                showsDatabase.reviewDao().getReviews(showId).map {
+                    Review(
+                        id = it.id,
+                        comment = it.comment,
+                        rating = it.rating,
+                        showId = it.showId,
+                        user = User(
+                            id = it.user.id,
+                            email = it.user.email,
+                            imageUrl = it.user.imageUrl
+                        )
+                    )
+                }
+            )
+        }
+    }
+
+    private fun writeReviewsToDB(reviews: List<Review>) {
+        Executors.newSingleThreadExecutor().execute {
+            showsDatabase.reviewDao().insertReviews(reviews.map {
+                ReviewEntity(
+                    id = it.id,
+                    comment = it.comment,
+                    rating = it.rating,
+                    showId = it.showId,
+                    user = UserEntity(
+                        id = it.user.id,
+                        email = it.user.email,
+                        imageUrl = it.user.imageUrl
+                    )
+                )
+            })
+        }
     }
 
     fun getReview(): List<ShowResponse> {

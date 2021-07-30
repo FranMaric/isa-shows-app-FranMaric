@@ -20,6 +20,7 @@ import com.shows.franmaric.R
 import com.shows.franmaric.repository.RepositoryViewModelFactory
 import com.shows.franmaric.databinding.DialogAddReviewBinding
 import com.shows.franmaric.databinding.FragmentShowDetailsBinding
+import com.shows.franmaric.extensions.hasInternetConnection
 
 
 class ShowDetailsFragment : Fragment() {
@@ -57,7 +58,7 @@ class ShowDetailsFragment : Fragment() {
 
         initReviewInfo()
 
-        viewModel.initShow(args.showId)
+        viewModel.initShow(args.showId, requireContext().hasInternetConnection())
     }
 
     private fun initReviewInfo() {
@@ -140,7 +141,7 @@ class ShowDetailsFragment : Fragment() {
 
         viewModel.getReviewsLiveData().observe(requireActivity()) { reviews ->
             reviewsAdapter?.setItems(reviews)
-            setRecyclerViewVisibility(reviews.size != 0)
+            setRecyclerViewVisibility(reviews.isNotEmpty())
         }
 
         binding.reviewsRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)

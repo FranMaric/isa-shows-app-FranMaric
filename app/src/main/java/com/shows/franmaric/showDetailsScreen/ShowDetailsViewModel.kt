@@ -1,5 +1,6 @@
 package com.shows.franmaric.showDetailsScreen
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -53,7 +54,6 @@ class ShowDetailsViewModel(
                             reviews.add(response.body()?.review!!)
 
                             reviewsLiveData.value = reviews
-                            reviewsAverageRatingLiveData.value = calculateAverageReviewsRating()
                         }
                     }
 
@@ -69,41 +69,26 @@ class ShowDetailsViewModel(
         reviewsLiveData.value = reviews
     }
 
-    private fun calculateAverageReviewsRating(): Double {
+    fun calculateAverageReviewsRating() : Double {
         return reviews.map{it->it.rating}.average()
     }
 
-   fun initShow(showId: String){
-       ApiModule.retrofit.getShow(showId)
-           .enqueue(object : Callback<GetShowResponse> {
-               override fun onResponse(
-                   call: Call<GetShowResponse>,
-                   response: Response<GetShowResponse>
-               ) {
-                   if(response.isSuccessful) {
-                        showLiveData.value = response.body()?.show
-                   }
-               }
-               override fun onFailure(call: Call<GetShowResponse>, t: Throwable) {
-                    //TODO: update viewModel onFailure
-               }
-           })
-
-       ApiModule.retrofit.getReviews(showId)
-           .enqueue(object : Callback<GetReviewsResponse> {
-               override fun onResponse(
-                   call: Call<GetReviewsResponse>,
-                   response: Response<GetReviewsResponse>
-               ) {
-                   if(response.isSuccessful) {
-                       reviews = response.body()?.reviews?.toMutableList() ?: mutableListOf<Review>()
-                       reviewsAverageRatingLiveData.value = calculateAverageReviewsRating()
-                       reviewsLiveData.value = reviews
-                   }
-               }
-               override fun onFailure(call: Call<GetReviewsResponse>, t: Throwable) {
-                   //TODO: update viewModel onFailure
-               }
-           })
+   fun initShow(showId: String, hasInternetConnection: Boolean) {
+       getShow(showId, hasInternetConnection)
+       getReview(showId, hasInternetConnection)
    }
+
+    private fun getShow(showId: String, hasInternetConnection: Boolean) {
+        repository.getShow(showId, hasInternetConnection) {
+            showLiveData.postValue(it)
+        }
+    }
+
+    private fun getReview(showId: String, hasInternetConnection: Boolean) {
+        repository.getReviews(showId, hasInternetConnection) {
+            reviews = it.toMutableList()
+            reviewsLiveData.postValue(it)
+            reviewsAverageRatingLiveData.postValue(calculateAverageReviewsRating())
+        }
+    }
 }
