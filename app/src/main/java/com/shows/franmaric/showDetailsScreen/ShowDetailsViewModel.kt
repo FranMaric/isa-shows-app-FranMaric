@@ -37,10 +37,6 @@ class ShowDetailsViewModel(
         return reviewsLiveData
     }
 
-    fun setShow(show: ShowResponse) {
-        showLiveData.value = show
-    }
-
     fun reviewsCount(): Int {
         return reviews.size
     }
