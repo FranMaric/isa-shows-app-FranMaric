@@ -152,7 +152,7 @@ class ShowsRepository(
         }
     }
 
-    private fun writeShowToDB(show : ShowResponse) {
+    private fun writeShowToDB(show: ShowResponse) {
         Executors.newSingleThreadExecutor().execute {
             showsDatabase.showDao().insertShow(
                 ShowEntity(
@@ -183,7 +183,11 @@ class ShowsRepository(
         }
     }
 
-    fun getReviews(showId: String, hasInternetConnection: Boolean, callback: (List<Review>) -> Unit) {
+    fun getReviews(
+        showId: String,
+        hasInternetConnection: Boolean,
+        callback: (List<Review>) -> Unit
+    ) {
         if (hasInternetConnection) {
             retrofit.getReviews(showId)
                 .enqueue(object : Callback<GetReviewsResponse> {
