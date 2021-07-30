@@ -13,6 +13,9 @@ interface ShowDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertShows(shows: List<ShowEntity>)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertShow(show: ShowEntity)
+
     @Query("SELECT * FROM show WHERE id IS :showId")
     fun getShow(showId: String) : ShowEntity
 
