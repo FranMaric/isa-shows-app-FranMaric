@@ -9,7 +9,7 @@ import androidx.fragment.app.FragmentActivity
 import com.google.android.material.snackbar.Snackbar
 import com.shows.franmaric.R
 
-fun Fragment.preparePrmissionsContract(
+fun Fragment.preparePermissionsContract(
     onPermissionsGranted: () -> Unit,
     onPermissionsDenied: () -> Unit = {
         activity?.let {

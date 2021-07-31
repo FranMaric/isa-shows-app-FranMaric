@@ -27,8 +27,7 @@ import com.shows.franmaric.databinding.BottomSheetProfileBinding
 import com.shows.franmaric.databinding.FragmentShowsBinding
 import com.shows.franmaric.extensions.hasInternetConnection
 import com.shows.franmaric.utils.FileUtil
-import com.shows.franmaric.utils.preparePrmissionsContract
-
+import com.shows.franmaric.utils.preparePermissionsContract
 
 class ShowsFragment : Fragment() {
 
@@ -40,7 +39,7 @@ class ShowsFragment : Fragment() {
         RepositoryViewModelFactory((requireActivity() as MainActivity).showsRepository)
     }
 
-    private val cameraPermissionForTakingPhoto = preparePrmissionsContract(onPermissionsGranted = {
+    private val cameraPermissionForTakingPhoto = preparePermissionsContract(onPermissionsGranted = {
         takePhoto()
     })
 
