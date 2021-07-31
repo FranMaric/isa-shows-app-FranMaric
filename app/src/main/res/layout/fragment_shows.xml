@@ -8,21 +8,19 @@
     android:orientation="vertical"
     tools:context=".showsScreen.ShowsFragment">
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/profileButton"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_gravity="end"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="19dp"
-        app:cardCornerRadius="100dp">
-
-        <ImageView
-            android:id="@+id/profileButton"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_profile_placeholder" />
-    </androidx.cardview.widget.CardView>
+        android:scaleType="centerCrop"
+        tools:srcCompat="@drawable/ic_profile_placeholder"
+        app:strokeWidth="2dp"
+        app:strokeColor="@color/purple"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
+        />
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
