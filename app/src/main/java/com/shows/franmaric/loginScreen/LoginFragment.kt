@@ -64,8 +64,9 @@ class LoginFragment : Fragment() {
 
     private fun initLoginObserver() {
         viewModel.getLoginResultLiveData().observe(requireActivity()) { isLoginSuccessful ->
-            if (isLoginSuccessful) {
-                val prefs = activity?.getPreferences(Context.MODE_PRIVATE) ?: return@observe
+            val prefs = activity?.getPreferences(Context.MODE_PRIVATE)
+
+            if (isLoginSuccessful && prefs != null) {
                 with(prefs.edit()){
                     putBoolean(PREFS_REMEMBER_ME_KEY, binding.rememberMeCheckBox.isChecked)
                     apply()
@@ -74,7 +75,7 @@ class LoginFragment : Fragment() {
                 val action = LoginFragmentDirections.actionLoginToShows()
                 findNavController().navigate(action)
             } else {
-                Toast.makeText(context, "Not successful login!", Toast.LENGTH_SHORT)
+                Toast.makeText(context, getString(R.string.login_failed_please_try_again), Toast.LENGTH_SHORT)
                     .show()
             }
         }
@@ -83,7 +84,7 @@ class LoginFragment : Fragment() {
     private fun initRegisterButton() {
         if (args.afterRegister) {
             binding.registerButton.isVisible = false
-            binding.loginTextView.text = "Registration successful!"
+            binding.loginTextView.text = getString(R.string.registration_successful)
         }
         binding.registerButton.setOnClickListener {
             val action = LoginFragmentDirections.actionLoginToRegister()
@@ -150,12 +151,21 @@ class LoginFragment : Fragment() {
     }
 
     private fun login() {
+        val prefs = activity?.getPreferences(Context.MODE_PRIVATE)
+        if(prefs == null) {
+            Toast.makeText(
+                context,
+                getString(R.string.login_failed_please_try_again),
+                Toast.LENGTH_SHORT
+            ).show()
+            return
+        }
         val email = binding.emailField.text.toString()
         val password = binding.passwordField.text.toString()
         viewModel.login(
             email,
             password,
-            activity?.getPreferences(Context.MODE_PRIVATE) ?: return,
+            prefs,
             requireContext().hasInternetConnection()
         )
     }
