@@ -64,6 +64,7 @@ class RegisterFragment : Fragment() {
     }
 
     private fun initRegisterButton() {
+        setButtonEnabled(false)
         binding.registerButton.setOnClickListener {
             val email = binding.emailField.text.toString()
             val password = binding.passwordField.text.toString()
