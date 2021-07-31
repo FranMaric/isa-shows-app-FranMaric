@@ -47,8 +47,6 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        checkRememberMe()
-
         initRegisterButton()
 
         initLoginButton()
@@ -84,15 +82,6 @@ class LoginFragment : Fragment() {
         }
         binding.registerButton.setOnClickListener {
             val action = LoginFragmentDirections.actionLoginToRegister()
-            findNavController().navigate(action)
-        }
-    }
-
-    private fun checkRememberMe() {
-        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
-
-        if (sharedPref.getBoolean(PREFS_REMEMBER_ME_KEY, false)) {
-            val action = LoginFragmentDirections.actionLoginToShows()
             findNavController().navigate(action)
         }
     }
