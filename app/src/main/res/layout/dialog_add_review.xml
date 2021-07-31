@@ -46,7 +46,7 @@
         android:background="@color/white"
         android:numStars="5"
         android:stepSize="1"
-        android:progressTint="#52368C"
+        android:progressTint="@color/purple"
         android:progressBackgroundTint="#EEE"/>
 
     <Space
@@ -60,8 +60,8 @@
         android:layout_marginHorizontal="24dp"
         android:hint="@string/comment"
         app:boxStrokeColor="@color/selector_review_outlined_box"
-        android:textColorHint="#52368C"
-        app:hintTextColor="#52368C">
+        android:textColorHint="@color/purple"
+        app:hintTextColor="@color/purple">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/commentField"
@@ -82,7 +82,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
         android:layout_marginVertical="24dp"
-        android:backgroundTint="#52368C"
+        android:backgroundTint="@color/purple"
         android:text="@string/submit"
         android:textAlignment="center"
         android:textAllCaps="false"

@@ -1,6 +1,7 @@
 package com.shows.franmaric.loginScreen
 
 import android.content.Context
+import android.content.res.Resources
 import android.graphics.Color
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
@@ -135,7 +136,7 @@ class LoginFragment : Fragment() {
                         R.color.button_enabled
                     )
                 )
-                setTextColor(Color.parseColor("#52368C"))
+                setTextColor(resources.getColor(R.color.purple))
             } else {
                 setBackgroundTintList(
                     ContextCompat.getColorStateList(

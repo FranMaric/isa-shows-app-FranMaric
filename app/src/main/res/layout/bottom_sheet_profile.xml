@@ -13,7 +13,7 @@
         android:layout_gravity="center_horizontal"
         android:src="@drawable/knv1"
         app:civ_border_width="2dp"
-        app:civ_border_color="#FF52368C"/>
+        app:civ_border_color="@color/purple"/>
 
     <TextView
         android:id="@+id/mailTextView"
@@ -31,7 +31,7 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/changeProfilePhotoButton"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        app:strokeColor="#FF52368C"
+        app:strokeColor="@color/purple"
         app:strokeWidth="2dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
         android:lineSpacingExtra="28sp"
         android:text="@string/change_profile_photo"
         android:textAllCaps="false"
-        android:textColor="#FF52368C"
+        android:textColor="@color/purple"
         android:textFontWeight="700"
         android:textSize="17sp"
         app:cornerRadius="40dp"/>
@@ -54,7 +54,7 @@
         android:layout_marginHorizontal="24dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="24dp"
-        android:backgroundTint="#FF52368C"
+        android:backgroundTint="@color/purple"
         android:fontFamily="sans-serif"
         android:lineSpacingExtra="28sp"
         android:text="@string/logout"
