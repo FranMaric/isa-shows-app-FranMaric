@@ -56,7 +56,7 @@ class ShowDetailsFragment : Fragment() {
 
         initReviewRecycler()
 
-        initSubmitButton()
+        initReviewButton()
 
         initReviewInfo()
 
@@ -95,7 +95,7 @@ class ShowDetailsFragment : Fragment() {
         }
     }
 
-    private fun initSubmitButton() {
+    private fun initReviewButton() {
         binding.reviewButton.setOnClickListener {
             showBottomSheet()
         }
