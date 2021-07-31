@@ -69,6 +69,9 @@ class ShowsViewModel(
             remove(PREFS_EMAIL_KEY)
             remove(PREFS_PROFILE_PHOTO_URL)
             putBoolean(PREFS_REMEMBER_ME_KEY, false)
+            remove("access-token")
+            remove("client")
+            remove("uid")
             apply()
         }
     }
