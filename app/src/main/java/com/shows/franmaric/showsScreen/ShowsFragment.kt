@@ -88,7 +88,7 @@ class ShowsFragment : Fragment() {
     }
 
     private fun initTopRatedCheckBox() {
-        binding.topRatedCheckBox.setOnCheckedChangeListener {_, isTopRated ->
+        binding.topRatedChip.setOnCheckedChangeListener {_, isTopRated ->
             viewModel.getShows(requireContext().hasInternetConnection() ,isTopRated)
         }
     }
