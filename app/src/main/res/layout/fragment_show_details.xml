@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.ShowDetailsFragment">
+    tools:context=".showDetailsScreen.ShowDetailsFragment">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="0dp"
@@ -91,7 +91,7 @@
                     android:layout_marginHorizontal="24dp"
                     android:fontFamily="sans-serif"
                     android:lineSpacingExtra="4sp"
-                    android:text="Reviews"
+                    android:text="@string/reviews"
                     android:textColor="@color/black"
                     android:textFontWeight="700"
                     android:textSize="24sp" />
@@ -135,7 +135,7 @@
                     android:layout_marginHorizontal="24dp"
                     android:fontFamily="sans-serif"
                     android:lineSpacingExtra="3sp"
-                    android:text="No reviews yet. "
+                    android:text="@string/no_reviews_yet"
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textFontWeight="400"
@@ -166,7 +166,7 @@
             android:gravity="center"
             android:lineSpacingExtra="28sp"
             android:minHeight="45dp"
-            android:text="Write a review"
+            android:text="@string/write_a_review"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textFontWeight="700"

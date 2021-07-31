@@ -1,4 +1,23 @@
 <resources>
     <string name="app_name">Shows-Franmaric</string>
     <string name="prefs_email">email</string>
+    <string name="prefs_remember_me">remember_me</string>
+    <string name="write_a_review">Write a review</string>
+    <string name="comment">Comment</string>
+    <string name="submit">Submit</string>
+    <string name="shows">Shows</string>
+    <string name="in_order_to_continue_please_log_in">In order to continue please log in.</string>
+    <string name="mail">Mail</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="reviews">Reviews</string>
+    <string name="no_reviews_yet">No reviews yet.</string>
+    <string name="remove_shows">REMOVE SHOWS</string>
+    <string name="your_shows_are_not_showing_get_it">Your shows are not showing. Get it?</string>
+    <string name="remember_me">Remember me</string>
+    <string name="logout">Logout</string>
+    <string name="change_profile_photo">Change profile photo</string>
+    <string name='no_permission' formatted='false'>Please check your permissions in Settings.</string>
+    <string name='settings' formatted='false'>Settings</string>
+    <string name="review_info">%1$d REVIEW%2$s, %3$s AVERAGE</string>
 </resources>

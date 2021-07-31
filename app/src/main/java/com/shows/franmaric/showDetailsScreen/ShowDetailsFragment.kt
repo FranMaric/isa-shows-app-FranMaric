@@ -1,4 +1,4 @@
-package com.shows.franmaric.fragments
+package com.shows.franmaric.showDetailsScreen
 
 import android.content.Context
 import android.graphics.Color
@@ -9,13 +9,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.shows.franmaric.R
-import com.shows.franmaric.adapters.ReviewsAdapter
 import com.shows.franmaric.data.ShowsResources
 import com.shows.franmaric.databinding.DialogAddReviewBinding
 import com.shows.franmaric.databinding.FragmentShowDetailsBinding
@@ -30,6 +30,8 @@ class ShowDetailsFragment : Fragment() {
     private val binding get() = _binding!!
 
     val args: ShowDetailsFragmentArgs by navArgs()
+
+    private val viewModel: ShowDetailsViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,18 +53,40 @@ class ShowDetailsFragment : Fragment() {
         initReviewRecycler()
 
         initSubmitButton()
+
+        initReviewInfo()
+    }
+
+    private fun initReviewInfo() {
+        viewModel.getAverageReviewRatingLiveData().observe(requireActivity()) { newRating ->
+            val reviewCount = viewModel.reviewsCount()
+            binding.reviewInfoTextView.text =
+                getString(
+                    R.string.review_info,
+                    reviewCount,
+                    if (reviewCount == 1) "" else "S",
+                    String.format("%.2f", newRating)
+                )
+
+            binding.ratingBar.rating = newRating.toFloat()
+        }
     }
 
     private fun initDataContainers(show: Show) {
-        binding.collapsingToolbarLayout.title = show.name
         binding.toolbar.navigationIcon?.setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_IN)
         binding.toolbar.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
         binding.collapsingToolbarLayout.setExpandedTitleColor(Color.BLACK)
         binding.collapsingToolbarLayout.setCollapsedTitleTextColor(Color.BLACK)
-        binding.showImageView.setImageResource(show.imageResourceId)
-        binding.descriptionTextView.text = show.description
+
+        viewModel.getShowLiveData().observe(requireActivity()) { show ->
+            binding.collapsingToolbarLayout.title = show.name
+            binding.showImageView.setImageResource(show.imageResourceId)
+            binding.descriptionTextView.text = show.description
+        }
+
+        viewModel.setShow(show)
     }
 
     private fun initSubmitButton() {
@@ -87,23 +111,13 @@ class ShowDetailsFragment : Fragment() {
 
             val sharedPref =
                 activity?.getPreferences(Context.MODE_PRIVATE) ?: return@setOnClickListener
-            val author = sharedPref.getString(getString(R.string.prefs_email), "imenko.prezimenovic@infinum.com")?.split("@")?.first() ?: return@setOnClickListener
+            val author = sharedPref.getString(
+                getString(R.string.prefs_email),
+                "imenko.prezimenovic@infinum.com"
+            )?.split("@")?.first() ?: return@setOnClickListener
 
             val review = Review(rating, comment, author)
-            reviewsAdapter?.addItem(review)
-
-            var newRating = 0.0
-            reviewsAdapter?.getItems()?.forEach { review ->
-                newRating += review.rating
-            }
-
-            var reviewCount = reviewsAdapter?.getItemCount()!!
-            newRating = newRating / reviewCount
-
-            binding.reviewInfoTextView.text =
-                "${reviewCount} REVIEW${if (reviewCount == 1) "" else "S"}, ${newRating} AVERAGE"
-
-            binding.ratingBar.rating = newRating.toFloat()
+            viewModel.addReview(review)
 
             setRecyclerViewVisibility(true)
 
@@ -118,26 +132,19 @@ class ShowDetailsFragment : Fragment() {
         if (binding.reviewsRecyclerView.isVisible == visible)
             return
 
-        if (visible) {
-            binding.reviewsRecyclerView.isVisible = true
-            binding.reviewInfoTextView.isVisible = true
-            binding.ratingBar.isVisible = true
-            binding.emptyStateLabel.isVisible = false
-        } else {
-            binding.reviewsRecyclerView.isVisible = false
-            binding.reviewInfoTextView.isVisible = false
-            binding.ratingBar.isVisible = false
-            binding.emptyStateLabel.isVisible = true
-        }
+        binding.reviewsRecyclerView.isVisible = visible
+        binding.reviewInfoTextView.isVisible = visible
+        binding.ratingBar.isVisible = visible
+        binding.emptyStateLabel.isVisible = !visible
     }
 
     private fun initReviewRecycler() {
         reviewsAdapter = ReviewsAdapter(emptyList())
 
-        if (reviewsAdapter?.getItemCount() == 0) {
-            setRecyclerViewVisibility(false)
-        } else {
-            setRecyclerViewVisibility(true)
+        setRecyclerViewVisibility(reviewsAdapter?.getItemCount() != 0)
+
+        viewModel.getReviewsLiveData().observe(requireActivity()) { reviews ->
+            reviewsAdapter?.setItems(reviews)
         }
 
         binding.reviewsRecyclerView.layoutManager = LinearLayoutManager(context)

@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.shows.franmaric.fragments.LoginFragment"
+        android:name="com.shows.franmaric.loginScreen.LoginFragment"
         tools:layout="@layout/fragment_login">
 
         <action
@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/showsFragment"
-        android:name="com.shows.franmaric.fragments.ShowsFragment"
+        android:name="com.shows.franmaric.showsScreen.ShowsFragment"
         tools:layout="@layout/fragment_shows">
 
         <action
@@ -33,7 +33,7 @@
 
     <fragment
         android:id="@+id/showDetailsFragment"
-        android:name="com.shows.franmaric.fragments.ShowDetailsFragment"
+        android:name="com.shows.franmaric.showDetailsScreen.ShowDetailsFragment"
         tools:layout="@layout/fragment_show_details">
 
         <argument
