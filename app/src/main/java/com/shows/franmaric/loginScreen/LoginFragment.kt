@@ -35,6 +35,8 @@ class LoginFragment : Fragment() {
         RepositoryViewModelFactory((requireActivity() as MainActivity).showsRepository)
     }
 
+    private var isFirstLogin = true
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -71,6 +73,7 @@ class LoginFragment : Fragment() {
             } else {
                 Toast.makeText(context, getString(R.string.login_failed_please_try_again), Toast.LENGTH_SHORT)
                     .show()
+                isFirstLogin = true
             }
         }
     }
@@ -89,7 +92,10 @@ class LoginFragment : Fragment() {
     private fun initLoginButton() {
         binding.loginButton.setEnabled(false)
         binding.loginButton.setOnClickListener {
-            login()
+            if(isFirstLogin) {
+                isFirstLogin = false
+                login()
+            }
         }
     }
 
@@ -143,6 +149,7 @@ class LoginFragment : Fragment() {
                 getString(R.string.login_failed_please_try_again),
                 Toast.LENGTH_SHORT
             ).show()
+            isFirstLogin = true
             return
         }
         val email = binding.emailField.text.toString()
