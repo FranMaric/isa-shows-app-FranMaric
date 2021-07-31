@@ -59,8 +59,11 @@ class ShowsFragment : Fragment() {
                         activity?.applicationContext?.packageName.toString() + ".fileprovider",
                         file
                     )
-                    viewModel.uploadProfilePhoto(file.toString(),
-                        activity?.getPreferences(Context.MODE_PRIVATE) ?: return@registerForActivityResult) { photoUrl ->
+                    viewModel.uploadProfilePhoto(
+                        file.toString(),
+                        avatarUri.toString(),
+                        activity?.getPreferences(Context.MODE_PRIVATE) ?: return@registerForActivityResult,
+                        requireContext().hasInternetConnection()) {
                         updateProfileAndBottomSheetPhoto()
                     }
                 }
@@ -85,6 +88,25 @@ class ShowsFragment : Fragment() {
         initProfileButton()
 
         initTopRatedCheckBox()
+
+        checkForOfflinePhotoToUpload()
+    }
+
+    private fun checkForOfflinePhotoToUpload() {
+        val file = FileUtil.getImageFile(requireContext())
+
+        if (file != null) {
+            val avatarUri = FileProvider.getUriForFile(
+                requireContext(),
+                activity?.applicationContext?.packageName.toString() + ".fileprovider",
+                file
+            )
+            viewModel.checkForOfflinePhotoToUpload(
+                file.toString(),
+                avatarUri.toString(),
+                activity?.getPreferences(Context.MODE_PRIVATE) ?: return,
+                requireContext().hasInternetConnection())
+        }
     }
 
     private fun initTopRatedCheckBox() {

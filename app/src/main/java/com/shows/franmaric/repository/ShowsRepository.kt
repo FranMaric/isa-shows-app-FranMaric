@@ -1,14 +1,21 @@
 package com.shows.franmaric.repository
 
+import android.content.SharedPreferences
+import androidx.core.content.FileProvider
+import com.shows.franmaric.PREFS_PROFILE_PHOTO_URL
 import com.shows.franmaric.database.ShowsDatabase
 import com.shows.franmaric.database.entities.ReviewEntity
 import com.shows.franmaric.database.entities.ShowEntity
 import com.shows.franmaric.database.entities.UserEntity
 import com.shows.franmaric.models.*
 import com.shows.franmaric.networking.ShowsApiService
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
 import java.util.concurrent.Executors
 
 class ShowsRepository(
@@ -364,7 +371,43 @@ class ShowsRepository(
         }
     }
 
-    fun uploadProfilePhoto() {
-        //TODO: implement
+    fun uploadProfilePhoto(imageUri: String, avatarUri: String, prefs: SharedPreferences, hasInternetConnection: Boolean, updateCallback: () -> Unit) {
+        if(hasInternetConnection) {
+            val file = File(imageUri)
+            val requestFile = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+            val profilePic = MultipartBody.Part.createFormData("image", file.name, requestFile)
+
+            retrofit.uploadProfilePhoto(profilePic)
+                .enqueue(object : Callback<ProfilePhotoResponse> {
+                    override fun onResponse(
+                        call: Call<ProfilePhotoResponse>,
+                        response: Response<ProfilePhotoResponse>
+                    ) {
+                        if (response.isSuccessful) {
+                            val photoUrl = response.body()?.user?.imageUrl.toString()
+                            with(prefs.edit()) {
+                                putString(PREFS_PROFILE_PHOTO_URL, photoUrl)
+                                commit()  // commit is better here then apply because we must ensure that url is written to prefs which is used by function that setts profileImage in layout
+                            }
+                            updateCallback()
+                        } else {
+                            writeOfflineProfilePhotoURLtoPrefs(avatarUri, prefs, updateCallback)
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ProfilePhotoResponse>, t: Throwable) =
+                        writeOfflineProfilePhotoURLtoPrefs(avatarUri, prefs, updateCallback)
+                })
+        } else {
+            writeOfflineProfilePhotoURLtoPrefs(avatarUri, prefs, updateCallback)
+        }
+    }
+
+    private fun writeOfflineProfilePhotoURLtoPrefs(avatarUri: String, prefs: SharedPreferences, updateCallback: () -> Unit) {
+        with(prefs.edit()) {
+            putString(PREFS_PROFILE_PHOTO_URL, avatarUri)
+            commit()
+        }
+        updateCallback()
     }
 }
