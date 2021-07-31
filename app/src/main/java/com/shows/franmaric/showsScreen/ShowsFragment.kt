@@ -22,6 +22,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.shows.franmaric.MainActivity
 import com.shows.franmaric.PREFS_EMAIL_KEY
 import com.shows.franmaric.PREFS_PROFILE_PHOTO_URL
+import com.shows.franmaric.R
 import com.shows.franmaric.repository.RepositoryViewModelFactory
 import com.shows.franmaric.databinding.BottomSheetProfileBinding
 import com.shows.franmaric.databinding.FragmentShowsBinding
@@ -172,14 +173,14 @@ class ShowsFragment : Fragment() {
     private fun showAlertDialog(onPositiveCallback: () -> Unit) {
         val alertDialog = AlertDialog.Builder(requireContext())
 
-        alertDialog.setTitle("LOGOUT")
-        alertDialog.setMessage("Are you sure you want to logout?")
+        alertDialog.setTitle(getString(R.string.logout))
+        alertDialog.setMessage(getString(R.string.are_you_sure_you_want_to_logout))
 
-        alertDialog.setPositiveButton("LOGOUT", { _, _ ->
+        alertDialog.setPositiveButton(getString(R.string.logout), { _, _ ->
             onPositiveCallback()
         })
 
-        alertDialog.setNegativeButton("BACK", { _, _ ->
+        alertDialog.setNegativeButton(getString(R.string.back), { _, _ ->
 
         })
 
