@@ -1,10 +1,7 @@
 package com.shows.franmaric.loginScreen
 
 import android.content.Context
-import android.content.res.Resources
 import android.graphics.Color
-import android.net.ConnectivityManager
-import android.net.NetworkInfo
 import android.os.Bundle
 import android.util.Patterns
 import android.view.LayoutInflater
@@ -24,7 +21,6 @@ import com.shows.franmaric.R
 import com.shows.franmaric.databinding.FragmentLoginBinding
 import com.shows.franmaric.extensions.hasInternetConnection
 import com.shows.franmaric.repository.RepositoryViewModelFactory
-import com.shows.franmaric.showsScreen.ShowsViewModel
 
 const val MIN_PASSWORD_LENGTH = 6
 
