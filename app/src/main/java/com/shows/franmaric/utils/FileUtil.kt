@@ -57,7 +57,7 @@ object FileUtil {
             ExifInterface.TAG_ORIENTATION,
             ExifInterface.ORIENTATION_UNDEFINED
         )
-        val bitmap = BitmapFactory.decodeFile(file.path)
+        val bitmap = BitmapFactory.decodeFile(file.path.toString())
         return when (orientation) {
             ExifInterface.ORIENTATION_ROTATE_90 -> rotateImage(bitmap, 90)
             ExifInterface.ORIENTATION_ROTATE_180 -> rotateImage(bitmap, 180)
