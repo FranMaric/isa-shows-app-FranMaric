@@ -19,10 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.shows.franmaric.MainActivity
-import com.shows.franmaric.PREFS_EMAIL_KEY
-import com.shows.franmaric.PREFS_PROFILE_PHOTO_URL
-import com.shows.franmaric.R
+import com.shows.franmaric.*
 import com.shows.franmaric.repository.RepositoryViewModelFactory
 import com.shows.franmaric.databinding.BottomSheetProfileBinding
 import com.shows.franmaric.databinding.FragmentShowsBinding
@@ -92,6 +89,24 @@ class ShowsFragment : Fragment() {
         checkForOfflinePhotoToUpload()
     }
 
+    private fun setState(state: State) {
+        binding.showsRecyclerView.isVisible = false
+        binding.emptyStateLabel.isVisible = false
+        binding.loadingIndicator.isVisible = false
+
+        when(state) {
+            State.EMPTY -> {
+                binding.emptyStateLabel.isVisible = true
+            }
+            State.DATA -> {
+                binding.showsRecyclerView.isVisible = true
+            }
+            State.LOADING -> {
+                binding.loadingIndicator.isVisible = true
+            }
+        }
+    }
+
     private fun checkForOfflinePhotoToUpload() {
         val file = FileUtil.getImageFile(requireContext())
 
@@ -110,6 +125,7 @@ class ShowsFragment : Fragment() {
     }
 
     private fun initTopRatedCheckBox() {
+        setState(State.LOADING)
         binding.topRatedChip.setOnCheckedChangeListener {_, isTopRated ->
             viewModel.getShows(requireContext().hasInternetConnection() ,isTopRated)
         }
@@ -220,11 +236,13 @@ class ShowsFragment : Fragment() {
         viewModel.getShowsLiveData().observe(requireActivity()) { shows ->
             showsAdapter?.setItems(shows)
 
-            val visible = showsAdapter?.getItemCount() != 0
-            binding.showsRecyclerView.isVisible = visible
-            binding.emptyStateLabel.isVisible = !visible
+            if(showsAdapter?.getItemCount() != 0)
+                setState(State.DATA)
+            else
+                setState(State.EMPTY)
         }
 
+        setState(State.LOADING)
         viewModel.getShows(requireContext().hasInternetConnection(), isTopRated = false)
 
         binding.showsRecyclerView.layoutManager =

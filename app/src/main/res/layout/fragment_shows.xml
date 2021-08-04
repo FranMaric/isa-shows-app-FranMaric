@@ -72,6 +72,16 @@
         tools:listitem="@layout/view_show_item"
         tools:visibility="gone" />
 
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/loadingIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:indicatorSize="32dp"
+        app:indicatorColor="@color/purple"
+        android:visibility="gone"
+        android:indeterminate="true"
+        android:gravity="center" />
+
     <LinearLayout
         android:id="@+id/emptyStateLabel"
         android:layout_width="match_parent"
