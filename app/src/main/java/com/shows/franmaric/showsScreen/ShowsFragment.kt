@@ -248,13 +248,6 @@ class ShowsFragment : Fragment() {
         binding.showsRecyclerView.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.showsRecyclerView.adapter = showsAdapter
-
-        binding.showsRecyclerView.addItemDecoration(
-            DividerItemDecoration(
-                context,
-                DividerItemDecoration.VERTICAL
-            )
-        )
     }
 
     override fun onDestroyView() {
