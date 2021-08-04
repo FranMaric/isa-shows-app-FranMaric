@@ -64,7 +64,7 @@ class RegisterFragment : Fragment() {
     }
 
     private fun initRegisterButton() {
-        setButtonEnabled(false)
+        binding.registerButton.isEnabled = false
         binding.registerButton.setOnClickListener {
             val email = binding.emailField.text.toString()
             val password = binding.passwordField.text.toString()
@@ -79,50 +79,27 @@ class RegisterFragment : Fragment() {
             val password = binding.passwordField.text.toString()
             val passwordConfirmation = binding.passwordConfirmationField.text.toString()
             if (isValidInput(email.toString(), password, passwordConfirmation)) {
-                setButtonEnabled(true)
+                binding.registerButton.isEnabled = true
             } else if (binding.registerButton.isEnabled) {
-                setButtonEnabled(false)
+                binding.registerButton.isEnabled = false
             }
         }
         binding.passwordField.doAfterTextChanged { password ->
             val email = binding.emailField.text.toString()
             val passwordConfirmation = binding.passwordConfirmationField.text.toString()
             if (isValidInput(email, password.toString(), passwordConfirmation)) {
-                setButtonEnabled(true)
+                binding.registerButton.isEnabled = true
             } else if (binding.registerButton.isEnabled) {
-                setButtonEnabled(false)
+                binding.registerButton.isEnabled = false
             }
         }
         binding.passwordConfirmationField.doAfterTextChanged { passwordConfirmation ->
             val email = binding.emailField.text.toString()
             val password = binding.passwordField.text.toString()
             if (isValidInput(email, password, passwordConfirmation.toString())) {
-                setButtonEnabled(true)
+                binding.registerButton.isEnabled = true
             } else if (binding.registerButton.isEnabled) {
-                setButtonEnabled(false)
-            }
-        }
-    }
-
-    private fun setButtonEnabled(enabled: Boolean) {
-        binding.registerButton.apply {
-            setEnabled(enabled)
-            if (enabled) {
-                setBackgroundTintList(
-                    ContextCompat.getColorStateList(
-                        requireContext(),
-                        R.color.button_enabled
-                    )
-                )
-                setTextColor(Color.parseColor("#52368C"))
-            } else {
-                setBackgroundTintList(
-                    ContextCompat.getColorStateList(
-                        requireContext(),
-                        R.color.button_disabled
-                    )
-                )
-                setTextColor(Color.WHITE)
+                binding.registerButton.isEnabled = false
             }
         }
     }
