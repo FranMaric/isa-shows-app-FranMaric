@@ -1,5 +1,6 @@
 package com.shows.franmaric.showDetailsScreen
 
+import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.PorterDuff
@@ -114,6 +115,19 @@ class ShowDetailsFragment : Fragment() {
         bottomSheetBinding.submitButton.setOnClickListener {
             val rating = bottomSheetBinding.ratingBar.rating.toInt()
             val comment = bottomSheetBinding.commentField.text.toString()
+
+            if(rating == 0) {
+                val alertDialog = AlertDialog.Builder(requireContext())
+
+                alertDialog.setTitle(getString(R.string.rating_invalid))
+                alertDialog.setMessage(getString(R.string.rating_must_not_be_zero))
+
+                alertDialog.setPositiveButton(getString(R.string.ok), { _, _ ->
+
+                })
+                alertDialog.show()
+                return@setOnClickListener
+            }
 
             val prefs = activity?.getPreferences(Context.MODE_PRIVATE) ?: return@setOnClickListener
 
