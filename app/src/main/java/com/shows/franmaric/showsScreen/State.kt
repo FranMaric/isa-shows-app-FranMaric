@@ -1,4 +1,4 @@
-package com.shows.franmaric
+package com.shows.franmaric.showsScreen
 
 enum class State {
     EMPTY,
