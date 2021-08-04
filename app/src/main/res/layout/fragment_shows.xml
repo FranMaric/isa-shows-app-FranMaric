@@ -65,50 +65,63 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/showsRecyclerView"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:listitem="@layout/view_show_item"
-        tools:visibility="gone" />
+        android:layout_height="match_parent">
 
-    <com.google.android.material.progressindicator.CircularProgressIndicator
-        android:id="@+id/loadingIndicator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:indicatorSize="32dp"
-        app:indicatorColor="@color/purple"
-        android:visibility="gone"
-        android:indeterminate="true"
-        android:gravity="center" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/showsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/view_show_item"
+            tools:visibility="gone" />
 
-    <LinearLayout
-        android:id="@+id/emptyStateLabel"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <ImageView
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/loadingIndicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_empty_state" />
+            app:indicatorSize="32dp"
+            app:indicatorColor="@color/purple"
+            android:visibility="gone"
+            android:indeterminate="true"
+            android:gravity="center" />
 
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="26dp" />
+        <LinearLayout
+            android:id="@+id/emptyStateLabel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
 
-        <TextView
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_empty_state" />
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="26dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:lineSpacingExtra="3sp"
+                android:text="@string/your_shows_are_not_showing_get_it"
+                android:textColor="#808080"
+                android:textFontWeight="400"
+                android:textSize="17sp" />
+
+        </LinearLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatingActionButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:lineSpacingExtra="3sp"
-            android:text="@string/your_shows_are_not_showing_get_it"
-            android:textColor="#808080"
-            android:textFontWeight="400"
-            android:textSize="17sp" />
-
-    </LinearLayout>
+            android:layout_gravity="bottom|right"
+            android:backgroundTint="@color/purple"
+            android:layout_margin="16dp"/>
+</FrameLayout>
 
 </LinearLayout>
 

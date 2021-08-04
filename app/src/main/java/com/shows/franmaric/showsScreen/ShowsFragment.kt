@@ -14,6 +14,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -25,6 +26,8 @@ import com.shows.franmaric.databinding.FragmentShowsBinding
 import com.shows.franmaric.extensions.hasInternetConnection
 import com.shows.franmaric.utils.FileUtil
 import com.shows.franmaric.utils.preparePermissionsContract
+
+private const val SPAN_COUNT = 2
 
 class ShowsFragment : Fragment() {
 
@@ -66,6 +69,8 @@ class ShowsFragment : Fragment() {
             }
         }
 
+    private var isLinear = true
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -86,6 +91,20 @@ class ShowsFragment : Fragment() {
         initTopRatedCheckBox()
 
         checkForOfflinePhotoToUpload()
+
+        initFAB()
+    }
+
+    private fun initFAB() {
+        binding.floatingActionButton.setOnClickListener {
+            isLinear = !isLinear
+            setLayoutManager(isLinear)
+        }
+    }
+    private fun setLayoutManager(isLinear: Boolean) {
+        binding.showsRecyclerView.layoutManager =
+            if(isLinear) LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            else GridLayoutManager(context, SPAN_COUNT)
     }
 
     private fun setState(state: State) {
@@ -225,7 +244,7 @@ class ShowsFragment : Fragment() {
     }
 
     private fun initShowsRecycler() {
-        showsAdapter = ShowsAdapter(emptyList(), requireContext()) { show ->
+        showsAdapter = ShowsAdapter(emptyList()) { show ->
             val action = ShowsFragmentDirections.actionShowsToShowDetails(
                 show.id
             )
@@ -244,8 +263,7 @@ class ShowsFragment : Fragment() {
         setState(State.LOADING)
         viewModel.getShows(requireContext().hasInternetConnection(), isTopRated = false)
 
-        binding.showsRecyclerView.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        setLayoutManager(isLinear = true)
         binding.showsRecyclerView.adapter = showsAdapter
     }
 
