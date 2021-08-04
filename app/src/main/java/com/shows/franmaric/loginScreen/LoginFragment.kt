@@ -1,14 +1,12 @@
 package com.shows.franmaric.loginScreen
 
 import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
@@ -73,6 +71,7 @@ class LoginFragment : Fragment() {
             } else {
                 Toast.makeText(context, getString(R.string.login_failed_please_try_again), Toast.LENGTH_SHORT)
                     .show()
+                setLoading(false)
                 isFirstLogin = true
             }
         }
@@ -90,7 +89,7 @@ class LoginFragment : Fragment() {
     }
 
     private fun initLoginButton() {
-        binding.loginButton.setEnabled(false)
+        binding.loginButton.isEnabled = true
         binding.loginButton.setOnClickListener {
             if(isFirstLogin) {
                 isFirstLogin = false
@@ -103,45 +102,29 @@ class LoginFragment : Fragment() {
         binding.emailField.doAfterTextChanged { email ->
             val password = binding.passwordField.text.toString()
             if (isValidInput(email.toString(), password)) {
-                setButtonEnabled(true)
+                binding.loginButton.isEnabled = true
             } else if (binding.loginButton.isEnabled) {
-                setButtonEnabled(false)
+                binding.loginButton.isEnabled = false
             }
         }
         binding.passwordField.doAfterTextChanged { password ->
             val email = binding.emailField.text.toString()
             if (isValidInput(email, password.toString())) {
-                setButtonEnabled(true)
+                binding.loginButton.isEnabled = true
             } else if (binding.loginButton.isEnabled) {
-                setButtonEnabled(false)
+                binding.loginButton.isEnabled = false
             }
         }
     }
 
-    private fun setButtonEnabled(enabled: Boolean) {
-        binding.loginButton.apply {
-            setEnabled(enabled)
-            if (enabled) {
-                setBackgroundTintList(
-                    ContextCompat.getColorStateList(
-                        requireContext(),
-                        R.color.button_enabled
-                    )
-                )
-                setTextColor(resources.getColor(R.color.purple))
-            } else {
-                setBackgroundTintList(
-                    ContextCompat.getColorStateList(
-                        requireContext(),
-                        R.color.button_disabled
-                    )
-                )
-                setTextColor(Color.WHITE)
-            }
-        }
+    private fun setLoading(isLoading: Boolean) {
+        binding.loginButton.text = if(isLoading) "" else getString(R.string.login)
+        binding.loadingIndicator.isVisible = isLoading
+        binding.loginButton.isEnabled = !isLoading      // this line shouldn't be here but for some reason loadingIndicator is not visible if loginButton is enabled
     }
 
     private fun login() {
+        setLoading(true)
         val prefs = activity?.getPreferences(Context.MODE_PRIVATE)
         if(prefs == null) {
             Toast.makeText(
@@ -150,6 +133,7 @@ class LoginFragment : Fragment() {
                 Toast.LENGTH_SHORT
             ).show()
             isFirstLogin = true
+            setLoading(false)
             return
         }
         val email = binding.emailField.text.toString()
