@@ -13,7 +13,6 @@
         android:layout_marginTop="40dp"
         android:layout_gravity="center_horizontal"
         android:scaleType="centerCrop"
-        tools:srcCompat="@drawable/knv1"
         android:backgroundTint="@color/white"
         app:strokeWidth="2dp"
         app:strokeColor="@color/purple"

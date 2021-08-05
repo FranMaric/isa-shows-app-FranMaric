@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="true"
-        app:rippleColor="#cfd8dc"
+        app:rippleColor="@color/ripple_color"
         app:cardBackgroundColor="@color/white"
         android:layout_margin="8dp">
 
@@ -24,7 +24,6 @@
                 android:id="@+id/showImage"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                tools:srcCompat="@drawable/knv4"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"/>
 
@@ -39,7 +38,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     tools:text="Krv nije voda ep1"
-                    android:textColor="#DE000000"
+                    android:textColor="@color/black"
                     android:textFontWeight="500"
                     android:textSize="24sp"
                     android:lineSpacingExtra="4sp"
@@ -51,7 +50,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     tools:text="Ovo je legendarna hrvatska serija."
-                    android:textColor="#99000000"
+                    android:textColor="@color/grey9"
                     android:textFontWeight="400"
                     android:textSize="16sp"
                     android:lineSpacingExtra="6sp"

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#3D1D72"
+    android:background="@color/background_purple"
     tools:context=".loginScreen.LoginFragment">
 
     <ImageView
@@ -178,7 +178,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
         android:layout_marginBottom="32dp"
-        android:backgroundTint="#3D1D72"
+        android:backgroundTint="@color/background_purple"
         android:fontFamily="sans-serif"
         android:lineSpacingExtra="24sp"
         android:text="@string/register"

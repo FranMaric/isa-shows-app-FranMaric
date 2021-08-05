@@ -47,7 +47,7 @@
         android:numStars="5"
         android:stepSize="1"
         android:progressTint="@color/purple"
-        android:progressBackgroundTint="#EEE"/>
+        android:progressBackgroundTint="@color/grey"/>
 
     <Space
         android:layout_width="wrap_content"
