@@ -105,6 +105,8 @@ class ShowsFragment : Fragment() {
 
             if(hasInternetConnection)
                 viewModel.getShows(hasInternetConnection, binding.topRatedChip.isChecked)
+            else
+                setState(State.DATA)
 
             binding.swipeRefresh.isRefreshing = false
         }
