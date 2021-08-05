@@ -186,7 +186,9 @@ class ShowsFragment : Fragment() {
 
         bottomSheetBinding!!.logoutButton.setOnClickListener {
             showAlertDialog {
-                viewModel.logout(activity?.getPreferences(Context.MODE_PRIVATE) ?: return@showAlertDialog)
+                viewModel.logout(
+                    activity?.getPreferences(Context.MODE_PRIVATE) ?: return@showAlertDialog,
+                    FileUtil.getImageFile(requireContext()))
 
                 val action = ShowsFragmentDirections.actionShowsToLogin()
                 findNavController().navigate(action)

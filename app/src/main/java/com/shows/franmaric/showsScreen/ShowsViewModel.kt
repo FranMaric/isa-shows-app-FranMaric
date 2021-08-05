@@ -9,6 +9,7 @@ import com.shows.franmaric.PREFS_REMEMBER_ME_KEY
 import com.shows.franmaric.models.*
 import com.shows.franmaric.networking.ApiModule
 import com.shows.franmaric.repository.ShowsRepository
+import com.shows.franmaric.utils.FileUtil
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -64,7 +65,8 @@ class ShowsViewModel(
        }
     }
 
-    fun logout(prefs: SharedPreferences) {
+    fun logout(prefs: SharedPreferences, imageFile: File?) {
+        imageFile?.delete()
         with(prefs.edit()) {
             remove(PREFS_EMAIL_KEY)
             remove(PREFS_PROFILE_PHOTO_URL)
