@@ -84,7 +84,7 @@
             app:indicatorColor="@color/purple"
             android:visibility="gone"
             android:indeterminate="true"
-            android:gravity="center" />
+            android:layout_gravity="center" />
 
         <LinearLayout
             android:id="@+id/emptyStateLabel"
