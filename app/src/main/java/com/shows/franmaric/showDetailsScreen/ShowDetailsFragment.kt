@@ -61,7 +61,18 @@ class ShowDetailsFragment : Fragment() {
 
         initReviewInfo()
 
+        initSwipeRefresh()
+
         viewModel.initShow(args.showId, requireContext().hasInternetConnection())
+    }
+
+    private fun initSwipeRefresh() {
+        binding.swipeRefresh.setOnRefreshListener {
+            val hasInternetConnection = requireContext().hasInternetConnection()
+            if(hasInternetConnection)
+                viewModel.initShow(args.showId, hasInternetConnection)
+            binding.swipeRefresh.isRefreshing = false
+        }
     }
 
     private fun initReviewInfo() {

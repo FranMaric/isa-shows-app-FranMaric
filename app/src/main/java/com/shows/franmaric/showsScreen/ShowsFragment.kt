@@ -93,6 +93,21 @@ class ShowsFragment : Fragment() {
         checkForOfflinePhotoToUpload()
 
         initFAB()
+
+        initSwipeRefresh()
+    }
+
+    private fun initSwipeRefresh() {
+        binding.swipeRefresh.setOnRefreshListener {
+            setState(State.LOADING)
+            val hasInternetConnection = requireContext().hasInternetConnection()
+            binding.offlineModeTextView.isVisible = !hasInternetConnection
+
+            if(hasInternetConnection)
+                viewModel.getShows(hasInternetConnection, binding.topRatedChip.isChecked)
+
+            binding.swipeRefresh.isRefreshing = false
+        }
     }
 
     private fun initFAB() {
