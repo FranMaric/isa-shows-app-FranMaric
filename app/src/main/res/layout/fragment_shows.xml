@@ -118,8 +118,9 @@
             android:id="@+id/floatingActionButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
+            android:layout_gravity="bottom|end"
             android:backgroundTint="@color/purple"
+            android:src="@drawable/ic_grid"
             android:layout_margin="16dp"/>
 </FrameLayout>
 
