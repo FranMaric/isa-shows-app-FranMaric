@@ -105,6 +105,8 @@ class ShowsFragment : Fragment() {
 
             if(hasInternetConnection)
                 viewModel.getShows(hasInternetConnection, binding.topRatedChip.isChecked)
+            else if (binding.topRatedChip.isChecked)
+                setState(State.EMPTY)
             else
                 setState(State.DATA)
 
