@@ -10,7 +10,7 @@
         android:id="@+id/profileImageView"
         android:layout_width="96dp"
         android:layout_height="96dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="40dp"
         android:layout_gravity="center_horizontal"
         android:scaleType="centerCrop"
         tools:srcCompat="@drawable/knv1"
@@ -25,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="29dp"
+        android:layout_marginTop="32dp"
         android:textAlignment="center"
         tools:text="imenko.prezimenovic@vrucimail.com"
         android:fontFamily="sans-serif"
@@ -44,12 +44,12 @@
         android:layout_marginTop="56dp"
         android:backgroundTint="@color/white"
         android:fontFamily="sans-serif"
-        android:lineSpacingExtra="28sp"
+        android:lineSpacingExtra="24sp"
         android:text="@string/change_profile_photo"
         android:textAllCaps="false"
         android:textColor="@color/purple"
         android:textFontWeight="700"
-        android:textSize="17sp"
+        android:textSize="16sp"
         app:cornerRadius="40dp"/>
 
     <com.google.android.material.button.MaterialButton
@@ -61,11 +61,11 @@
         android:layout_marginBottom="24dp"
         android:backgroundTint="@color/purple"
         android:fontFamily="sans-serif"
-        android:lineSpacingExtra="28sp"
+        android:lineSpacingExtra="24sp"
         android:text="@string/logout"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textFontWeight="700"
-        android:textSize="17sp"
+        android:textSize="16sp"
         app:cornerRadius="40dp"/>
 </LinearLayout>

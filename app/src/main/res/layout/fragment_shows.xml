@@ -14,7 +14,7 @@
         android:layout_height="24dp"
         android:layout_gravity="end"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="19dp"
+        android:layout_marginEnd="16dp"
         android:scaleType="centerCrop"
         tools:srcCompat="@drawable/ic_profile_placeholder"
         app:strokeWidth="2dp"
@@ -27,7 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:minHeight="115dp">
+        android:minHeight="112dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -41,7 +41,7 @@
                 android:lineSpacingExtra="3sp"
                 android:textColor="@color/black"
                 android:textFontWeight="700"
-                android:textSize="36sp" />
+                android:textSize="40sp" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/topRatedChip"
@@ -100,7 +100,7 @@
 
             <Space
                 android:layout_width="wrap_content"
-                android:layout_height="26dp" />
+                android:layout_height="24dp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -110,7 +110,7 @@
                 android:text="@string/your_shows_are_not_showing_get_it"
                 android:textColor="#808080"
                 android:textFontWeight="400"
-                android:textSize="17sp" />
+                android:textSize="16sp" />
 
         </LinearLayout>
 
