@@ -147,7 +147,9 @@ class ShowsFragment : Fragment() {
     private fun initTopRatedChip() {
         binding.topRatedChip.setOnCheckedChangeListener {_, isTopRated ->
             setState(State.LOADING)
-            viewModel.getShows(requireContext().hasInternetConnection() ,isTopRated)
+            val hasInternetConnection = requireContext().hasInternetConnection()
+            binding.offlineModeTextView.isVisible = !hasInternetConnection
+            viewModel.getShows(hasInternetConnection, isTopRated)
         }
     }
 
@@ -263,7 +265,9 @@ class ShowsFragment : Fragment() {
         }
 
         setState(State.LOADING)
-        viewModel.getShows(requireContext().hasInternetConnection(), isTopRated = false)
+        val hasInternetConnection = requireContext().hasInternetConnection()
+        binding.offlineModeTextView.isVisible = !hasInternetConnection
+        viewModel.getShows(hasInternetConnection, isTopRated = false)
 
         setLayoutManager(isLinear = true)
         binding.showsRecyclerView.adapter = showsAdapter

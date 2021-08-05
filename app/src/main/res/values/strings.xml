@@ -29,5 +29,6 @@
     <string name="rating_invalid">Rating invalid!</string>
     <string name="rating_must_not_be_zero">Rating must not be zero!</string>
     <string name="ok">Ok</string>
+    <string name="offline_mode">· Offline mode</string>
 
 </resources>
