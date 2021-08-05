@@ -88,7 +88,7 @@ class ShowsFragment : Fragment() {
 
         initProfileButton()
 
-        initTopRatedCheckBox()
+        initTopRatedChip()
 
         checkForOfflinePhotoToUpload()
 
@@ -142,9 +142,9 @@ class ShowsFragment : Fragment() {
         }
     }
 
-    private fun initTopRatedCheckBox() {
-        setState(State.LOADING)
+    private fun initTopRatedChip() {
         binding.topRatedChip.setOnCheckedChangeListener {_, isTopRated ->
+            setState(State.LOADING)
             viewModel.getShows(requireContext().hasInternetConnection() ,isTopRated)
         }
     }
