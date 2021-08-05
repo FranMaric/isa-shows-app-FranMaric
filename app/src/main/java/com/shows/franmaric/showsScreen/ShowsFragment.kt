@@ -105,6 +105,8 @@ class ShowsFragment : Fragment() {
         binding.showsRecyclerView.layoutManager =
             if(isLinear) LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             else GridLayoutManager(context, SPAN_COUNT)
+
+        binding.floatingActionButton.setImageResource(if(isLinear) R.drawable.ic_grid else R.drawable.ic_list)
     }
 
     private fun setState(state: State) {
