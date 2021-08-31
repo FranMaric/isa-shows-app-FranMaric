@@ -14,7 +14,7 @@
         android:layout_height="24dp"
         android:layout_gravity="end"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="19dp"
+        android:layout_marginEnd="16dp"
         android:scaleType="centerCrop"
         tools:srcCompat="@drawable/ic_profile_placeholder"
         app:strokeWidth="2dp"
@@ -27,27 +27,39 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:minHeight="115dp">
+        android:minHeight="112dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <TextView
+                android:id="@+id/showsTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:text="@string/shows"
                 android:fontFamily="sans-serif"
-                android:lineSpacingExtra="3sp"
                 android:textColor="@color/black"
                 android:textFontWeight="700"
-                android:textSize="36sp" />
+                android:textSize="40sp" />
+
+            <TextView
+                android:id="@+id/offlineModeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="8dp"
+                android:visibility="gone"
+                android:layout_toEndOf="@id/showsTextView"
+                android:text="@string/offline_mode"/>
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/topRatedChip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
                 android:layout_marginEnd="24dp"
                 app:iconStartPadding="8dp"
                 android:text="@string/top_rated"
@@ -65,40 +77,70 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/showsRecyclerView"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:listitem="@layout/view_show_item"
-        tools:visibility="gone" />
+        android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/emptyStateLabel"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_empty_state" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/showsRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:listitem="@layout/view_show_item"
+                    tools:visibility="gone" />
 
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="26dp" />
+                <com.google.android.material.progressindicator.CircularProgressIndicator
+                    android:id="@+id/loadingIndicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:indicatorSize="32dp"
+                    app:indicatorColor="@color/purple"
+                    android:visibility="gone"
+                    android:indeterminate="true"
+                    android:layout_gravity="center" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:lineSpacingExtra="3sp"
-            android:text="@string/your_shows_are_not_showing_get_it"
-            android:textColor="#808080"
-            android:textFontWeight="400"
-            android:textSize="17sp" />
+                <LinearLayout
+                    android:id="@+id/emptyStateLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
-    </LinearLayout>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_empty_state" />
+
+                    <Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="24dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:lineSpacingExtra="3sp"
+                        android:text="@string/your_shows_are_not_showing_get_it"
+                        android:textColor="@color/grey9"
+                        android:textFontWeight="400"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/floatingActionButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+                    android:backgroundTint="@color/purple"
+                    android:src="@drawable/ic_grid"
+                    android:layout_margin="16dp"/>
+        </FrameLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </LinearLayout>
 

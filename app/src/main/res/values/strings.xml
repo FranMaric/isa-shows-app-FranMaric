@@ -26,4 +26,9 @@
     <string name="login_failed_please_try_again">Login failed, please try again!</string>
     <string name="are_you_sure_you_want_to_logout">Are you sure you want to logout?</string>
     <string name="back">Back</string>
+    <string name="rating_invalid">Rating invalid!</string>
+    <string name="rating_must_not_be_zero">Rating must not be zero!</string>
+    <string name="ok">Ok</string>
+    <string name="offline_mode">· Offline mode</string>
+
 </resources>

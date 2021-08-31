@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -50,6 +51,12 @@ class RegisterFragment : Fragment() {
         initInputs()
     }
 
+    private fun setLoading(isLoading: Boolean) {
+        binding.registerButton.text = if(isLoading) "" else getString(R.string.register)
+        binding.loadingIndicator.isVisible = isLoading
+        binding.registerButton.isEnabled = !isLoading      // this line shouldn't be here but for some reason loadingIndicator is not visible if loginButton is enabled
+    }
+
     private fun initRegisterObserver() {
         viewModel.getRegistrationResultLiveData()
             .observe(requireActivity()) { isRegisterSuccessful ->
@@ -59,13 +66,15 @@ class RegisterFragment : Fragment() {
                 } else {
                     Toast.makeText(context, "Not successful registration!", Toast.LENGTH_SHORT)
                         .show()
+                    setLoading(false)
                 }
             }
     }
 
     private fun initRegisterButton() {
-        setButtonEnabled(false)
+        binding.registerButton.isEnabled = false
         binding.registerButton.setOnClickListener {
+            setLoading(true)
             val email = binding.emailField.text.toString()
             val password = binding.passwordField.text.toString()
             val passwordConfirmation = binding.passwordConfirmationField.text.toString()
@@ -79,50 +88,27 @@ class RegisterFragment : Fragment() {
             val password = binding.passwordField.text.toString()
             val passwordConfirmation = binding.passwordConfirmationField.text.toString()
             if (isValidInput(email.toString(), password, passwordConfirmation)) {
-                setButtonEnabled(true)
+                binding.registerButton.isEnabled = true
             } else if (binding.registerButton.isEnabled) {
-                setButtonEnabled(false)
+                binding.registerButton.isEnabled = false
             }
         }
         binding.passwordField.doAfterTextChanged { password ->
             val email = binding.emailField.text.toString()
             val passwordConfirmation = binding.passwordConfirmationField.text.toString()
             if (isValidInput(email, password.toString(), passwordConfirmation)) {
-                setButtonEnabled(true)
+                binding.registerButton.isEnabled = true
             } else if (binding.registerButton.isEnabled) {
-                setButtonEnabled(false)
+                binding.registerButton.isEnabled = false
             }
         }
         binding.passwordConfirmationField.doAfterTextChanged { passwordConfirmation ->
             val email = binding.emailField.text.toString()
             val password = binding.passwordField.text.toString()
             if (isValidInput(email, password, passwordConfirmation.toString())) {
-                setButtonEnabled(true)
+                binding.registerButton.isEnabled = true
             } else if (binding.registerButton.isEnabled) {
-                setButtonEnabled(false)
-            }
-        }
-    }
-
-    private fun setButtonEnabled(enabled: Boolean) {
-        binding.registerButton.apply {
-            setEnabled(enabled)
-            if (enabled) {
-                setBackgroundTintList(
-                    ContextCompat.getColorStateList(
-                        requireContext(),
-                        R.color.button_enabled
-                    )
-                )
-                setTextColor(Color.parseColor("#52368C"))
-            } else {
-                setBackgroundTintList(
-                    ContextCompat.getColorStateList(
-                        requireContext(),
-                        R.color.button_disabled
-                    )
-                )
-                setTextColor(Color.WHITE)
+                binding.registerButton.isEnabled = false
             }
         }
     }

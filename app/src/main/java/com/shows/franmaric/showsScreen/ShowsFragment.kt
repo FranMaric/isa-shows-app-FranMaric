@@ -14,21 +14,20 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.shows.franmaric.MainActivity
-import com.shows.franmaric.PREFS_EMAIL_KEY
-import com.shows.franmaric.PREFS_PROFILE_PHOTO_URL
-import com.shows.franmaric.R
+import com.shows.franmaric.*
 import com.shows.franmaric.repository.RepositoryViewModelFactory
 import com.shows.franmaric.databinding.BottomSheetProfileBinding
 import com.shows.franmaric.databinding.FragmentShowsBinding
 import com.shows.franmaric.extensions.hasInternetConnection
 import com.shows.franmaric.utils.FileUtil
 import com.shows.franmaric.utils.preparePermissionsContract
+
+private const val SPAN_COUNT = 2
 
 class ShowsFragment : Fragment() {
 
@@ -70,6 +69,8 @@ class ShowsFragment : Fragment() {
             }
         }
 
+    private var isLinear = true
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -87,9 +88,62 @@ class ShowsFragment : Fragment() {
 
         initProfileButton()
 
-        initTopRatedCheckBox()
+        initTopRatedChip()
 
         checkForOfflinePhotoToUpload()
+
+        initFAB()
+
+        initSwipeRefresh()
+    }
+
+    private fun initSwipeRefresh() {
+        binding.swipeRefresh.setOnRefreshListener {
+            setState(State.LOADING)
+            val hasInternetConnection = requireContext().hasInternetConnection()
+            binding.offlineModeTextView.isVisible = !hasInternetConnection
+
+            if(hasInternetConnection)
+                viewModel.getShows(hasInternetConnection, binding.topRatedChip.isChecked)
+            else if (binding.topRatedChip.isChecked)
+                setState(State.EMPTY)
+            else
+                setState(State.DATA)
+
+            binding.swipeRefresh.isRefreshing = false
+        }
+    }
+
+    private fun initFAB() {
+        binding.floatingActionButton.setOnClickListener {
+            isLinear = !isLinear
+            setLayoutManager(isLinear)
+        }
+    }
+    private fun setLayoutManager(isLinear: Boolean) {
+        binding.showsRecyclerView.layoutManager =
+            if(isLinear) LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            else GridLayoutManager(context, SPAN_COUNT)
+
+        binding.floatingActionButton.setImageResource(if(isLinear) R.drawable.ic_grid else R.drawable.ic_list)
+    }
+
+    private fun setState(state: State) {
+        binding.showsRecyclerView.isVisible = false
+        binding.emptyStateLabel.isVisible = false
+        binding.loadingIndicator.isVisible = false
+
+        when(state) {
+            State.EMPTY -> {
+                binding.emptyStateLabel.isVisible = true
+            }
+            State.DATA -> {
+                binding.showsRecyclerView.isVisible = true
+            }
+            State.LOADING -> {
+                binding.loadingIndicator.isVisible = true
+            }
+        }
     }
 
     private fun checkForOfflinePhotoToUpload() {
@@ -109,9 +163,12 @@ class ShowsFragment : Fragment() {
         }
     }
 
-    private fun initTopRatedCheckBox() {
+    private fun initTopRatedChip() {
         binding.topRatedChip.setOnCheckedChangeListener {_, isTopRated ->
-            viewModel.getShows(requireContext().hasInternetConnection() ,isTopRated)
+            setState(State.LOADING)
+            val hasInternetConnection = requireContext().hasInternetConnection()
+            binding.offlineModeTextView.isVisible = !hasInternetConnection
+            viewModel.getShows(hasInternetConnection, isTopRated)
         }
     }
 
@@ -131,7 +188,9 @@ class ShowsFragment : Fragment() {
 
         bottomSheetBinding!!.logoutButton.setOnClickListener {
             showAlertDialog {
-                viewModel.logout(activity?.getPreferences(Context.MODE_PRIVATE) ?: return@showAlertDialog)
+                viewModel.logout(
+                    activity?.getPreferences(Context.MODE_PRIVATE) ?: return@showAlertDialog,
+                    FileUtil.getImageFile(requireContext()))
 
                 val action = ShowsFragmentDirections.actionShowsToLogin()
                 findNavController().navigate(action)
@@ -210,7 +269,7 @@ class ShowsFragment : Fragment() {
     }
 
     private fun initShowsRecycler() {
-        showsAdapter = ShowsAdapter(emptyList(), requireContext()) { show ->
+        showsAdapter = ShowsAdapter(emptyList()) { show ->
             val action = ShowsFragmentDirections.actionShowsToShowDetails(
                 show.id
             )
@@ -220,23 +279,19 @@ class ShowsFragment : Fragment() {
         viewModel.getShowsLiveData().observe(requireActivity()) { shows ->
             showsAdapter?.setItems(shows)
 
-            val visible = showsAdapter?.getItemCount() != 0
-            binding.showsRecyclerView.isVisible = visible
-            binding.emptyStateLabel.isVisible = !visible
+            if(showsAdapter?.getItemCount() != 0)
+                setState(State.DATA)
+            else
+                setState(State.EMPTY)
         }
 
-        viewModel.getShows(requireContext().hasInternetConnection(), isTopRated = false)
+        setState(State.LOADING)
+        val hasInternetConnection = requireContext().hasInternetConnection()
+        binding.offlineModeTextView.isVisible = !hasInternetConnection
+        viewModel.getShows(hasInternetConnection, isTopRated = false)
 
-        binding.showsRecyclerView.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        setLayoutManager(isLinear = true)
         binding.showsRecyclerView.adapter = showsAdapter
-
-        binding.showsRecyclerView.addItemDecoration(
-            DividerItemDecoration(
-                context,
-                DividerItemDecoration.VERTICAL
-            )
-        )
     }
 
     override fun onDestroyView() {

@@ -17,7 +17,7 @@
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="150dp">
+            android:layout_height="152dp">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:id="@+id/collapsing_toolbar_layout"
@@ -41,108 +41,114 @@
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.core.widget.NestedScrollView
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fillViewport="true"
-            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <!-- CONTENT -->
-            <LinearLayout
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white"
-                android:orientation="vertical">
+                android:fillViewport="true"
+                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="24dp"
-                    android:layout_marginVertical="10dp"
-                    android:elevation="10dp"
-                    app:cardCornerRadius="20dp">
-
-                    <ImageView
-                        android:id="@+id/showImageView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:adjustViewBounds="true"
-                        tools:src="@drawable/knv1" />
-                </androidx.cardview.widget.CardView>
-
-                <TextView
-                    android:id="@+id/descriptionTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="24dp"
-                    android:layout_marginVertical="10dp"
-                    android:fontFamily="sans-serif"
-                    android:lineSpacingExtra="3sp"
-                    android:textColor="@color/black"
-                    android:textFontWeight="400"
-                    android:textSize="17sp"
-                    tools:text="Ovo je dugacaaaaak opis ove serije wuhuuu" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="24dp"
-                    android:fontFamily="sans-serif"
-                    android:lineSpacingExtra="4sp"
-                    android:text="@string/reviews"
-                    android:textColor="@color/black"
-                    android:textFontWeight="700"
-                    android:textSize="24sp" />
-
-                <TextView
-                    android:id="@+id/reviewInfoTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="24dp"
-                    android:fontFamily="sans-serif"
-                    android:lineSpacingExtra="4sp"
-                    android:text="@string/_0_reviews_0_average"
-                    android:textColor="#999999"
-                    android:textFontWeight="400"
-                    android:textSize="14sp" />
-
-                <RatingBar
-                    android:id="@+id/ratingBar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="24dp"
-                    android:background="@color/white"
-                    android:isIndicator="true"
-                    android:numStars="5"
-                    android:progressBackgroundTint="#EEE"
-                    android:progressTint="@color/purple" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/reviewsRecyclerView"
+                <!-- CONTENT -->
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginHorizontal="24dp"
-                    tools:listitem="@layout/view_review_item"
-                    tools:visibility="gone"
-                    android:nestedScrollingEnabled="false"/>
+                    android:background="@color/white"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/emptyStateLabel"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="24dp"
-                    android:fontFamily="sans-serif"
-                    android:lineSpacingExtra="3sp"
-                    android:text="@string/no_reviews_yet"
-                    android:textAlignment="center"
-                    android:textColor="@color/black"
-                    android:textFontWeight="400"
-                    android:textSize="17sp" />
 
-            </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="24dp"
+                        android:layout_marginVertical="8dp"
+                        android:elevation="8dp"
+                        app:cardCornerRadius="24dp">
+
+                        <ImageView
+                            android:id="@+id/showImageView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:adjustViewBounds="true"/>
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:id="@+id/descriptionTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="24dp"
+                        android:layout_marginVertical="8dp"
+                        android:fontFamily="sans-serif"
+                        android:lineSpacingExtra="3sp"
+                        android:textColor="@color/black"
+                        android:textFontWeight="400"
+                        android:textSize="16sp"
+                        tools:text="Ovo je dugacaaaaak opis ove serije wuhuuu" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="24dp"
+                        android:fontFamily="sans-serif"
+                        android:lineSpacingExtra="4sp"
+                        android:text="@string/reviews"
+                        android:textColor="@color/black"
+                        android:textFontWeight="700"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/reviewInfoTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="24dp"
+                        android:fontFamily="sans-serif"
+                        android:lineSpacingExtra="4sp"
+                        android:text="@string/_0_reviews_0_average"
+                        android:textColor="@color/grey9"
+                        android:textFontWeight="400"
+                        android:textSize="16sp" />
+
+                    <RatingBar
+                        android:id="@+id/ratingBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="24dp"
+                        android:background="@color/white"
+                        android:isIndicator="true"
+                        android:numStars="5"
+                        android:progressBackgroundTint="@color/grey"
+                        android:progressTint="@color/purple" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/reviewsRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="24dp"
+                        tools:listitem="@layout/view_review_item"
+                        tools:visibility="gone"
+                        android:nestedScrollingEnabled="false"/>
+
+                    <TextView
+                        android:id="@+id/emptyStateLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="24dp"
+                        android:fontFamily="sans-serif"
+                        android:lineSpacingExtra="3sp"
+                        android:text="@string/no_reviews_yet"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textFontWeight="400"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
@@ -164,13 +170,13 @@
             android:backgroundTint="@color/purple"
             android:fontFamily="sans-serif"
             android:gravity="center"
-            android:lineSpacingExtra="28sp"
-            android:minHeight="45dp"
+            android:lineSpacingExtra="24sp"
+            android:minHeight="48dp"
             android:text="@string/write_a_review"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textFontWeight="700"
-            android:textSize="17sp"
+            android:textSize="16sp"
             app:cornerRadius="40dp" />
     </FrameLayout>
 
