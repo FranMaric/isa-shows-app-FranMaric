@@ -103,7 +103,7 @@
                     android:layout_marginHorizontal="24dp"
                     android:fontFamily="sans-serif"
                     android:lineSpacingExtra="4sp"
-                    android:text="0 REVIEWS, 0 AVERAGE"
+                    android:text="@string/_0_reviews_0_average"
                     android:textColor="#999999"
                     android:textFontWeight="400"
                     android:textSize="14sp" />

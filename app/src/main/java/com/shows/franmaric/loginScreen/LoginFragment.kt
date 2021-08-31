@@ -7,10 +7,15 @@ import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import com.shows.franmaric.PREFS_REMEMBER_ME_KEY
 import com.shows.franmaric.R
 import com.shows.franmaric.databinding.FragmentLoginBinding
 
@@ -20,6 +25,10 @@ class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
 
     private val binding get() = _binding!!
+
+    val args: LoginFragmentArgs by navArgs()
+
+    private val viewModel: LoginViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,15 +44,48 @@ class LoginFragment : Fragment() {
 
         checkRememberMe()
 
+        initRegisterButton()
+
         initLoginButton()
 
         initInputs()
+
+        initLoginObserver()
+    }
+
+    private fun initLoginObserver() {
+        viewModel.getLoginResultLiveData().observe(requireActivity()) { isLoginSuccessful ->
+            if (isLoginSuccessful) {
+                val prefs = activity?.getPreferences(Context.MODE_PRIVATE) ?: return@observe
+                with(prefs.edit()){
+                    putBoolean(PREFS_REMEMBER_ME_KEY, binding.rememberMeCheckBox.isChecked)
+                    apply()
+                }
+
+                val action = LoginFragmentDirections.actionLoginToShows()
+                findNavController().navigate(action)
+            } else {
+                Toast.makeText(context, "Not successful login!", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
+    }
+
+    private fun initRegisterButton() {
+        if (args.afterRegister) {
+            binding.registerButton.isVisible = false
+            binding.loginTextView.text = "Registration successful!"
+        }
+        binding.registerButton.setOnClickListener {
+            val action = LoginFragmentDirections.actionLoginToRegister()
+            findNavController().navigate(action)
+        }
     }
 
     private fun checkRememberMe() {
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
 
-        if (sharedPref.getBoolean(getString(R.string.prefs_remember_me), false)) {
+        if (sharedPref.getBoolean(PREFS_REMEMBER_ME_KEY, false)) {
             val action = LoginFragmentDirections.actionLoginToShows()
             findNavController().navigate(action)
         }
@@ -99,15 +141,13 @@ class LoginFragment : Fragment() {
     }
 
     private fun login() {
-        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
-        with(sharedPref.edit()) {
-            putString(getString(R.string.prefs_email), binding.emailField.text.toString())
-            putBoolean(getString(R.string.prefs_remember_me), binding.rememberMeCheckBox.isChecked)
-            apply()
-        }
-
-        val action = LoginFragmentDirections.actionLoginToShows()
-        findNavController().navigate(action)
+        val email = binding.emailField.text.toString()
+        val password = binding.passwordField.text.toString()
+        viewModel.login(
+            email,
+            password,
+            activity?.getPreferences(Context.MODE_PRIVATE) ?: return
+        )
     }
 
     private fun isValidInput(email: String?, password: String?) =

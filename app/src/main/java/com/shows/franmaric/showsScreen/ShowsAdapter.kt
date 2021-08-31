@@ -1,14 +1,17 @@
 package com.shows.franmaric.showsScreen
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.shows.franmaric.databinding.ViewShowItemBinding
-import com.shows.franmaric.models.Show
+import com.shows.franmaric.models.ShowResponse
 
 class ShowsAdapter(
-    private var items: List<Show>,
-    private val onItemClickCallback: (Show) -> Unit
+    private var items: List<ShowResponse>,
+    private val context : Context,
+    private val onItemClickCallback: (ShowResponse) -> Unit
 ) : RecyclerView.Adapter<ShowsAdapter.ShowViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShowViewHolder {
@@ -26,12 +29,12 @@ class ShowsAdapter(
         holder.bind(items[position])
     }
 
-    fun setItems(shows: List<Show>) {
+    fun setItems(shows: List<ShowResponse>) {
         items = shows
         notifyDataSetChanged()
     }
 
-    fun addItem(show: Show) {
+    fun addItem(show: ShowResponse) {
         items = items + show
         notifyItemInserted(items.size)
     }
@@ -39,10 +42,12 @@ class ShowsAdapter(
     inner class ShowViewHolder(private val binding: ViewShowItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: Show) {
-            binding.showImage.setImageResource(item.imageResourceId)
+        fun bind(item: ShowResponse) {
+            Glide.with(context)
+                .load(item.imageUrl)
+                .into(binding.showImage)
 
-            binding.titleTextView.text = item.name
+            binding.titleTextView.text = item.title
 
             binding.descriptionTextView.text = item.description
 

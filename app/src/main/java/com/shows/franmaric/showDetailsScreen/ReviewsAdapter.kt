@@ -1,14 +1,17 @@
 package com.shows.franmaric.showDetailsScreen
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.shows.franmaric.databinding.ViewReviewItemBinding
 import com.shows.franmaric.models.Review
 
 class ReviewsAdapter(
-    private var items: List<Review>
-) : RecyclerView.Adapter<ReviewsAdapter.ReviewViewHolder>() {
+    private var items: List<Review>,
+    private val context : Context
+    ) : RecyclerView.Adapter<ReviewsAdapter.ReviewViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReviewViewHolder {
         val binding =
@@ -43,9 +46,14 @@ class ReviewsAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(review: Review) {
-            binding.nameTextView.text = review.author
+            binding.nameTextView.text = review.user.email.split("@").first()
             binding.commentTextView.text = review.comment
             binding.ratingTextView.text = review.rating.toString()
+
+            if(review.user.imageUrl != null)
+                Glide.with(context)
+                    .load(review.user.imageUrl)
+                    .into(binding.authorPhotoImageView)
         }
     }
 }

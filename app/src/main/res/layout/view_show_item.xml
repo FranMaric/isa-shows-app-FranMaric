@@ -52,7 +52,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="Ovo je legendarna hrvatska serija."
+                    tools:text="Ovo je legendarna hrvatska serija."
                     android:textColor="#99000000"
                     android:textFontWeight="400"
                     android:textSize="14sp"
