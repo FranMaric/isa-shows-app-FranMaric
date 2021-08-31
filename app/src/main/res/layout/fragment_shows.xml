@@ -8,21 +8,19 @@
     android:orientation="vertical"
     tools:context=".showsScreen.ShowsFragment">
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/profileButton"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_gravity="end"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="19dp"
-        app:cardCornerRadius="100dp">
-
-        <ImageView
-            android:id="@+id/profileButton"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_profile_placeholder" />
-    </androidx.cardview.widget.CardView>
+        android:scaleType="centerCrop"
+        tools:srcCompat="@drawable/ic_profile_placeholder"
+        app:strokeWidth="2dp"
+        app:strokeColor="@color/purple"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
+        />
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -31,26 +29,39 @@
         android:background="@color/white"
         android:minHeight="115dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/shows"
-            android:fontFamily="sans-serif"
-            android:lineSpacingExtra="3sp"
-            android:textColor="@color/black"
-            android:textFontWeight="700"
-            android:textSize="36sp" />
-
-        <CheckBox
-            android:id="@+id/topRatedCheckBox"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/top_rated"
-            android:textAllCaps="false"
-            android:gravity="end"
-            android:checked="false"
-            android:button="@drawable/selector_top_rated_check_box"
-            app:useMaterialThemeColors="false" />
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/shows"
+                android:fontFamily="sans-serif"
+                android:lineSpacingExtra="3sp"
+                android:textColor="@color/black"
+                android:textFontWeight="700"
+                android:textSize="36sp" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/topRatedChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="24dp"
+                app:iconStartPadding="8dp"
+                android:text="@string/top_rated"
+                android:textColor="@color/selector_top_rated_chip_text"
+                app:chipIcon="@drawable/selector_top_rated_chip"
+                app:chipIconSize="16dp"
+                android:checkable="true"
+                android:checked="false"
+                android:layout_marginStart="16dp"
+                app:chipStrokeColor="@color/purple"
+                app:checkedIcon="@drawable/selector_top_rated_chip"
+                app:chipBackgroundColor="@color/selector_top_rated_chip_background"
+                app:chipStrokeWidth="1dp"/>
+        </RelativeLayout>
 
     </androidx.appcompat.widget.Toolbar>
 

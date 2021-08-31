@@ -1,15 +1,15 @@
 package com.shows.franmaric.showsScreen
 
-import android.content.Context
 import android.content.SharedPreferences
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import android.util.Log
+import androidx.lifecycle.*
 import com.shows.franmaric.PREFS_EMAIL_KEY
 import com.shows.franmaric.PREFS_PROFILE_PHOTO_URL
 import com.shows.franmaric.PREFS_REMEMBER_ME_KEY
 import com.shows.franmaric.models.*
 import com.shows.franmaric.networking.ApiModule
+import com.shows.franmaric.repository.ShowsRepository
+import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -18,7 +18,9 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
 
-class ShowsViewModel : ViewModel() {
+class ShowsViewModel(
+    val repository: ShowsRepository
+) : ViewModel() {
     private val showsLiveData: MutableLiveData<List<ShowResponse>> by lazy {
         MutableLiveData<List<ShowResponse>>()
     }
@@ -27,19 +29,15 @@ class ShowsViewModel : ViewModel() {
         return showsLiveData
     }
 
-    fun initShows(){
-        getShows(false)
-    }
-
-    fun getShows(isTopRated: Boolean = false){
-        if(isTopRated){
+    fun getShows(hasInternetConnection: Boolean, isTopRated: Boolean = false) {
+        if (isTopRated) {
             ApiModule.retrofit.getTopRatedShows()
                 .enqueue(object : Callback<GetTopRatedShowsResponse> {
                     override fun onResponse(
                         call: Call<GetTopRatedShowsResponse>,
                         response: Response<GetTopRatedShowsResponse>
                     ) {
-                        if(response.isSuccessful){
+                        if (response.isSuccessful) {
                             showsLiveData.value = response.body()?.shows
                         }
                     }
@@ -49,49 +47,21 @@ class ShowsViewModel : ViewModel() {
                     }
                 })
         } else {
-            ApiModule.retrofit.getShows()
-                .enqueue(object : Callback<GetShowsResponse> {
-                    override fun onResponse(
-                        call: Call<GetShowsResponse>,
-                        response: Response<GetShowsResponse>
-                    ) {
-                        if (response.isSuccessful) {
-                            showsLiveData.value = response.body()?.shows
-                        }
-                    }
-
-                    override fun onFailure(call: Call<GetShowsResponse>, t: Throwable) {
-                        showsLiveData.value = emptyList()
-                    }
-                })
+            repository.getShows(hasInternetConnection) {
+                showsLiveData.postValue(it)
+            }
         }
     }
 
-    fun uploadProfilePhoto(imageUri: String, prefs: SharedPreferences, updateCallback: (String) -> Unit) {
-        val file = File(imageUri)
-        val requestFile = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
-        val profilePic = MultipartBody.Part.createFormData("image", file.name, requestFile)
+    fun uploadProfilePhoto(imageUri: String, avatarUri: String, prefs: SharedPreferences, hasInternetConnection: Boolean,updateCallback: () -> Unit)
+        = repository.uploadProfilePhoto(imageUri, avatarUri, prefs,hasInternetConnection, updateCallback)
 
-        ApiModule.retrofit.uploadProfilePhoto(profilePic)
-            .enqueue(object : Callback<ProfilePhotoResponse> {
-                override fun onResponse(
-                    call: Call<ProfilePhotoResponse>,
-                    response: Response<ProfilePhotoResponse>
-                ) {
-                    if(response.isSuccessful){
-                        val photoUrl = response.body()?.user?.imageUrl.toString()
-                        with(prefs.edit()){
-                            putString(PREFS_PROFILE_PHOTO_URL, photoUrl)
-                            apply()
-                        }
-                        updateCallback(photoUrl)
-                    }
-                }
+    fun checkForOfflinePhotoToUpload(imageUri: String, avatarUri: String, prefs: SharedPreferences, hasInternetConnection: Boolean) {
+        val currentImageUri = prefs.getString(PREFS_PROFILE_PHOTO_URL,"") ?: return
 
-                override fun onFailure(call: Call<ProfilePhotoResponse>, t: Throwable) {
-
-                }
-            })
+       if(!currentImageUri.contains("http")) {
+           uploadProfilePhoto(imageUri, avatarUri, prefs, hasInternetConnection, {})
+       }
     }
 
     fun logout(prefs: SharedPreferences) {

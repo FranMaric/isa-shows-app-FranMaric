@@ -19,13 +19,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.shows.franmaric.MainActivity
 import com.shows.franmaric.PREFS_EMAIL_KEY
 import com.shows.franmaric.PREFS_PROFILE_PHOTO_URL
+import com.shows.franmaric.R
+import com.shows.franmaric.repository.RepositoryViewModelFactory
 import com.shows.franmaric.databinding.BottomSheetProfileBinding
 import com.shows.franmaric.databinding.FragmentShowsBinding
+import com.shows.franmaric.extensions.hasInternetConnection
 import com.shows.franmaric.utils.FileUtil
-import com.shows.franmaric.utils.preparePrmissionsContract
-
+import com.shows.franmaric.utils.preparePermissionsContract
 
 class ShowsFragment : Fragment() {
 
@@ -33,9 +36,11 @@ class ShowsFragment : Fragment() {
 
     private val binding get() = _binding!!
 
-    private val viewModel: ShowsViewModel by viewModels()
+    private val viewModel: ShowsViewModel by viewModels {
+        RepositoryViewModelFactory((requireActivity() as MainActivity).showsRepository)
+    }
 
-    private val cameraPermissionForTakingPhoto = preparePrmissionsContract(onPermissionsGranted = {
+    private val cameraPermissionForTakingPhoto = preparePermissionsContract(onPermissionsGranted = {
         takePhoto()
     })
 
@@ -54,8 +59,11 @@ class ShowsFragment : Fragment() {
                         activity?.applicationContext?.packageName.toString() + ".fileprovider",
                         file
                     )
-                    viewModel.uploadProfilePhoto(file.toString(),
-                        activity?.getPreferences(Context.MODE_PRIVATE) ?: return@registerForActivityResult) { photoUrl ->
+                    viewModel.uploadProfilePhoto(
+                        file.toString(),
+                        avatarUri.toString(),
+                        activity?.getPreferences(Context.MODE_PRIVATE) ?: return@registerForActivityResult,
+                        requireContext().hasInternetConnection()) {
                         updateProfileAndBottomSheetPhoto()
                     }
                 }
@@ -80,11 +88,30 @@ class ShowsFragment : Fragment() {
         initProfileButton()
 
         initTopRatedCheckBox()
+
+        checkForOfflinePhotoToUpload()
+    }
+
+    private fun checkForOfflinePhotoToUpload() {
+        val file = FileUtil.getImageFile(requireContext())
+
+        if (file != null) {
+            val avatarUri = FileProvider.getUriForFile(
+                requireContext(),
+                activity?.applicationContext?.packageName.toString() + ".fileprovider",
+                file
+            )
+            viewModel.checkForOfflinePhotoToUpload(
+                file.toString(),
+                avatarUri.toString(),
+                activity?.getPreferences(Context.MODE_PRIVATE) ?: return,
+                requireContext().hasInternetConnection())
+        }
     }
 
     private fun initTopRatedCheckBox() {
-        binding.topRatedCheckBox.setOnCheckedChangeListener {_, isTopRated ->
-            viewModel.getShows(isTopRated)
+        binding.topRatedChip.setOnCheckedChangeListener {_, isTopRated ->
+            viewModel.getShows(requireContext().hasInternetConnection() ,isTopRated)
         }
     }
 
@@ -168,14 +195,14 @@ class ShowsFragment : Fragment() {
     private fun showAlertDialog(onPositiveCallback: () -> Unit) {
         val alertDialog = AlertDialog.Builder(requireContext())
 
-        alertDialog.setTitle("LOGOUT")
-        alertDialog.setMessage("Are you sure you want to logout?")
+        alertDialog.setTitle(getString(R.string.logout))
+        alertDialog.setMessage(getString(R.string.are_you_sure_you_want_to_logout))
 
-        alertDialog.setPositiveButton("LOGOUT", { _, _ ->
+        alertDialog.setPositiveButton(getString(R.string.logout), { _, _ ->
             onPositiveCallback()
         })
 
-        alertDialog.setNegativeButton("BACK", { _, _ ->
+        alertDialog.setNegativeButton(getString(R.string.back), { _, _ ->
 
         })
 
@@ -192,10 +219,13 @@ class ShowsFragment : Fragment() {
 
         viewModel.getShowsLiveData().observe(requireActivity()) { shows ->
             showsAdapter?.setItems(shows)
-            binding.showsRecyclerView.isVisible = showsAdapter?.getItemCount() != 0
+
+            val visible = showsAdapter?.getItemCount() != 0
+            binding.showsRecyclerView.isVisible = visible
+            binding.emptyStateLabel.isVisible = !visible
         }
 
-        viewModel.initShows()
+        viewModel.getShows(requireContext().hasInternetConnection(), isTopRated = false)
 
         binding.showsRecyclerView.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)

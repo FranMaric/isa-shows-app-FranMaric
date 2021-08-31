@@ -16,12 +16,13 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.shows.franmaric.MainActivity
 import com.shows.franmaric.PREFS_EMAIL_KEY
 import com.shows.franmaric.R
+import com.shows.franmaric.repository.RepositoryViewModelFactory
 import com.shows.franmaric.databinding.DialogAddReviewBinding
 import com.shows.franmaric.databinding.FragmentShowDetailsBinding
-import com.shows.franmaric.models.Review
-import com.shows.franmaric.models.ReviewRequest
+import com.shows.franmaric.extensions.hasInternetConnection
 
 
 class ShowDetailsFragment : Fragment() {
@@ -32,7 +33,9 @@ class ShowDetailsFragment : Fragment() {
 
     private val args: ShowDetailsFragmentArgs by navArgs()
 
-    private val viewModel: ShowDetailsViewModel by viewModels()
+    private val viewModel: ShowDetailsViewModel by viewModels {
+        RepositoryViewModelFactory((requireActivity() as MainActivity).showsRepository)
+    }
 
     private var reviewsAdapter: ReviewsAdapter? = null
 
@@ -53,11 +56,11 @@ class ShowDetailsFragment : Fragment() {
 
         initReviewRecycler()
 
-        initSubmitButton()
+        initReviewButton()
 
         initReviewInfo()
 
-        viewModel.initShow(args.showId)
+        viewModel.initShow(args.showId, requireContext().hasInternetConnection())
     }
 
     private fun initReviewInfo() {
@@ -92,7 +95,7 @@ class ShowDetailsFragment : Fragment() {
         }
     }
 
-    private fun initSubmitButton() {
+    private fun initReviewButton() {
         binding.reviewButton.setOnClickListener {
             showBottomSheet()
         }
@@ -112,7 +115,14 @@ class ShowDetailsFragment : Fragment() {
             val rating = bottomSheetBinding.ratingBar.rating.toInt()
             val comment = bottomSheetBinding.commentField.text.toString()
 
-            viewModel.addReview(comment, rating)
+            val prefs = activity?.getPreferences(Context.MODE_PRIVATE) ?: return@setOnClickListener
+
+            viewModel.addReview(
+                comment,
+                rating,
+                requireContext().hasInternetConnection(),
+                prefs.getString(PREFS_EMAIL_KEY, "")!!
+            )
 
             setRecyclerViewVisibility(true)
 
@@ -140,7 +150,7 @@ class ShowDetailsFragment : Fragment() {
 
         viewModel.getReviewsLiveData().observe(requireActivity()) { reviews ->
             reviewsAdapter?.setItems(reviews)
-            setRecyclerViewVisibility(reviews.size != 0)
+            setRecyclerViewVisibility(reviews.isNotEmpty())
         }
 
         binding.reviewsRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)

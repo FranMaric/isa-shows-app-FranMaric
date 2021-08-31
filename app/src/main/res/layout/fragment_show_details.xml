@@ -117,7 +117,7 @@
                     android:isIndicator="true"
                     android:numStars="5"
                     android:progressBackgroundTint="#EEE"
-                    android:progressTint="#52368C" />
+                    android:progressTint="@color/purple" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/reviewsRecyclerView"
@@ -161,7 +161,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="24dp"
             android:layout_marginVertical="24dp"
-            android:backgroundTint="#52368C"
+            android:backgroundTint="@color/purple"
             android:fontFamily="sans-serif"
             android:gravity="center"
             android:lineSpacingExtra="28sp"

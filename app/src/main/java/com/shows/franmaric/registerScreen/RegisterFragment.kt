@@ -1,6 +1,5 @@
 package com.shows.franmaric.registerScreen
 
-import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Patterns
@@ -13,8 +12,13 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.shows.franmaric.MainActivity
 import com.shows.franmaric.R
 import com.shows.franmaric.databinding.FragmentRegisterBinding
+import com.shows.franmaric.extensions.hasInternetConnection
+import com.shows.franmaric.loginScreen.LoginViewModel
+import com.shows.franmaric.repository.RepositoryViewModelFactory
+import com.shows.franmaric.repository.ShowsRepository
 
 const val MIN_PASSWORD_LENGTH = 6
 
@@ -23,7 +27,9 @@ class RegisterFragment : Fragment() {
 
     private val binding get() = _binding!!
 
-    private val viewModel: RegisterViewModel by viewModels()
+    private val viewModel: RegisterViewModel by viewModels {
+        RepositoryViewModelFactory((requireActivity() as MainActivity).showsRepository)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -58,12 +64,13 @@ class RegisterFragment : Fragment() {
     }
 
     private fun initRegisterButton() {
+        setButtonEnabled(false)
         binding.registerButton.setOnClickListener {
             val email = binding.emailField.text.toString()
             val password = binding.passwordField.text.toString()
             val passwordConfirmation = binding.passwordConfirmationField.text.toString()
 
-            viewModel.register(email, password, passwordConfirmation)
+            viewModel.register(email, password, passwordConfirmation, requireContext().hasInternetConnection())
         }
     }
 
