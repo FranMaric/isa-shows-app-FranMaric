@@ -15,10 +15,9 @@ class ShowsAdapter(
 ) : RecyclerView.Adapter<ShowsAdapter.ShowViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShowViewHolder {
-        val binding =
-            ViewShowItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val showCardView = ShowCardView(parent.context)
 
-        return ShowViewHolder(binding)
+        return ShowViewHolder(showCardView)
     }
 
     override fun getItemCount(): Int {
@@ -39,19 +38,17 @@ class ShowsAdapter(
         notifyItemInserted(items.size)
     }
 
-    inner class ShowViewHolder(private val binding: ViewShowItemBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    inner class ShowViewHolder(private val showCardView: ShowCardView) :
+        RecyclerView.ViewHolder(showCardView) {
 
         fun bind(item: ShowResponse) {
-            Glide.with(context)
-                .load(item.imageUrl)
-                .into(binding.showImage)
+            showCardView.setImage(item.imageUrl)
 
-            binding.titleTextView.text = item.title
+            showCardView.setTitle(item.title)
 
-            binding.descriptionTextView.text = item.description
+            showCardView.setDescription(item.description ?: "")
 
-            binding.card.setOnClickListener {
+            showCardView.setOnClickListener {
                 onItemClickCallback(item)
             }
         }

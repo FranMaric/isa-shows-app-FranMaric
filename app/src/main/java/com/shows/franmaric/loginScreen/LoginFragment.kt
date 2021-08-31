@@ -1,10 +1,7 @@
 package com.shows.franmaric.loginScreen
 
 import android.content.Context
-import android.content.res.Resources
 import android.graphics.Color
-import android.net.ConnectivityManager
-import android.net.NetworkInfo
 import android.os.Bundle
 import android.util.Patterns
 import android.view.LayoutInflater
@@ -24,7 +21,6 @@ import com.shows.franmaric.R
 import com.shows.franmaric.databinding.FragmentLoginBinding
 import com.shows.franmaric.extensions.hasInternetConnection
 import com.shows.franmaric.repository.RepositoryViewModelFactory
-import com.shows.franmaric.showsScreen.ShowsViewModel
 
 const val MIN_PASSWORD_LENGTH = 6
 
@@ -39,6 +35,8 @@ class LoginFragment : Fragment() {
         RepositoryViewModelFactory((requireActivity() as MainActivity).showsRepository)
     }
 
+    private var isFirstLogin = true
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -50,8 +48,6 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        checkRememberMe()
 
         initRegisterButton()
 
@@ -77,6 +73,7 @@ class LoginFragment : Fragment() {
             } else {
                 Toast.makeText(context, getString(R.string.login_failed_please_try_again), Toast.LENGTH_SHORT)
                     .show()
+                isFirstLogin = true
             }
         }
     }
@@ -92,19 +89,13 @@ class LoginFragment : Fragment() {
         }
     }
 
-    private fun checkRememberMe() {
-        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
-
-        if (sharedPref.getBoolean(PREFS_REMEMBER_ME_KEY, false)) {
-            val action = LoginFragmentDirections.actionLoginToShows()
-            findNavController().navigate(action)
-        }
-    }
-
     private fun initLoginButton() {
         binding.loginButton.setEnabled(false)
         binding.loginButton.setOnClickListener {
-            login()
+            if(isFirstLogin) {
+                isFirstLogin = false
+                login()
+            }
         }
     }
 
@@ -158,6 +149,7 @@ class LoginFragment : Fragment() {
                 getString(R.string.login_failed_please_try_again),
                 Toast.LENGTH_SHORT
             ).show()
+            isFirstLogin = true
             return
         }
         val email = binding.emailField.text.toString()
